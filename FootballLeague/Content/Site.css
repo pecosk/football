@@ -1,0 +1,9 @@
+﻿.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+button.register.registered, button.unregister {
+    display: none;
+}
+
+button.register, button.unregister.registered {
+    display: block;
+}

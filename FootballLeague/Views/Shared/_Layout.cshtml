@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html ng-app="footballApp">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link href="~/Content/ng-table.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+</head>
+<body ng-controller="footballController">
+    <button ng-click="register()" ng-class="{registered: registered}" class="register btn">Registrovat</button>
+    <button ng-click="unregister()" ng-class="{registered: registered}" class="unregister btn">Odregistrovat</button>
+
+    <table ng-table="tableParams" class="table table-striped">
+        <tr ng-repeat="user in $data">
+            <td data-title="'Id'" sortable="'Id'">{{user.Id}}</td>
+            <td data-title="'Meno'" sortable="'Name'">{{user.Name}}</td>
+        </tr>
+    </table>
+
+    @RenderBody()
+
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/ng-table.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap.js"></script>
+    <script src="~/Scripts/app/football.js"></script>
+</body>
+</html>
