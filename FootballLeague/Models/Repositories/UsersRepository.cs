@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace FootballLeague.Models.Repositories
 {
-    public class UsersRepository
+    public class UsersRepository : IUsersRepository
     {
         private FootballContext _context;
 
@@ -12,7 +12,7 @@ namespace FootballLeague.Models.Repositories
             _context = new FootballContext();
         }
 
-        public List<User> GetAllUsers()
+        public IEnumerable<User> GetAllUsers()
         {
             return _context.Users.ToList();
         }

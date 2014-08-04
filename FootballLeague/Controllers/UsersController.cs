@@ -8,27 +8,27 @@ namespace FootballLeague.Controllers
 {
     public class UsersController : ApiController
     {
-        private UsersRepository _repository;
+        private IUsersRepository _repository;
 
-        public UsersController()
+        public UsersController() : this(null)
         {
-            _repository = new UsersRepository();
+        }
+
+        public UsersController(IUsersRepository repository)
+        {
+            _repository = repository ?? new UsersRepository();
         }
 
         // GET api/users
         public IEnumerable<User> Get()
         {
-            //return new User[] {
-            //    new User { Id = 1, Name = "Janko" },
-            //    new User { Id = 2, Name = "Hrasko" }
-            //};
             return _repository.GetAllUsers();
         }
 
         // GET api/users/5
-        public string Get(int id)
+        public User Get(int id)
         {
-            return _repository.GetUser(id).Name;
+            return _repository.GetUser(id);
         }
 
         // POST api/users
@@ -40,15 +40,16 @@ namespace FootballLeague.Controllers
         }
 
         // PUT api/users/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
+        //public void Put(int id, [FromBody]string value)
+        //{
+        //}
 
         // DELETE api/users/5
         public void Delete(int id)
         {
             var user = _repository.GetUser(id);
-            if (user == null || !User.Identity.Name.EndsWith('\\' + user.Name))
+            var userName = User.Identity.Name.Split('\\').Last();
+            if (user == null || userName != user.Name)
                 return;
 
             _repository.DeleteUser(user.Id);
