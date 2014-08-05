@@ -10,7 +10,7 @@ using System.Threading;
 namespace FootballLeague.Tests.Controllers
 {
     [TestFixture]
-    public class UsersControllerTest
+    public class UsersControllerTest : ControllerTestBase
     {
         IUsersRepository _repository;
 
@@ -18,15 +18,6 @@ namespace FootballLeague.Tests.Controllers
         public void SetUp()
         {
             _repository = MockRepository.GenerateMock<IUsersRepository>();
-        }
-
-        private void MockCurrentUser(string userName)
-        {
-            var identity = MockRepository.GenerateMock<IIdentity>();
-            identity.Stub(i => i.Name).Return(userName);
-            var principal = MockRepository.GenerateMock<IPrincipal>();
-            principal.Stub(p => p.Identity).Return(identity);
-            Thread.CurrentPrincipal = principal;
         }
 
         [Test]
@@ -71,7 +62,7 @@ namespace FootballLeague.Tests.Controllers
         [Test]
         public void Delete_IfCurrentUserExists_DeletesHim()
         {
-            var user = new User { Name = "Janko" };
+            var user = new User { Id = 1, Name = "Janko" };
             MockCurrentUser("Janko");
             _repository.Stub(r => r.GetUser(1)).Return(user);
             _repository.Expect(r => r.DeleteUser(1));

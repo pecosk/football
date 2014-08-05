@@ -1,6 +1,6 @@
-﻿using FootballLeague.Models;
+﻿using FootballLeague.Filters;
+using FootballLeague.Models;
 using FootballLeague.Models.Repositories;
-using System;
 using System.Linq;
 using System.Web.Http;
 
@@ -8,21 +8,22 @@ namespace FootballLeague.Controllers
 {
     public class IdentityController : ApiController
     {
-        private UsersRepository _repository;
+        private IUsersRepository _repository;
 
-        public IdentityController()
+        public IdentityController() : this(null)
         {
-            _repository = new UsersRepository();
         }
 
+        public IdentityController(IUsersRepository repository)
+        {
+            _repository = repository ?? new UsersRepository();
+        }
+
+        [NullObjectActionFilter]
         public User Get()
         {
             var name = User.Identity.Name.Split('\\').Last();
-            var user = _repository.GetUser(name);
-            if (user == null)
-                throw new NullReferenceException();
-
-            return user;
+            return _repository.GetUser(name);
         }
     }
 }
