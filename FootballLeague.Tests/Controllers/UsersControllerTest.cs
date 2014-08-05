@@ -4,7 +4,6 @@ using Rhino.Mocks;
 using FootballLeague.Controllers;
 using FootballLeague.Models;
 using FootballLeague.Models.Repositories;
-using System.Web.Http;
 using System.Security.Principal;
 using System.Threading;
 
@@ -21,7 +20,7 @@ namespace FootballLeague.Tests.Controllers
             _repository = MockRepository.GenerateMock<IUsersRepository>();
         }
 
-        private void MockUser(string userName)
+        private void MockCurrentUser(string userName)
         {
             var identity = MockRepository.GenerateMock<IIdentity>();
             identity.Stub(i => i.Name).Return(userName);
@@ -58,11 +57,11 @@ namespace FootballLeague.Tests.Controllers
         }
 
         [Test]
-        public void Post()
+        public void Post_WithoutArguments_InsertsCurrentUser()
         {
             _repository.Expect(r => r.InsertUser(Arg<User>.Matches(u => u.Name == "Ferko")));
             var controller = new UsersController(_repository);
-            MockUser("Ferko");
+            MockCurrentUser("Ferko");
 
             controller.Post();
 
@@ -70,14 +69,11 @@ namespace FootballLeague.Tests.Controllers
         }
 
         [Test]
-        public void Delete()
+        public void Delete_IfCurrentUserExists_DeletesHim()
         {
-            var allUsers = new List<User> { 
-                new User { Id = 1, Name = "Janko" },
-                new User { Id = 2, Name = "Marienka" }
-            };
-            MockUser("Janko");
-            _repository.Stub(r => r.GetUser(1)).Return(allUsers[0]);
+            var user = new User { Name = "Janko" };
+            MockCurrentUser("Janko");
+            _repository.Stub(r => r.GetUser(1)).Return(user);
             _repository.Expect(r => r.DeleteUser(1));
             var controller = new UsersController(_repository);
 
