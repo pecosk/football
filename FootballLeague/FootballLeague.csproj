@@ -117,12 +117,15 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IdentityController.cs" />
+    <Compile Include="Controllers\MatchesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Filters\NullObjectActionFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\FootballContext.cs" />
+    <Compile Include="Models\Match.cs" />
+    <Compile Include="Models\Repositories\IMatchesRepository.cs" />
     <Compile Include="Models\Repositories\IUsersRepository.cs" />
     <Compile Include="Models\Repositories\UsersRepository.cs" />
     <Compile Include="Models\User.cs" />
