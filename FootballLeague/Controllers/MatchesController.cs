@@ -13,10 +13,14 @@ namespace FootballLeague.Controllers
         private IMatchesRepository _matchRepository;
         private IUsersRepository _userRepository;
 
+        public MatchesController() : this(null, null)
+        {
+        }
+
         public MatchesController(IMatchesRepository matchRepository, IUsersRepository userRepository)
         {
-            _matchRepository = matchRepository;
-            _userRepository = userRepository;
+            _matchRepository = matchRepository ?? new MatchesRepository();
+            _userRepository = userRepository ?? new UsersRepository();
         }
 
         public void Post(Match match)
