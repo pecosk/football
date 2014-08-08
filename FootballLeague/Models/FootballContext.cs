@@ -4,8 +4,8 @@ namespace FootballLeague.Models
 {
     public class FootballContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
-        public DbSet<Match> Matches { get; set; }
+        public virtual IDbSet<User> Users { get; set; }
+        public virtual IDbSet<Match> Matches { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

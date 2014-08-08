@@ -4,9 +4,9 @@
     {
         private FootballContext _context;
 
-        public MatchesRepository()
+        public MatchesRepository(FootballContext context = null)
         {
-            _context = new FootballContext();
+            _context = context ?? new FootballContext();
         }
 
         public Match InsertMatch(User user, Match match)
