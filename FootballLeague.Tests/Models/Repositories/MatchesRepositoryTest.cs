@@ -10,7 +10,7 @@ using System.Linq;
 namespace FootballLeague.Tests.Models.Repositories
 {
     [TestFixture]
-    public class MatchesRepositoryTest
+    public class MatchesRepositoryTest : RepositoryTestBase
     {
         FootballContext _context;
 
@@ -18,17 +18,6 @@ namespace FootballLeague.Tests.Models.Repositories
         public void SetUp()
         {
             _context = MockRepository.GenerateMock<FootballContext>();
-        }
-
-        private IDbSet<T> MockContextData<T>(FootballContext context, Func<FootballContext, IDbSet<T>> dataSelector, IQueryable<T> mockData) where T : class
-        {
-            var mockSet = MockRepository.GenerateMock<IDbSet<T>, IQueryable>();
-            mockSet.Stub(m => m.Provider).Return(mockData.Provider);
-            mockSet.Stub(m => m.Expression).Return(mockData.Expression);
-            mockSet.Stub(m => m.ElementType).Return(mockData.ElementType);
-            mockSet.Stub(m => m.GetEnumerator()).Return(mockData.GetEnumerator());
-            context.Stub(x => dataSelector(x)).PropertyBehavior();
-            return mockSet;
         }
 
         [Test]
