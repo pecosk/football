@@ -34,5 +34,44 @@ namespace FootballLeague.Tests.Models.Repositories
 
             _context.Matches.VerifyAllExpectations();
         }
+
+        [Test]
+        public void GetPlanned_GetsAllMatchesInFuture()
+        {
+            var ferko = new User { Id = 1, Name = "Ferko" };
+            var longAgo = DateTime.Parse("1896-01-02T01:01");
+            var inFuture = DateTime.Parse("2046-01-01T01:01");
+            var planned = new List<Match> {
+                new Match{ Id = 0, PlannedTime = longAgo, Creator = ferko, Players = new[] { ferko }},
+                new Match{ Id = 2, PlannedTime = inFuture, Creator = ferko, Players = new[] { ferko }},
+            };
+            _context.Matches = MockContextData(_context, c => c.Matches, planned.AsQueryable());
+            var repo = new MatchesRepository(_context);
+
+            var result = repo.GetPlanned();
+
+            Assert.That(result.Count(), Is.EqualTo(1));
+            Assert.That(result.First().PlannedTime, Is.EqualTo(inFuture));
+        }
+
+        [Test]
+        public void GetPlanned_GetsAllMatchesOrderedByPlannedDate()
+        {
+            var ferko = new User { Id = 1, Name = "Ferko" };
+            var furtherInFuture = DateTime.Parse("2046-01-02T01:01");
+            var inFuture = DateTime.Parse("2046-01-01T01:01");
+            var planned = new List<Match> {
+                new Match{ Id = 0, PlannedTime = furtherInFuture, Creator = ferko, Players = new[] { ferko }},
+                new Match{ Id = 2, PlannedTime = inFuture, Creator = ferko, Players = new[] { ferko }},
+            };
+            _context.Matches = MockContextData(_context, c => c.Matches, planned.AsQueryable());
+            var repo = new MatchesRepository(_context);
+
+            var result = repo.GetPlanned();
+
+            Assert.That(result.Count(), Is.EqualTo(2));
+            Assert.That(result.First().PlannedTime, Is.EqualTo(inFuture));
+            Assert.That(result.Last().PlannedTime, Is.EqualTo(furtherInFuture));
+        }
     }
 }

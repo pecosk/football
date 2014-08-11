@@ -4,6 +4,8 @@ using FootballLeague.Models.Repositories;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FootballLeague.Tests.Controllers
 {
@@ -50,7 +52,26 @@ namespace FootballLeague.Tests.Controllers
             controller.Post(new Match { PlannedTime = plannedTime });
 
             _matchRepo.VerifyAllExpectations();
+        }
 
+        [Test]
+        public void Get_GetsAllPlannedMatches()
+        {
+            var ferko = new User { Id = 1, Name = "Ferko" };
+            var jurko = new User { Id = 1, Name = "Jurko" };
+            var janko = new User { Id = 1, Name = "Janko" };
+            var marienka = new User { Id = 1, Name = "Marienka" };
+
+            var planned = new List<Match> {
+                new Match{ Id = 1, PlannedTime = DateTime.Parse("2046-01-02T01:01"), Creator = ferko, Players = new[] { ferko, jurko, janko }},
+                new Match{ Id = 2, PlannedTime = DateTime.Parse("2046-01-01T01:01"), Creator = ferko, Players = new[] { ferko, jurko, janko, marienka }},
+            };
+            _matchRepo.Stub(r => r.GetPlanned()).Return(planned);
+            var controller = new MatchesController(_matchRepo, _userRepo);
+
+            var matches = controller.Get();
+
+            Assert.That(matches, Is.EqualTo(planned));
         }
     }
 }

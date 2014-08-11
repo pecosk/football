@@ -32,5 +32,10 @@ namespace FootballLeague.Controllers
 
             _matchRepository.InsertMatch(user, new Match { PlannedTime = match.PlannedTime });
         }
+
+        public IEnumerable<Match> Get()
+        {
+            return _matchRepository.GetPlanned();
+        }
     }
 }
