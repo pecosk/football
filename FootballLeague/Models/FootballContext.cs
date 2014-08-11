@@ -13,7 +13,7 @@ namespace FootballLeague.Models
 
             modelBuilder.Entity<Match>().HasKey(m => m.Id).Property(m => m.PlannedTime).IsRequired();
             modelBuilder.Entity<Match>().HasOptional(m => m.Creator);
-            modelBuilder.Entity<Match>().HasMany(m => m.Players).WithOptional();
+            modelBuilder.Entity<Match>().HasMany(m => m.Players).WithMany(u => u.Matches);
         }
     }
 }

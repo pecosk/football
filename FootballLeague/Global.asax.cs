@@ -1,4 +1,5 @@
 ﻿using FootballLeague.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -23,6 +24,7 @@ namespace FootballLeague
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             Database.SetInitializer<FootballContext>(new DropCreateDatabaseIfModelChanges<FootballContext>());
+            GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             // for now now bundles
             // BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
