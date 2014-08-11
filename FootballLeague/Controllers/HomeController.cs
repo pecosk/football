@@ -9,16 +9,10 @@ namespace FootballLeague.Controllers
 {
     public class HomeController : Controller
     {
-        private UsersRepository _repository;
-
-        public HomeController()
-        {
-            _repository = new UsersRepository();
-        }
-
         [Authorize]
         public ActionResult Index()
         {
+            ViewBag.Title = "Table Football League";
             return View();
         }
     }

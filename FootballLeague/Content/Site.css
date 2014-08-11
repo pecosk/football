@@ -1,9 +1,21 @@
 ﻿.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
-button.register.registered, button.unregister {
+.navbar .nav > li > a.register.registered, .navbar .nav > li > a.unregister {
     display: none;
 }
 
-button.register, button.unregister.registered {
+.navbar .nav > li > a.register, .navbar .nav > li > a.unregister.registered {
     display: block;
+}
+
+.hidden {
+    display: none;
+}
+
+.navbar .nav > li > a.register {
+    color: #5cb85c;
+}
+
+.navbar .nav > li > a.unregister {
+    color: #d9534f;
 }

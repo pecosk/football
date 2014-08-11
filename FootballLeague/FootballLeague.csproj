@@ -117,18 +117,23 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IdentityController.cs" />
+    <Compile Include="Controllers\MatchesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Filters\NullObjectActionFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\FootballContext.cs" />
+    <Compile Include="Models\Match.cs" />
+    <Compile Include="Models\Repositories\IMatchesRepository.cs" />
     <Compile Include="Models\Repositories\IUsersRepository.cs" />
+    <Compile Include="Models\Repositories\MatchesRepository.cs" />
     <Compile Include="Models\Repositories\UsersRepository.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Angular\UsersTable.html" />
     <Content Include="Content\ng-table.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -447,10 +452,8 @@
     </Content>
     <Content Include="Content\Site.css" />
     <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -491,6 +494,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\simplePublish.pubxml" />
+    <Content Include="Angular\CreateMatch.html" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
