@@ -1,6 +1,20 @@
-﻿var footballApp = angular.module('footballApp', ['ngTable']);
+﻿var footballApp = angular.module('footballApp', ['ngTable', 'ngRoute']);
 var url = 'api/users';
 var identity = 'api/identity';
+var match = 'api/matches';
+
+footballApp.config(['$routeProvider',
+  function ($routeProvider) {
+      $routeProvider.
+        when('/matches', {
+            templateUrl: 'Angular/CreateMatch.html',
+            controller: 'footballController'
+        })
+        .otherwise({
+            templateUrl: 'Angular/UsersTable.html',
+          controller: 'footballController'
+        });
+  }]);
 
 footballApp.controller('footballController', function ($scope, $filter, footballersRepository, identityRepository, ngTableParams) {
     $scope.registered = false;

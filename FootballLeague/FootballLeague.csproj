@@ -133,6 +133,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Angular\UsersTable.html" />
     <Content Include="Content\ng-table.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -451,10 +452,8 @@
     </Content>
     <Content Include="Content\Site.css" />
     <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -495,6 +494,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\simplePublish.pubxml" />
+    <Content Include="Angular\CreateMatch.html" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -510,7 +510,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>60205</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
