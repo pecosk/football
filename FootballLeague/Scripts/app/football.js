@@ -1,5 +1,5 @@
 ﻿var footballApp = angular.module('footballApp', ['ngTable', 'ngRoute']);
-var url = 'api/users';
+var users = 'api/users';
 var identity = 'api/identity';
 var match = 'api/matches';
 
@@ -8,13 +8,20 @@ footballApp.config(['$routeProvider',
       $routeProvider.
         when('/matches', {
             templateUrl: 'Angular/CreateMatch.html',
-            controller: 'footballController'
+            controller: 'matchController'
         })
         .otherwise({
             templateUrl: 'Angular/UsersTable.html',
           controller: 'footballController'
         });
   }]);
+
+footballApp.controller('matchController', function ($scope, matchesRepository) {
+    $scope.submit = function () {
+        var dateTime = $scope.date + 'T' + $scope.time;
+        matchesRepository.insertMatch(dateTime, function () { alert('match inserted'); });
+    }
+});
 
 footballApp.controller('footballController', function ($scope, $filter, footballersRepository, identityRepository, ngTableParams) {
     $scope.registered = false;
@@ -76,13 +83,13 @@ footballApp.controller('footballController', function ($scope, $filter, football
 footballApp.factory('footballersRepository', function ($http) {
     return {
         getFootballers: function (callback) {
-            $http.get(url).success(callback);
+            $http.get(users).success(callback);
         },
         insertFootballer: function (callback, fallback) {
-            $http.post(url).success(callback).error(fallback);
+            $http.post(users).success(callback).error(fallback);
         },
         deleteFootballer: function (id, callback) {
-            $http.delete(url + '/' + id).success(callback);
+            $http.delete(users + '/' + id).success(callback);
         }
     }
 });
@@ -91,6 +98,17 @@ footballApp.factory('identityRepository', function ($http) {
     return {
         getIdentity: function (callback, fallback) {
             $http.get(identity).success(callback).error(fallback);
+        }
+    }
+});
+
+footballApp.factory('matchesRepository', function ($http) {
+    return {
+        insertMatch: function (date, callback) {
+            $http.post(match, { PlannedTime: date }).success(callback);
+        },
+        getPlannedMatches: function (callback) {
+            $http.get(match).success(callback);
         }
     }
 });
