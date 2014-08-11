@@ -12,6 +12,7 @@ namespace FootballLeague.Controllers
         [Authorize]
         public ActionResult Index()
         {
+            ViewBag.Title = "Table Football League";
             return View();
         }
     }
