@@ -19,13 +19,17 @@ namespace FootballLeague.Tests.Models.Repositories
         }
 
         [Test]
-        public void GetAllUsers_GetsAllUsers()
+        public void GetAllUsers_GetsAllActiveUsers()
         {
-            var users = new List<User> { new User(), new User() };
+            var users = new List<User> { new User(), new User(), new User { Inactive = true } };
             _context.Users = MockContextData(_context, c => c.Users, users.AsQueryable());
             var repo = new UsersRepository(_context);
 
-            Assert.That(repo.GetAllUsers(), Is.EqualTo(users));
+            var activeUsers = repo.GetAllUsers();
+
+            Assert.That(activeUsers.Count(), Is.EqualTo(2));
+            Assert.That(activeUsers.First(), Is.EqualTo(users[0]));
+            Assert.That(activeUsers.Last(), Is.EqualTo(users[1]));
         }
 
         [Test]
@@ -69,9 +73,9 @@ namespace FootballLeague.Tests.Models.Repositories
         }
 
         [Test]
-        public void InsertUser_AddsUser()
+        public void InsertUser_WhenUserDoesNotExist_AddsUser()
         {
-            var user = new User();
+            var user = new User { Name = "Janko" };
             _context.Users = MockContextData(_context, c => c.Users, new List<User>().AsQueryable());
             _context.Users.Expect(u => u.Add(Arg<User>.Is.Same(user))).Return(null);
             _context.Expect(c => c.SaveChanges()).Return(0);
@@ -84,11 +88,42 @@ namespace FootballLeague.Tests.Models.Repositories
         }
 
         [Test]
-        public void DeleteUser_RemovesUser()
+        public void InsertUser_WhenUserExists_DoesNothing()
+        {
+            var user = new User { Name = "Janko" };
+            _context.Users = MockContextData(_context, c => c.Users, new List<User> { user }.AsQueryable());
+            _context.Users.Expect(u => u.Add(Arg<User>.Is.Anything)).Repeat.Never();
+            _context.Expect(c => c.SaveChanges()).Repeat.Never();
+            var repo = new UsersRepository(_context);
+
+            repo.InsertUser(user);
+
+            _context.Users.VerifyAllExpectations();
+            _context.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void InsertUser_WhenUserExistsButInactive_SetsHimToActive()
+        {
+            var user = new User { Name = "Janko", Inactive = true };
+            _context.Users = MockContextData(_context, c => c.Users, new List<User> { user }.AsQueryable());
+            _context.Users.Expect(u => u.Add(Arg<User>.Is.Anything)).Repeat.Never();
+            _context.Expect(c => c.SaveChanges()).Return(0);
+            var repo = new UsersRepository(_context);
+
+            repo.InsertUser(user);
+
+            _context.Users.VerifyAllExpectations();
+            _context.VerifyAllExpectations();
+            Assert.IsFalse(user.Inactive);
+        }
+
+        [Test]
+        public void DeleteUser_MakesHimInactive()
         {
             var user = new User { Id = 1 };
             _context.Users = MockContextData(_context, c => c.Users, new List<User> { user }.AsQueryable());
-            _context.Users.Expect(u => u.Remove(Arg<User>.Is.Same(user))).Return(null);
+            _context.Users.Expect(u => u.Remove(Arg<User>.Is.Same(user))).Repeat.Never();
             _context.Expect(c => c.SaveChanges()).Return(0);
             var repo = new UsersRepository(_context);
 
@@ -96,6 +131,7 @@ namespace FootballLeague.Tests.Models.Repositories
 
             _context.Users.VerifyAllExpectations();
             _context.VerifyAllExpectations();
+            Assert.IsTrue(user.Inactive);
         }
     }
 }

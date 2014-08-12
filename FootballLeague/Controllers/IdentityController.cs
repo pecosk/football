@@ -23,7 +23,11 @@ namespace FootballLeague.Controllers
         public User Get()
         {
             var name = User.Identity.Name.Split('\\').Last();
-            return _repository.GetUser(name);
+            var user = _repository.GetUser(name);
+            if(user == null || user.Inactive)
+                return null;
+
+            return user;
         }
     }
 }
