@@ -48,7 +48,7 @@ namespace FootballLeague.Tests.Controllers
         }
 
         [Test]
-        public void Post_WithoutArguments_InsertsCurrentUser()
+        public void Post_Always_TriesToInsertUser()
         {
             _repository.Expect(r => r.InsertUser(Arg<User>.Matches(u => u.Name == "Ferko")));
             var controller = new UsersController(_repository);

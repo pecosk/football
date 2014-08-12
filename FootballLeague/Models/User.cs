@@ -6,6 +6,7 @@ namespace FootballLeague.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public bool Inactive { get; set; }
         public IList<Match> Matches { get; set; }
     }
 }

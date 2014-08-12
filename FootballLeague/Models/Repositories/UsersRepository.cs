@@ -14,15 +14,20 @@ namespace FootballLeague.Models.Repositories
 
         public IEnumerable<User> GetAllUsers()
         {
-            return _context.Users.ToList();
+            return _context.Users.Where(u => u.Inactive == false).ToList();
         }
 
         public void InsertUser(User user)
         {
-            if (GetUser(user.Name) != null)
+            var dbUser = GetUser(user.Name);
+            if (dbUser != null && !dbUser.Inactive)
                 return;
 
-            _context.Users.Add(user);
+            if (dbUser == null)
+                _context.Users.Add(user);
+            else
+                dbUser.Inactive = false;
+
             _context.SaveChanges();
         }
 
@@ -32,7 +37,7 @@ namespace FootballLeague.Models.Repositories
             if (user == null)
                 return;
 
-            _context.Users.Remove(user);
+            user.Inactive = true;
             _context.SaveChanges();
         }
 
