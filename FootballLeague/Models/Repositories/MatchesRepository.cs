@@ -17,6 +17,7 @@ namespace FootballLeague.Models.Repositories
         public Match InsertMatch(User user, Match match)
         {
             match.Creator = user;
+            match.Players = new List<User> { user };
             _context.Matches.Add(match);
             _context.SaveChanges();
             return match;
