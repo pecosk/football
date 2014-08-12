@@ -73,5 +73,31 @@ namespace FootballLeague.Tests.Models.Repositories
             Assert.That(result.First().PlannedTime, Is.EqualTo(inFuture));
             Assert.That(result.Last().PlannedTime, Is.EqualTo(furtherInFuture));
         }
+
+        [Test]
+        public void GetMatch_ForExistingId_ReturnsMatch()
+        {
+            var match = new Match { Id = 1 };
+            var matches = new List<Match> { match };
+            _context.Matches = MockContextData(_context, c => c.Matches, matches.AsQueryable());
+            var repo = new MatchesRepository(_context);
+
+            var result = repo.GetMatch(1);
+
+            Assert.That(result, Is.EqualTo(match));
+        }
+
+        [Test]
+        public void GetMatch_ForNonExistingId_ReturnsNull()
+        {
+            var match = new Match { Id = 1 };
+            var matches = new List<Match> { match };
+            _context.Matches = MockContextData(_context, c => c.Matches, matches.AsQueryable());
+            var repo = new MatchesRepository(_context);
+
+            var result = repo.GetMatch(2);
+
+            Assert.IsNull(result);
+        }
     }
 }

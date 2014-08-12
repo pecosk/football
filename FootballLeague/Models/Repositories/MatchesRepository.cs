@@ -32,5 +32,21 @@ namespace FootballLeague.Models.Repositories
                 .OrderBy(m => m.PlannedTime)
                 .ToList();
         }
+
+        public Match GetMatch(int id)
+        {
+            return _context.Matches.FirstOrDefault(m => m.Id == id);
+        }
+
+        public void AddMatchParticipant(User user, Match match)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public void RemoveMatchParticipant(User user, Match match)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

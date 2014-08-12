@@ -25,8 +25,7 @@ namespace FootballLeague.Controllers
 
         public void Post(Match match)
         {
-            var userName = User.Identity.Name.Split('\\').Last();
-            var user = _userRepository.GetUser(userName);
+            var user = GetCurrentUser();
             if (user == null)
                 throw new UnauthorizedAccessException();
 
@@ -36,6 +35,25 @@ namespace FootballLeague.Controllers
         public IEnumerable<Match> Get()
         {
             return _matchRepository.GetPlanned();
+        }
+
+        public void Put(int matchId)
+        {
+            var user = GetCurrentUser();
+            var match = _matchRepository.GetMatch(matchId);
+            if (match == null)
+                return;
+
+            if (match.Players.Contains(user))
+                _matchRepository.RemoveMatchParticipant(user, match);
+            else
+                _matchRepository.AddMatchParticipant(user, match);
+        }
+
+        private User GetCurrentUser()
+        {
+            var userName = User.Identity.Name.Split('\\').Last();
+            return _userRepository.GetUser(userName);
         }
     }
 }
