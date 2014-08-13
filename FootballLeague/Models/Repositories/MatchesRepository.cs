@@ -40,13 +40,24 @@ namespace FootballLeague.Models.Repositories
 
         public void AddMatchParticipant(User user, Match match)
         {
-            throw new NotImplementedException();
+            if (match.Players == null)
+                match.Players = new List<User>();
+
+            if (match.Players.Contains(user))
+                return;
+
+            match.Players.Add(user);
+            _context.SaveChanges();
         }
 
 
         public void RemoveMatchParticipant(User user, Match match)
         {
-            throw new NotImplementedException();
+            if (match.Players == null || !match.Players.Contains(user))
+                return;
+
+            match.Players.Remove(user);
+            _context.SaveChanges();
         }
     }
 }

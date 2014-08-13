@@ -99,5 +99,89 @@ namespace FootballLeague.Tests.Models.Repositories
 
             Assert.IsNull(result);
         }
+
+        [Test]
+        public void AddMatchParticipant_IfNotYetInMatch_AddsParticipantToMatch()
+        {
+            var user = new User();
+            var match = new Match { Players = new List<User>() };
+            var repo = new MatchesRepository(_context);
+            _context.Expect(c => c.SaveChanges()).Return(0);
+
+            repo.AddMatchParticipant(user, match);
+
+            _context.VerifyAllExpectations();
+            Assert.IsTrue(match.Players.Contains(user));
+        }
+
+        [Test]
+        public void AddMatchParticipant_NullPlayers_CreatesOneParticipant()
+        {
+            var user = new User();
+            var match = new Match { Players = null };
+            var repo = new MatchesRepository(_context);
+            _context.Expect(c => c.SaveChanges()).Return(0);
+
+            repo.AddMatchParticipant(user, match);
+
+            _context.VerifyAllExpectations();
+            Assert.IsTrue(match.Players.Contains(user));
+        }
+
+        [Test]
+        public void AddMatchParticipant_PlayerExists_DoesNothing()
+        {
+            var user = new User();
+            var match = new Match { Players = new List<User> { user } };
+            var repo = new MatchesRepository(_context);
+            _context.Expect(c => c.SaveChanges()).Repeat.Never();
+
+            repo.AddMatchParticipant(user, match);
+
+            _context.VerifyAllExpectations();
+            Assert.IsTrue(match.Players.Contains(user));
+        }
+
+        [Test]
+        public void RemoveMatchParticipant_IfNotYetInMatch_DoesNothing()
+        {
+            var user = new User();
+            var match = new Match { Players = new List<User>() };
+            var repo = new MatchesRepository(_context);
+            _context.Expect(c => c.SaveChanges()).Repeat.Never();
+
+            repo.RemoveMatchParticipant(user, match);
+
+            _context.VerifyAllExpectations();
+            Assert.IsFalse(match.Players.Contains(user));
+        }
+
+        [Test]
+        public void RemoveMatchParticipant_NullPlayers_DoesNothing()
+        {
+            var user = new User();
+            var match = new Match { Players = null };
+            var repo = new MatchesRepository(_context);
+            _context.Expect(c => c.SaveChanges()).Repeat.Never();
+
+            repo.RemoveMatchParticipant(user, match);
+
+            _context.VerifyAllExpectations();
+            Assert.IsNull(match.Players);
+        }
+
+        [Test]
+        public void RemoveMatchParticipant_PlayerExists_RemovesMatchParticipant()
+        {
+            var user = new User();
+            var match = new Match { Players = new List<User> { user } };
+            var repo = new MatchesRepository(_context);
+            _context.Expect(c => c.SaveChanges()).Return(0);
+
+            repo.RemoveMatchParticipant(user, match);
+
+            _context.VerifyAllExpectations();
+            Assert.IsFalse(match.Players.Contains(user));
+        }
     }
 }
