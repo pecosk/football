@@ -1,4 +1,4 @@
-﻿var footballApp = angular.module('footballApp', ['ngTable', 'ngRoute']);
+﻿var footballApp = angular.module('footballApp', ['ngTable', 'ngRoute', 'ui.bootstrap']);
 var users = 'api/users';
 var identity = 'api/identity';
 var match = 'api/matches';
@@ -18,9 +18,20 @@ footballApp.config(['$routeProvider',
 
 footballApp.controller('matchController', function ($scope, matchesRepository) {
     $scope.submit = function () {
-        var dateTime = $scope.date + 'T' + $scope.time;
+        var date = $scope.date;
+        var time = $scope.time;
+        var dateTime = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + 'T' + time.getHours() + ':' + time.getMinutes();
         matchesRepository.insertMatch(dateTime, function () { alert('match inserted'); });
-    }
+    };
+    $scope.open = function($event) {
+        $event.preventDefault();
+        $event.stopPropagation();
+
+        $scope.opened = true;
+    };
+    $scope.minDate = new Date();
+    $scope.date = new Date();
+    $scope.time = new Date();
 });
 
 footballApp.controller('footballController', function ($scope, $filter, footballersRepository, identityRepository, ngTableParams) {
