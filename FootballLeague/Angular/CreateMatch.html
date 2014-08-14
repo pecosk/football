@@ -1,17 +1,17 @@
 ﻿<div>
     <span>Create a match to enjoy time with your friends.</span>
     <form ng-submit="submit()" ng-controller="matchController">
-        <div class="row">
-            <div class="col-md-6">
-                <p class="input-group">
-                  <input type="text" class="form-control" datepicker-popup="" ng-model="date" min-date="minDate" is-open="opened" ng-required="true" close-text="Close" />
-                  <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                  </span>
-                </p>
-            </div>
+        <div class="col-md-2">
+            <p style="margin-top:34px" class="input-group">
+              <input type="text" class="form-control" datepicker-popup="" ng-model="date" min-date="minDate" is-open="opened" ng-required="true" close-text="Close" />
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </p>
         </div>
-        <timepicker ng-model="time"></timepicker>
-        <input type="submit" name="submit" class="btn btn-primary" />
+        <div class="col-md-2">
+            <timepicker ng-model="time"></timepicker>
+        </div>
+        <input style="margin-top: 34px" type="submit" name="submit" class="btn btn-primary" />
     </form>
 </div>
