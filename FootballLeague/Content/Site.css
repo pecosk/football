@@ -19,3 +19,7 @@
 .navbar .nav > li > a.unregister {
     color: #d9534f;
 }
+
+.form-inline .timepicker input {
+    width: 100%;
+}
