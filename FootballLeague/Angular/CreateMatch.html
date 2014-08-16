@@ -1,6 +1,6 @@
-﻿<div class="row">
+﻿<div class="row" ng-controller="matchController">
     <span>Create a match to enjoy time with your friends.</span>
-    <form ng-submit="submit()" ng-controller="matchController" class="form-inline">
+    <form ng-submit="submit()" class="form-inline">
         <div class="form-group">
             <div class="input-group">
               <input type="text" class="form-control" datepicker-popup="" ng-model="date" min-date="minDate" is-open="opened" ng-required="true" close-text="Close" />
@@ -14,4 +14,15 @@
         </div>
         <input type="submit" name="submit" class="btn btn-primary" />
     </form>
+    <table ng-table="tableParams" class="table table-striped">
+        <tr ng-repeat="match in $data">
+            <td data-title="'Planovany cas'" sortable="'PlannedTime'">{{match.PlannedTime}}</td>
+            <td data-title="'Vytvoril'" sortable="'Creator'">{{match.Creator}}</td>
+            <td data-title="'Hraci'" sortable="'Players'">{{match.Players}}</td>
+            <td>
+                <a ng-click="join(match.Id)" ng-class="{hidden: !forJoin(match.Id)}">Join</a>
+                <a ng-click="leave(match.Id)" ng-class="{hidden: !forLeave(match.Id)}">Leave</a>
+            </td>
+        </tr>
+    </table>
 </div>

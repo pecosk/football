@@ -16,18 +16,64 @@ footballApp.config(['$routeProvider',
         });
   }]);
 
-footballApp.controller('matchController', function ($scope, matchesRepository) {
+footballApp.controller('matchController', function ($scope, matchesRepository, ngTableParams, $filter) {
     $scope.submit = function () {
         var date = $scope.date;
         var time = $scope.time;
-        var dateTime = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + 'T' + time.getHours() + ':' + time.getMinutes();
-        matchesRepository.insertMatch(dateTime, function () { alert('match inserted'); });
+        var dateTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + 'T' + time.getHours() + ':' + time.getMinutes();
+        matchesRepository.insertMatch(dateTime, function () { reloadMatches(); });
     };
     $scope.open = function($event) {
         $event.preventDefault();
         $event.stopPropagation();
-
         $scope.opened = true;
+    };
+    function getMatches() {
+        return $scope.matches;
+    };
+    function transformMatches(match) {
+        return {
+            Id: match.Id,
+            PlannedTime: match.PlannedTime,
+            Creator: match.Creator.Name,
+            Players: match.Players.map(function (user) { return user.Name; }).join(' ')
+        };
+    };
+    reloadMatches();
+    $scope.join = function (matchId) {
+        alert('joining match ' + matchId + ' not yet implemented');
+    };
+    $scope.leave = function (matchId) {
+        alert('leaving match ' + matchId + ' not yet implemented');
+    };
+    $scope.forJoin = function (matchId) {
+        return true
+    };
+    $scope.forLeave = function (matchId) {
+        return true;
+    };
+    function reloadMatches() {
+        matchesRepository.getPlannedMatches(function (result) {
+            $scope.matches = result.map(transformMatches);
+
+            if (typeof ($scope.tableParams) == 'undefined') {
+                $scope.tableParams = new ngTableParams({
+                    page: 1,
+                    count: 10,
+                    sorting: { Name: 'asc' }
+                }, {
+                    total: getMatches().length,
+                    getData: function ($defer, params) {
+                        var orderedData = params.sorting()
+                            ? $filter('orderBy')(getMatches(), params.orderBy())
+                            : getMatches();
+                        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    }
+                });
+            }
+            else
+                $scope.tableParams.reload();
+        });
     };
     $scope.minDate = new Date();
     $scope.date = new Date();
