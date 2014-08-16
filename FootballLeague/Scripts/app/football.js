@@ -40,11 +40,8 @@ footballApp.controller('matchController', function ($scope, $rootScope, matchesR
         };
     };
     reloadMatches();
-    $scope.join = function (matchId) {
-        alert('joining match ' + matchId + ' not yet implemented');
-    };
-    $scope.leave = function (matchId) {
-        alert('leaving match ' + matchId + ' not yet implemented');
+    $scope.toggleParticipation = function (matchId) {
+        matchesRepository.toggleMatchParticipation(matchId, function () { reloadMatches(); });
     };
     $scope.forJoin = function (matchId) {
         return $rootScope.registered && !isUserInMatch(matchId, $rootScope.identity);
@@ -174,6 +171,9 @@ footballApp.factory('matchesRepository', function ($http) {
         },
         getPlannedMatches: function (callback) {
             $http.get(match).success(callback);
+        },
+        toggleMatchParticipation: function (matchId, callback) {
+            $http.put(match + '/' + matchId).success(callback);
         }
     }
 });

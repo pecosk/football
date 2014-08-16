@@ -48,16 +48,21 @@ namespace FootballLeague.Models.Repositories
                 return;
 
             match.Players.Add(user);
+            _context.Users.Attach(user);
             _context.SaveChanges();
         }
 
 
         public void RemoveMatchParticipant(User user, Match match)
         {
-            if (match.Players == null || !match.Players.Contains(user))
+            if (match.Players == null)
                 return;
 
-            match.Players.Remove(user);
+            var playerInMatch = match.Players.FirstOrDefault(p => p.Id == user.Id);
+            if (playerInMatch == null)
+                return;
+
+            match.Players.Remove(playerInMatch);
             _context.SaveChanges();
         }
     }

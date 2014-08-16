@@ -37,14 +37,14 @@ namespace FootballLeague.Controllers
             return _matchRepository.GetPlanned();
         }
 
-        public void Put(int matchId)
+        public void Put(int id)
         {
             var user = GetCurrentUser();
-            var match = _matchRepository.GetMatch(matchId);
+            var match = _matchRepository.GetMatch(id);
             if (match == null)
                 return;
 
-            if (match.Players.Contains(user))
+            if (match.Players.Any(p => p.Id == user.Id))
                 _matchRepository.RemoveMatchParticipant(user, match);
             else
                 _matchRepository.AddMatchParticipant(user, match);

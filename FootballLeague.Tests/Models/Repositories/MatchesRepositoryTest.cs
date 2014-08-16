@@ -109,11 +109,14 @@ namespace FootballLeague.Tests.Models.Repositories
             var user = new User();
             var match = new Match { Players = new List<User>() };
             var repo = new MatchesRepository(_context);
+            _context.Users = MockContextData(_context, c => c.Users, new List<User>().AsQueryable());
             _context.Expect(c => c.SaveChanges()).Return(0);
+            _context.Users.Expect(e => e.Attach(Arg<User>.Is.Same(user))).Return(null);
 
             repo.AddMatchParticipant(user, match);
 
             _context.VerifyAllExpectations();
+            _context.Users.VerifyAllExpectations();
             Assert.IsTrue(match.Players.Contains(user));
         }
 
@@ -123,11 +126,14 @@ namespace FootballLeague.Tests.Models.Repositories
             var user = new User();
             var match = new Match { Players = null };
             var repo = new MatchesRepository(_context);
+            _context.Users = MockContextData(_context, c => c.Users, new List<User>().AsQueryable());
             _context.Expect(c => c.SaveChanges()).Return(0);
+            _context.Users.Expect(e => e.Attach(Arg<User>.Is.Same(user))).Return(null);
 
             repo.AddMatchParticipant(user, match);
 
             _context.VerifyAllExpectations();
+            _context.Users.VerifyAllExpectations();
             Assert.IsTrue(match.Players.Contains(user));
         }
 

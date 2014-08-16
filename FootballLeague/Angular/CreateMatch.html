@@ -20,8 +20,8 @@
             <td data-title="'Vytvoril'" sortable="'Creator'">{{match.Creator}}</td>
             <td data-title="'Hraci'" sortable="'Players'">{{match.Players}}</td>
             <td>
-                <a ng-click="join(match.Id)" ng-class="{hidden: !forJoin(match.Id)}">Join</a>
-                <a ng-click="leave(match.Id)" ng-class="{hidden: !forLeave(match.Id)}">Leave</a>
+                <a ng-click="toggleParticipation(match.Id)" ng-class="{hidden: !forJoin(match.Id)}">Join</a>
+                <a ng-click="toggleParticipation(match.Id)" ng-class="{hidden: !forLeave(match.Id)}">Leave</a>
             </td>
         </tr>
     </table>
