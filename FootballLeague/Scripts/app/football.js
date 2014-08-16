@@ -16,7 +16,7 @@ footballApp.config(['$routeProvider',
         });
   }]);
 
-footballApp.controller('matchController', function ($scope, matchesRepository, ngTableParams, $filter) {
+footballApp.controller('matchController', function ($scope, $rootScope, matchesRepository, ngTableParams, $filter) {
     $scope.submit = function () {
         var date = $scope.date;
         var time = $scope.time;
@@ -47,13 +47,21 @@ footballApp.controller('matchController', function ($scope, matchesRepository, n
         alert('leaving match ' + matchId + ' not yet implemented');
     };
     $scope.forJoin = function (matchId) {
-        return true
+        return $rootScope.registered && !isUserInMatch(matchId, $rootScope.identity);
     };
     $scope.forLeave = function (matchId) {
-        return true;
+        return $rootScope.registered && isUserInMatch(matchId, $rootScope.identity);
+    };
+    function isUserInMatch(matchId, user) {
+        var matches = $scope.serverMatches.filter(function (match) { return match.Id == matchId });
+        if (matches.length == 0)
+            return false;
+
+        return matches[0].Players.filter(function (player) { return player.Id == user.Id }).length;
     };
     function reloadMatches() {
         matchesRepository.getPlannedMatches(function (result) {
+            $scope.serverMatches = result;
             $scope.matches = result.map(transformMatches);
 
             if (typeof ($scope.tableParams) == 'undefined') {
@@ -80,29 +88,29 @@ footballApp.controller('matchController', function ($scope, matchesRepository, n
     $scope.time = new Date();
 });
 
-footballApp.controller('footballController', function ($scope, $filter, footballersRepository, identityRepository, ngTableParams) {
-    $scope.registered = false;
+footballApp.controller('footballController', function ($scope, $rootScope, $filter, footballersRepository, identityRepository, ngTableParams) {
+    $rootScope.registered = false;
 
     identityRepository.getIdentity(function (user) {
-        $scope.identity = user;
-        $scope.registered = true;
+        $rootScope.identity = user;
+        $rootScope.registered = true;
     }, function () {
-        $scope.identity = null;
-        $scope.registered = false;
+        $rootScope.identity = null;
+        $rootScope.registered = false;
     });
 
     $scope.register = function () {
         footballersRepository.insertFootballer(function (user) {
-            $scope.registered = true;
-            $scope.identity = user;
+            $rootScope.registered = true;
+            $rootScope.identity = user;
             reloadFootballers();
         });
     };
 
     $scope.unregister = function () {
-        footballersRepository.deleteFootballer($scope.identity.Id, function () {
-            $scope.registered = false;
-            $scope.identity = null;
+        footballersRepository.deleteFootballer($rootScope.identity.Id, function () {
+            $rootScope.registered = false;
+            $rootScope.identity = null;
             reloadFootballers();
         });
     };
