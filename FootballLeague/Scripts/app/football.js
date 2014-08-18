@@ -86,7 +86,7 @@ footballApp.controller('matchController', function ($scope, $rootScope, matchesR
     $scope.time = new Date();
 });
 
-footballApp.controller('footballController', function ($scope, $rootScope, $filter, footballersRepository, identityRepository, ngTableParams) {
+footballApp.controller('identityController', function ($scope, $rootScope, footballersRepository, identityRepository) {
     $rootScope.registered = false;
 
     identityRepository.getIdentity(function (user) {
@@ -101,7 +101,7 @@ footballApp.controller('footballController', function ($scope, $rootScope, $filt
         footballersRepository.insertFootballer(function (user) {
             $rootScope.registered = true;
             $rootScope.identity = user;
-            reloadFootballers();
+            $rootScope.$emit("reloadFootballers", { registered: true });
         });
     };
 
@@ -109,18 +109,21 @@ footballApp.controller('footballController', function ($scope, $rootScope, $filt
         footballersRepository.deleteFootballer($rootScope.identity.Id, function () {
             $rootScope.registered = false;
             $rootScope.identity = null;
-            reloadFootballers();
+            $rootScope.$emit("reloadFootballers", { registered: false });
         });
     };
+});
 
-    function getFootballers() {
-        return $scope.footballers;
-    }
+footballApp.controller('footballController', function ($scope, $rootScope, $filter, footballersRepository, ngTableParams) {
+    $rootScope.$on("reloadFootballers", function (event, args) {
+        reloadFootballers();
+    });
 
     reloadFootballers();
+
     function reloadFootballers() {
         footballersRepository.getFootballers(function (result) {
-            $scope.footballers = result;
+            $rootScope.footballers = result;
 
             if (typeof ($scope.tableParams) == 'undefined') {
                 $scope.tableParams = new ngTableParams({
@@ -128,11 +131,11 @@ footballApp.controller('footballController', function ($scope, $rootScope, $filt
                     count: 10,
                     sorting: { Name: 'asc' }
                 }, {
-                    total: getFootballers().length,
+                    total: $rootScope.footballers.length,
                     getData: function ($defer, params) {
                         var orderedData = params.sorting()
-                            ? $filter('orderBy')(getFootballers(), params.orderBy())
-                            : getFootballers();
+                            ? $filter('orderBy')($rootScope.footballers, params.orderBy())
+                            : $rootScope.footballers;
                         $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                     }
                 });
