@@ -29,7 +29,7 @@ footballApp.controller('matchController', function ($scope, $rootScope, matchesR
         $scope.opened = true;
     };
     function getMatches() {
-        return $rootScope.matches;
+        return $scope.matches;
     };
     function transformMatches(match) {
         return {
@@ -59,7 +59,7 @@ footballApp.controller('matchController', function ($scope, $rootScope, matchesR
     function reloadMatches() {
         matchesRepository.getPlannedMatches(function (result) {
             $scope.serverMatches = result;
-            $rootScope.matches = result.map(transformMatches);
+            $scope.matches = result.map(transformMatches);
 
             if (typeof ($scope.tableParams) == 'undefined') {
                 $scope.tableParams = new ngTableParams({
@@ -123,7 +123,7 @@ footballApp.controller('footballController', function ($scope, $rootScope, $filt
 
     function reloadFootballers() {
         footballersRepository.getFootballers(function (result) {
-            $rootScope.footballers = result;
+            $scope.footballers = result;
 
             if (typeof ($scope.tableParams) == 'undefined') {
                 $scope.tableParams = new ngTableParams({
@@ -131,11 +131,11 @@ footballApp.controller('footballController', function ($scope, $rootScope, $filt
                     count: 10,
                     sorting: { Name: 'asc' }
                 }, {
-                    total: $rootScope.footballers.length,
+                    total: $scope.footballers.length,
                     getData: function ($defer, params) {
                         var orderedData = params.sorting()
-                            ? $filter('orderBy')($rootScope.footballers, params.orderBy())
-                            : $rootScope.footballers;
+                            ? $filter('orderBy')($scope.footballers, params.orderBy())
+                            : $scope.footballers;
                         $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                     }
                 });
