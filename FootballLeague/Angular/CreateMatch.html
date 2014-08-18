@@ -1,19 +1,21 @@
 ﻿<div class="row" ng-controller="matchController">
-    <span>Create a match to enjoy time with your friends.</span>
-    <form ng-submit="submit()" class="form-inline">
-        <div class="form-group">
-            <div class="input-group">
-              <input type="text" class="form-control" datepicker-popup="" ng-model="date" min-date="minDate" is-open="opened" ng-required="true" close-text="Close" />
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-              </span>
+    <div ng-class="{hidden: !registered}">
+        <span>Create a match to enjoy time with your friends.</span>
+        <form ng-submit="submit()" class="form-inline">
+            <div class="form-group">
+                <div class="input-group">
+                  <input type="text" class="form-control" datepicker-popup="" ng-model="date" min-date="minDate" is-open="opened" ng-required="true" close-text="Close" />
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+                </div>
             </div>
-        </div>
-        <div class="form-group timepicker">
-            <timepicker ng-model="time"></timepicker>
-        </div>
-        <input type="submit" name="submit" class="btn btn-primary" />
-    </form>
+            <div class="form-group timepicker">
+                <timepicker ng-model="time"></timepicker>
+            </div>
+            <input type="submit" name="submit" class="btn btn-primary" />
+        </form>
+    </div>
     <table ng-table="tableParams" class="table table-striped">
         <tr ng-repeat="match in $data">
             <td data-title="'Planovany cas'" sortable="'PlannedTime'">{{match.PlannedTime}}</td>

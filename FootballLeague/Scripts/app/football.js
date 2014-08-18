@@ -29,7 +29,7 @@ footballApp.controller('matchController', function ($scope, $rootScope, matchesR
         $scope.opened = true;
     };
     function getMatches() {
-        return $scope.matches;
+        return $rootScope.matches;
     };
     function transformMatches(match) {
         return {
@@ -59,7 +59,7 @@ footballApp.controller('matchController', function ($scope, $rootScope, matchesR
     function reloadMatches() {
         matchesRepository.getPlannedMatches(function (result) {
             $scope.serverMatches = result;
-            $scope.matches = result.map(transformMatches);
+            $rootScope.matches = result.map(transformMatches);
 
             if (typeof ($scope.tableParams) == 'undefined') {
                 $scope.tableParams = new ngTableParams({
@@ -76,8 +76,9 @@ footballApp.controller('matchController', function ($scope, $rootScope, matchesR
                     }
                 });
             }
-            else
+            else {
                 $scope.tableParams.reload();
+            }
         });
     };
     $scope.minDate = new Date();
