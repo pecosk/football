@@ -20,7 +20,7 @@ footballApp.controller('matchController', function ($scope, $rootScope, matchesR
     $scope.submit = function () {
         var date = $scope.date;
         var time = $scope.time;
-        var dateTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + 'T' + time.getHours() + ':' + time.getMinutes();
+        var dateTime = new Date(date.getFullYear(), date.getMonth(), date.getDay(), time.getHours(), time.getMinutes()).toISOString();            
         matchesRepository.insertMatch(dateTime, function () { reloadMatches(); });
     };
     $scope.open = function($event) {
