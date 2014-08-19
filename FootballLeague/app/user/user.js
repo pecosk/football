@@ -1,5 +1,6 @@
 ﻿
 footballApp.controller('userController', function ($scope, $rootScope, $filter, userRepository, ngTableParams) {
+
     $rootScope.$on("reloadUsers", function (event, args) {
         reloadUsers();
     });

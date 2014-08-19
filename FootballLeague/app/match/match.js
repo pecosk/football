@@ -30,10 +30,6 @@ footballApp.controller('matchController', function ($scope, $rootScope, matchRep
     $scope.date = new Date();
     $scope.time = new Date();
 
-    function getMatches() {
-        return $scope.matches;
-    };
-    
     function transformMatches(match) {
         return {
             Id: match.Id,
@@ -62,11 +58,11 @@ footballApp.controller('matchController', function ($scope, $rootScope, matchRep
                     count: 10,
                     sorting: { Name: 'asc' }
                 }, {
-                    total: getMatches().length,
+                    total: $scope.matches.length,
                     getData: function ($defer, params) {
                         var orderedData = params.sorting()
-                            ? $filter('orderBy')(getMatches(), params.orderBy())
-                            : getMatches();
+                            ? $filter('orderBy')($scope.matches, params.orderBy())
+                            : $scope.matches;
                         $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                     }
                 });
