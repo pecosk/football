@@ -9,6 +9,8 @@ using System.Linq;
 
 namespace FootballLeague.Tests.Models.Repositories
 {
+    using FootballLeague.Tests.Data;
+
     [TestFixture]
     public class MatchesRepositoryTest : RepositoryTestBase
     {
@@ -23,16 +25,24 @@ namespace FootballLeague.Tests.Models.Repositories
         [Test]
         public void InsertMatch_InsertMatchWithCreator()
         {
-            var user = new User { Id = 1, Name = "Ferko" };
-            var matches = new List<Match> { new Match { Id = 1, PlannedTime = DateTime.Parse("2014-01-01T12:34"), Creator = user } };
+            var user = Users.Ferko;
+            var matches = new List<Match> { new Match { Id = 1, PlannedTime = DateTime.Parse("2014-01-01T12:34"), Creator = user, Team1 = TeamData.EmptyTeam, Team2 = TeamData.EmptyTeam } };
             _context.Matches = MockContextData(_context, c => c.Matches, matches.AsQueryable());
             _context.Users = MockContextData(_context, c => c.Users, new List<User>().AsQueryable());
             var repo = new MatchesRepository(_context);
             var newMatchTime = DateTime.Parse("2024-01-01T12:34");
-            _context.Matches.Expect(e => e.Add(Arg<Match>.Matches(m => m.PlannedTime == newMatchTime && m.Creator == user && m.Players.Count == 1 && m.Players[0] == user))).Return(null);
+            _context.Matches
+                .Expect(e => e.Add(Arg<Match>
+                    .Matches(m => 
+                        m.PlannedTime == newMatchTime && 
+                        m.Creator.Id == user.Id && 
+                        m.Team1.Member1 != null && 
+                        m.Team1.Member1.Id == user.Id)))
+                .Return(null);
+            
             _context.Users.Expect(e => e.Attach(Arg<User>.Is.Same(user))).Return(null);
 
-            repo.InsertMatch(user, new Match { PlannedTime = newMatchTime });
+            repo.InsertMatch(user, new Match { PlannedTime = newMatchTime, Team1 = TeamData.TeamWithFerko, Team2 = TeamData.EmptyTeam });
 
             _context.Matches.VerifyAllExpectations();
             _context.Users.VerifyAllExpectations();
@@ -40,13 +50,12 @@ namespace FootballLeague.Tests.Models.Repositories
 
         [Test]
         public void GetPlanned_GetsAllMatchesInFuture()
-        {
-            var ferko = new User { Id = 1, Name = "Ferko" };
+        {            
             var longAgo = DateTime.Parse("1896-01-02T01:01");
             var inFuture = DateTime.Parse("2046-01-01T01:01");
             var planned = new List<Match> {
-                new Match{ Id = 0, PlannedTime = longAgo, Creator = ferko, Players = new[] { ferko }},
-                new Match{ Id = 2, PlannedTime = inFuture, Creator = ferko, Players = new[] { ferko }},
+                new Match{ Id = 0, PlannedTime = longAgo, Creator = Users.Ferko, Team1 = TeamData.TeamWithFerko},
+                new Match{ Id = 2, PlannedTime = inFuture, Creator = Users.Ferko, Team1 = TeamData.TeamWithFerko},
             };
             _context.Matches = MockContextData(_context, c => c.Matches, planned.AsQueryable());
             var repo = new MatchesRepository(_context);
@@ -64,8 +73,8 @@ namespace FootballLeague.Tests.Models.Repositories
             var furtherInFuture = DateTime.Parse("2046-01-02T01:01");
             var inFuture = DateTime.Parse("2046-01-01T01:01");
             var planned = new List<Match> {
-                new Match{ Id = 0, PlannedTime = furtherInFuture, Creator = ferko, Players = new[] { ferko }},
-                new Match{ Id = 2, PlannedTime = inFuture, Creator = ferko, Players = new[] { ferko }},
+                new Match{ Id = 0, PlannedTime = furtherInFuture, Creator = ferko, Team1 = TeamData.TeamWithFerko},
+                new Match{ Id = 2, PlannedTime = inFuture, Creator = ferko, Team1 = TeamData.TeamWithFerko},
             };
             _context.Matches = MockContextData(_context, c => c.Matches, planned.AsQueryable());
             var repo = new MatchesRepository(_context);
@@ -102,95 +111,105 @@ namespace FootballLeague.Tests.Models.Repositories
 
             Assert.IsNull(result);
         }
-
         [Test]
-        public void AddMatchParticipant_IfNotYetInMatch_AddsParticipantToMatch()
+        public void AddTeamMember_WhenNotYetInMatch_ThenAddsTeamMember()
         {
-            var user = new User();
-            var match = new Match { Players = new List<User>() };
+            var match = MatchBuilder.Create().WithTeamMember(Users.Ferko).Build();
             var repo = new MatchesRepository(_context);
             _context.Users = MockContextData(_context, c => c.Users, new List<User>().AsQueryable());
             _context.Expect(c => c.SaveChanges()).Return(0);
-            _context.Users.Expect(e => e.Attach(Arg<User>.Is.Same(user))).Return(null);
+            _context.Users.Expect(e => e.Attach(Arg<User>.Is.Same(Users.Dano))).Return(null);
 
-            repo.AddMatchParticipant(user, match);
+            repo.AddMatchParticipantToTeam(Users.Dano, match, match.Team1.Id);
 
             _context.VerifyAllExpectations();
             _context.Users.VerifyAllExpectations();
-            Assert.IsTrue(match.Players.Contains(user));
+            Assert.IsTrue(match.Contains(Users.Dano));
+            Assert.IsTrue(match.Contains(Users.Ferko));
         }
 
         [Test]
         public void AddMatchParticipant_NullPlayers_CreatesOneParticipant()
         {
-            var user = new User();
-            var match = new Match { Players = null };
+            var match = MatchBuilder.Create().Build();
             var repo = new MatchesRepository(_context);
             _context.Users = MockContextData(_context, c => c.Users, new List<User>().AsQueryable());
             _context.Expect(c => c.SaveChanges()).Return(0);
-            _context.Users.Expect(e => e.Attach(Arg<User>.Is.Same(user))).Return(null);
+            _context.Users.Expect(e => e.Attach(Arg<User>.Is.Same(Users.Ferko))).Return(null);
 
-            repo.AddMatchParticipant(user, match);
+            repo.AddMatchParticipantToTeam(Users.Ferko, match, match.Team1.Id);
 
             _context.VerifyAllExpectations();
             _context.Users.VerifyAllExpectations();
-            Assert.IsTrue(match.Players.Contains(user));
+            Assert.IsTrue(match.Contains(Users.Ferko));
         }
 
         [Test]
         public void AddMatchParticipant_PlayerExists_DoesNothing()
         {
-            var user = new User();
-            var match = new Match { Players = new List<User> { user } };
+            var match = MatchData.MatchWithTwoFullTeams;
             var repo = new MatchesRepository(_context);
             _context.Expect(c => c.SaveChanges()).Repeat.Never();
 
-            repo.AddMatchParticipant(user, match);
+            repo.AddMatchParticipantToTeam(Users.Ferko, match, match.Team1.Id);
 
             _context.VerifyAllExpectations();
-            Assert.IsTrue(match.Players.Contains(user));
+            Assert.IsTrue(match.Contains(Users.Ferko));
+        }
+
+        [Test]
+        //TODO wouldn't it make more sense to switch user to other team?
+        public void AddMatchParticipant_WhenInOtherTeam_DoesNothing()
+        {
+            var match = MatchBuilder.Create().WithTeamMember(Users.Ferko).WithTeamMember(Users.Dano).Build();
+            match.Team1.SetMember(Users.Dano);
+            var repo = new MatchesRepository(_context);
+            _context.Expect(c => c.SaveChanges()).Repeat.Never();
+
+            repo.AddMatchParticipantToTeam(Users.Dano, match, match.Team2.Id);
+
+            _context.VerifyAllExpectations();
+            Assert.IsFalse(match.Team2.Contains(Users.Dano));
         }
 
         [Test]
         public void RemoveMatchParticipant_IfNotYetInMatch_DoesNothing()
         {
-            var user = new User();
-            var match = new Match { Players = new List<User>() };
+            var match = MatchBuilder.Create().WithTeamMember(Users.Ferko).Build();
             var repo = new MatchesRepository(_context);
             _context.Expect(c => c.SaveChanges()).Repeat.Never();
 
-            repo.RemoveMatchParticipant(user, match);
+            repo.RemoveMatchParticipantFromTeam(Users.Dano, match, match.Team1.Id);
 
             _context.VerifyAllExpectations();
-            Assert.IsFalse(match.Players.Contains(user));
+            Assert.IsFalse(match.Contains(Users.Dano));
         }
 
         [Test]
         public void RemoveMatchParticipant_NullPlayers_DoesNothing()
         {
             var user = new User();
-            var match = new Match { Players = null };
+            var match = MatchBuilder.Create().Build();
             var repo = new MatchesRepository(_context);
             _context.Expect(c => c.SaveChanges()).Repeat.Never();
 
-            repo.RemoveMatchParticipant(user, match);
+            repo.RemoveMatchParticipantFromTeam(user, match, match.Team1.Id);
 
             _context.VerifyAllExpectations();
-            Assert.IsNull(match.Players);
+            Assert.IsNull(match.Team1.Member1);
         }
 
         [Test]
         public void RemoveMatchParticipant_PlayerExists_RemovesMatchParticipant()
         {
-            var user = new User();
-            var match = new Match { Players = new List<User> { user } };
+            var match = MatchBuilder.Create().WithTeamMember(Users.Ferko).Build();
             var repo = new MatchesRepository(_context);
             _context.Expect(c => c.SaveChanges()).Return(0);
 
-            repo.RemoveMatchParticipant(user, match);
+            repo.RemoveMatchParticipantFromTeam(Users.Ferko, match, match.Team1.Id);
 
             _context.VerifyAllExpectations();
-            Assert.IsFalse(match.Players.Contains(user));
+            Assert.IsFalse(match.Contains(Users.Ferko));
         }
     }
 }

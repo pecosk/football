@@ -110,9 +110,13 @@
     <Compile Include="Controllers\ControllerTestBase.cs" />
     <Compile Include="Controllers\IdentityControllerTest.cs" />
     <Compile Include="Controllers\MatchesControllerTest.cs" />
+    <Compile Include="Data\MatchBuilder.cs" />
+    <Compile Include="Data\TeamBuilder.cs" />
+    <Compile Include="Data\Users.cs" />
     <Compile Include="Models\Repositories\MatchesRepositoryTest.cs" />
     <Compile Include="Models\Repositories\RepositoryTestBase.cs" />
     <Compile Include="Models\Repositories\UsersRepositoryTest.cs" />
+    <Compile Include="Models\TeamModelTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\UsersControllerTest.cs" />
   </ItemGroup>

@@ -51,6 +51,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -129,12 +130,15 @@
     <Compile Include="Models\Repositories\IUsersRepository.cs" />
     <Compile Include="Models\Repositories\MatchesRepository.cs" />
     <Compile Include="Models\Repositories\UsersRepository.cs" />
+    <Compile Include="Models\Result.cs" />
+    <Compile Include="Models\Team.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\identity.js" />
     <Content Include="app\match\match.js" />
+    <Content Include="App_Data\FootballLeague.Models.FootballContext.mdf" />
     <Content Include="app\repositories\identity.js" />
     <Content Include="app\repositories\match.js" />
     <Content Include="app\repositories\user.js" />
@@ -467,7 +471,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Angular\" />
-    <Folder Include="App_Data\" />
     <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>

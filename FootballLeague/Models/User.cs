@@ -8,5 +8,11 @@ namespace FootballLeague.Models
         public string Name { get; set; }
         public bool Inactive { get; set; }
         public IList<Match> Matches { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as User;
+            return other != null && Id == other.Id;
+        }
     }
 }
