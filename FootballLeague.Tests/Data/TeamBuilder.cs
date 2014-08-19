@@ -8,9 +8,7 @@
 
         private User _member1;
 
-        private User _member2;
-
-        private Match _parent;
+        private User _member2;        
 
         private TeamBuilder() {}
 
@@ -33,13 +31,7 @@
                 _member2 = member;               
             
             return this;
-        }
-
-        public TeamBuilder WithParent(Match parent)
-        {
-            _parent = parent;
-            return this;
-        }
+        }        
 
         public Team Build()
         {
@@ -48,9 +40,7 @@
 
             if (_member1 != null) team.SetMember(_member1);
 
-            if (_member2 != null) team.SetMember(_member2);
-
-            if (_parent != null) team.Parent = _parent;
+            if (_member2 != null) team.SetMember(_member2);            
 
             return team;
         }        

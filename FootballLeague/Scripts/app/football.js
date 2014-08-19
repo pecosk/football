@@ -176,8 +176,8 @@ footballApp.factory('matchesRepository', function ($http) {
         getPlannedMatches: function (callback) {
             $http.get(match).success(callback);
         },
-        toggleMatchParticipation: function (matchId, callback) {
-            $http.put(match + '/' + matchId).success(callback);
+        toggleMatchParticipation: function (teamId, callback) {
+            $http.put(match + '/' + teamId).success(callback);
         }
     }
 });

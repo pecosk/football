@@ -126,10 +126,8 @@
     <Compile Include="Models\FootballContext.cs" />
     <Compile Include="Models\Match.cs" />
     <Compile Include="Models\Repositories\IMatchesRepository.cs" />
-    <Compile Include="Models\Repositories\ITeamRepository.cs" />
     <Compile Include="Models\Repositories\IUsersRepository.cs" />
     <Compile Include="Models\Repositories\MatchesRepository.cs" />
-    <Compile Include="Models\Repositories\TeamRepository.cs" />
     <Compile Include="Models\Repositories\UsersRepository.cs" />
     <Compile Include="Models\Result.cs" />
     <Compile Include="Models\Team.cs" />

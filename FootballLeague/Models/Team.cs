@@ -6,9 +6,7 @@
         
         public virtual User Member1 { get; set; }
         
-        public virtual User Member2 { get; set; }
-
-        public virtual Match Parent { get; set; }
+        public virtual User Member2 { get; set; }        
 
         public bool IsEmpty
         {

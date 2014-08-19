@@ -61,25 +61,11 @@
             if (_id.HasValue) match.Id = _id.Value;
             if (_creator != null) match.Creator = _creator;
 
-            if (_team1 != null)
-            {
-                _team1.Parent = match;
-                match.Team1 = _team1;
-            }
-            else
-            {
-                match.Team1 = new Team { Parent = match };
-            }
+            if (_team1 != null) match.Team1 = _team1;
+            else match.Team1 = new Team();
 
-            if (_team2 != null)
-            {
-                _team2.Parent = match;
-                match.Team2 = _team2;
-            }
-            else
-            {
-                match.Team2 = new Team { Parent = match };
-            }
+            if (_team2 != null) match.Team2 = _team2;
+            else match.Team2 = new Team();
 
             match.PlannedTime = _plannedTime;            
 

@@ -12,16 +12,13 @@ namespace FootballLeague.Tests.Controllers
     {
         private IMatchesRepository _matchRepo;
 
-        private IUsersRepository _userRepo;
-
-        private ITeamRepository _teamRepo;
+        private IUsersRepository _userRepo;        
 
         [SetUp]
         public void SetUp()
         {
             _matchRepo = MockRepository.GenerateMock<IMatchesRepository>();
-            _userRepo = MockRepository.GenerateMock<IUsersRepository>();
-            _teamRepo = MockRepository.GenerateMock<ITeamRepository>();
+            _userRepo = MockRepository.GenerateMock<IUsersRepository>();            
         }
 
         [Test]
@@ -34,7 +31,7 @@ namespace FootballLeague.Tests.Controllers
             _userRepo.Stub(u => u.GetUser(currentUserName)).Return(user);
             _matchRepo.Expect(
                 r => r.InsertMatch(Arg<User>.Is.Same(user), Arg<Match>.Matches(m => m.PlannedTime == plannedTime)));
-            var controller = new MatchesController(_matchRepo, _userRepo, _teamRepo);
+            var controller = new MatchesController(_matchRepo, _userRepo);
 
             controller.Post(new Match { PlannedTime = plannedTime });
 
@@ -50,7 +47,7 @@ namespace FootballLeague.Tests.Controllers
             MockCurrentUser(currentUserName);
             _userRepo.Stub(u => u.GetUser(currentUserName)).Return(null);
             _matchRepo.Expect(r => r.InsertMatch(Arg<User>.Is.Anything, Arg<Match>.Is.Anything)).Repeat.Times(0);
-            var controller = new MatchesController(_matchRepo, _userRepo, _teamRepo);
+            var controller = new MatchesController(_matchRepo, _userRepo);
 
             controller.Post(new Match { PlannedTime = plannedTime });
 

@@ -14,6 +14,11 @@ namespace FootballLeague.Models.Repositories
             _context = context ?? new FootballContext();
         }
 
+        public Match GetMatch(int id)
+        {
+            return _context.Matches.FirstOrDefault(m => m.Id == id);
+        }
+
         public Match InsertMatch(User user, Match match)
         {
             match.Creator = user;
@@ -33,9 +38,25 @@ namespace FootballLeague.Models.Repositories
                 .ToList();
         }
 
-        public Match GetMatch(int id)
+        public void AddMatchParticipantToTeam(User user, Match match, int teamId)
         {
-            return _context.Matches.FirstOrDefault(m => m.Id == id);
-        }        
+            var team = match.GetTeam(teamId);
+            if (team.IsFull || match.Contains(user))
+                return;
+
+            team.SetMember(user);
+            _context.Users.Attach(user);
+            _context.SaveChanges();
+        }
+
+        public void RemoveMatchParticipantFromTeam(User user, Match match, int teamId)
+        {
+            var team = match.GetTeam(teamId);
+            if (team.IsEmpty || !team.Contains(user))
+                return;
+
+            team.RemoveMember(user);
+            _context.SaveChanges();
+        }
     }
 }
