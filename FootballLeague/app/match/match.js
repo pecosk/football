@@ -1,11 +1,12 @@
 ﻿
-footballApp.controller('matchController', function ($scope, $rootScope, matchRepository, ngTableParams, $filter) {
+footballApp.controller('matchController', function ($scope, $rootScope, $resource, ngTableParams, $filter) {
+    var Match = $resource('api/matches/:id', { id: '@id' }, { 'update': { method: 'PUT' } });
 
     $scope.submit = function () {
         var date = $scope.date;
         var time = $scope.time;
         var dateTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes()).toISOString();            
-        matchRepository.insertMatch(dateTime, function () { reloadMatches(); });
+        Match.save({ PlannedTime: dateTime }).$promise.then(function () { reloadMatches(); });
     };
 
     $scope.open = function($event) {
@@ -15,7 +16,7 @@ footballApp.controller('matchController', function ($scope, $rootScope, matchRep
     };
 
     $scope.toggleParticipation = function (matchId) {
-        matchRepository.toggleMatchParticipation(matchId, function () { reloadMatches(); });
+        Match.update({ id: matchId }, function () { reloadMatches(); });
     };
     
     $scope.forJoin = function (matchId) {
@@ -48,7 +49,7 @@ footballApp.controller('matchController', function ($scope, $rootScope, matchRep
     };
 
     function reloadMatches() {
-        matchRepository.getPlannedMatches(function (result) {
+        Match.query().$promise.then(function (result) {
             $scope.serverMatches = result;
             $scope.matches = result.map(transformMatches);
 
