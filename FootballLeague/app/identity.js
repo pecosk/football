@@ -1,8 +1,11 @@
 ﻿
-footballApp.controller('identityController', function ($scope, $rootScope, userRepository, identityRepository) {
+footballApp.controller('identityController', function ($scope, $rootScope, $resource) {
+    var Identity = $resource('api/identity');
+    var User = $resource('api/users/:id');
+
     $rootScope.registered = false;
 
-    identityRepository.getIdentity(function (user) {
+    Identity.get().$promise.then(function (user) {
         $rootScope.identity = user;
         $rootScope.registered = true;
     }, function () {
@@ -11,7 +14,7 @@ footballApp.controller('identityController', function ($scope, $rootScope, userR
     });
 
     $scope.register = function () {
-        userRepository.insertUser(function (user) {
+        User.save().$promise.then(function (user) {
             $rootScope.registered = true;
             $rootScope.identity = user;
             $rootScope.$emit("reloadUsers", { registered: true });
@@ -19,7 +22,7 @@ footballApp.controller('identityController', function ($scope, $rootScope, userR
     };
 
     $scope.unregister = function () {
-        userRepository.deleteUser($rootScope.identity.Id, function () {
+        User.remove({ id: $rootScope.identity.Id }).$promise.then(function () {
             $rootScope.registered = false;
             $rootScope.identity = null;
             $rootScope.$emit("reloadUsers", { registered: false });

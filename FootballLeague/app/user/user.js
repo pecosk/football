@@ -1,5 +1,6 @@
 ﻿
-footballApp.controller('userController', function ($scope, $rootScope, $filter, userRepository, ngTableParams) {
+footballApp.controller('userController', function ($scope, $rootScope, $filter, $resource, ngTableParams) {
+    var User = $resource('api/users');
 
     $rootScope.$on("reloadUsers", function (event, args) {
         reloadUsers();
@@ -8,7 +9,7 @@ footballApp.controller('userController', function ($scope, $rootScope, $filter, 
     reloadUsers();
 
     function reloadUsers() {
-        userRepository.getUsers(function (result) {
+        User.query().$promise.then(function (result) {
             $scope.users = result;
 
             if (typeof ($scope.tableParams) == 'undefined') {
