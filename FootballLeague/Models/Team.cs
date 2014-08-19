@@ -1,21 +1,25 @@
 ﻿namespace FootballLeague.Models
 {
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;    
+
     public class Team
     {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         
-        public virtual User Member1 { get; set; }
+        public User Member1 { get; set; }
         
-        public virtual User Member2 { get; set; }        
+        public User Member2 { get; set; }        
 
         public bool IsEmpty
         {
             get
             {
-                return Member1 == null && Member2 == null;
-            }
+                return Member1 == null && Member2 == null;   
+            }            
         }
-
+        
         public bool IsFull
         {
             get
@@ -31,31 +35,18 @@
 
         public void SetMember(User user)
         {
-            if (IsFull)
-            {
+            if (IsFull)            
                 return;
-            }
 
-            if (Member1 == null)
-            {
-                Member1 = user;
-            }
-            else
-            {
-                Member2 = user;
-            }
+            if (Member1 == null) Member1 = user;
+            else Member2 = user;
         }
 
         public void RemoveMember(User user)
         {
-            if (user.Equals(Member1))
-            {
-                Member1 = null;
-            }
-            else if(user.Equals(Member2))
-            {
-                Member2 = null;
-            }
+            if (user.Equals(Member1)) Member1 = null;
+            else if (user.Equals(Member2)) Member2 = null;
+
         }
     }
 }

@@ -22,7 +22,9 @@ namespace FootballLeague.Models.Repositories
         public Match InsertMatch(User user, Match match)
         {
             match.Creator = user;
-            _context.Users.Attach(user);                        
+            _context.Users.Attach(user);
+            _context.Teams.Add(match.Team1);
+            _context.Teams.Add(match.Team2);             
             _context.Matches.Add(match);
             _context.SaveChanges();
             return match;
@@ -31,6 +33,7 @@ namespace FootballLeague.Models.Repositories
         public IList<Match> GetPlanned()
         {
             return _context.Matches
+                .Include(m => m.Creator)
                 .Include(m => m.Team1)
                 .Include(m => m.Team2)
                 .Where(m => m.PlannedTime >= DateTime.Now)

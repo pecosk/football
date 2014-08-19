@@ -2,6 +2,8 @@
 
 namespace FootballLeague.Models
 {
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public class FootballContext : DbContext
     {
         public virtual IDbSet<User> Users { get; set; }
@@ -13,13 +15,13 @@ namespace FootballLeague.Models
             modelBuilder.Entity<User>().HasKey(u => u.Id).Property(u => u.Name).IsRequired();
 
             modelBuilder.Entity<Match>().HasKey(m => m.Id).Property(m => m.PlannedTime).IsRequired();
-            modelBuilder.Entity<Match>().HasOptional(m => m.Creator);            
-            modelBuilder.Entity<Match>().HasRequired(m => m.Team1);
-            modelBuilder.Entity<Match>().HasRequired(m => m.Team2);
+            modelBuilder.Entity<Match>().HasOptional(m => m.Creator);
+            modelBuilder.Entity<Match>().HasOptional(m => m.Team1);
+            modelBuilder.Entity<Match>().HasOptional(m => m.Team2);
 
             modelBuilder.Entity<Team>().HasKey(t => t.Id);
             modelBuilder.Entity<Team>().HasOptional(t => t.Member1);
-            modelBuilder.Entity<Team>().HasOptional(t => t.Member2);            
+            modelBuilder.Entity<Team>().HasOptional(t => t.Member2);
         }
     }
 }

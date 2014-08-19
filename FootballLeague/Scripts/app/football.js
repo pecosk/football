@@ -36,7 +36,8 @@ footballApp.controller('matchController', function ($scope, $rootScope, matchesR
             Id: match.Id,
             PlannedTime: match.PlannedTime,
             Creator: match.Creator.Name,
-            Players: match.Players.map(function (user) { return user.Name; }).join(' ')
+            Team1: match.Team1,
+            Team2: match.Team2
         };
     };
     reloadMatches();

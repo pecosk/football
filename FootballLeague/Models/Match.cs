@@ -2,24 +2,29 @@
 
 namespace FootballLeague.Models
 {
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public class Match
-    {        
+    {
+        public Match()
+        {
+            Team1 = new Team();
+            Team2 = new Team();
+        }
+
         public int Id { get; set; }
         public DateTime PlannedTime { get; set; }
-        public virtual User Creator { get; set; }
-
-        public int Team1Id { get; set; }
-        public virtual Team Team1 { get; set; }
-
-        public int Team2Id { get; set; }
-        public virtual Team Team2 { get; set; }
-
+        public User Creator { get; set; }        
+        public Team Team1 { get; set; }
+        public Team Team2 { get; set; }
+        
+        [NotMapped]
         public object IsFull
         {
             get
             {
                 return Team1.IsFull && Team2.IsFull;
-            }
+            }           
         }
 
         public bool Contains(User user)
