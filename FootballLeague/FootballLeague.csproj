@@ -126,14 +126,19 @@
     <Compile Include="Models\FootballContext.cs" />
     <Compile Include="Models\Match.cs" />
     <Compile Include="Models\Repositories\IMatchesRepository.cs" />
+    <Compile Include="Models\Repositories\ITeamRepository.cs" />
     <Compile Include="Models\Repositories\IUsersRepository.cs" />
     <Compile Include="Models\Repositories\MatchesRepository.cs" />
+    <Compile Include="Models\Repositories\TeamRepository.cs" />
     <Compile Include="Models\Repositories\UsersRepository.cs" />
+    <Compile Include="Models\Result.cs" />
+    <Compile Include="Models\Team.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Angular\UsersTable.html" />
+    <Content Include="App_Data\FootballLeague.Models.FootballContext.mdf" />
     <Content Include="Content\ng-table.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -460,7 +465,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>

@@ -6,6 +6,7 @@ namespace FootballLeague.Models
     {
         public virtual IDbSet<User> Users { get; set; }
         public virtual IDbSet<Match> Matches { get; set; }
+        public virtual IDbSet<Team> Teams { get; set; } 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -13,7 +14,11 @@ namespace FootballLeague.Models
 
             modelBuilder.Entity<Match>().HasKey(m => m.Id).Property(m => m.PlannedTime).IsRequired();
             modelBuilder.Entity<Match>().HasOptional(m => m.Creator);
-            modelBuilder.Entity<Match>().HasMany(m => m.Players).WithMany(u => u.Matches);
+            modelBuilder.Entity<Match>().HasRequired(m => m.Team1);
+            modelBuilder.Entity<Match>().HasRequired(m => m.Team2);
+
+            modelBuilder.Entity<Team>().HasOptional(t => t.Member1);
+            modelBuilder.Entity<Team>().HasOptional(t => t.Member2);
         }
     }
 }

@@ -12,15 +12,17 @@ namespace FootballLeague.Controllers
     {
         private IMatchesRepository _matchRepository;
         private IUsersRepository _userRepository;
+        private ITeamRepository _teamRepository;
 
-        public MatchesController() : this(null, null)
+        public MatchesController() : this(null, null, null)
         {
         }
 
-        public MatchesController(IMatchesRepository matchRepository, IUsersRepository userRepository)
+        public MatchesController(IMatchesRepository matchRepository, IUsersRepository userRepository, ITeamRepository teamRepository)
         {
             _matchRepository = matchRepository ?? new MatchesRepository();
             _userRepository = userRepository ?? new UsersRepository();
+            _teamRepository = teamRepository ?? new TeamRepository();
         }
 
         public void Post(Match match)
@@ -37,17 +39,17 @@ namespace FootballLeague.Controllers
             return _matchRepository.GetPlanned();
         }
 
-        public void Put(int id)
+        public void Put(int teamId)
         {
             var user = GetCurrentUser();
-            var match = _matchRepository.GetMatch(id);
-            if (match == null)
+            var team = _teamRepository.GetTeam(teamId);
+            if (team == null)
                 return;
 
-            if (match.Players.Any(p => p.Id == user.Id))
-                _matchRepository.RemoveMatchParticipant(user, match);
+            if (team.Contains(user))
+                _teamRepository.RemoveMatchParticipantFromTeam(user, team);
             else
-                _matchRepository.AddMatchParticipant(user, match);
+                _teamRepository.AddMatchParticipantToTeam(user, team);
         }
 
         private User GetCurrentUser()

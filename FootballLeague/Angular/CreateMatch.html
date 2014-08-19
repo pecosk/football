@@ -20,7 +20,9 @@
         <tr ng-repeat="match in $data">
             <td data-title="'Planovany cas'" sortable="'PlannedTime'">{{match.PlannedTime}}</td>
             <td data-title="'Vytvoril'" sortable="'Creator'">{{match.Creator}}</td>
-            <td data-title="'Hraci'" sortable="'Players'">{{match.Players}}</td>
+            <td data-title="'Team1'" >{{match.Team1}}</td>
+            <td data-title="'Team2'" >{{match.Team2}}</td>
+            <td date-title="'Result'">{{match.Result}}</td>
             <td>
                 <a ng-click="toggleParticipation(match.Id)" ng-class="{hidden: !forJoin(match.Id)}">Join</a>
                 <a ng-click="toggleParticipation(match.Id)" ng-class="{hidden: !forLeave(match.Id)}">Leave</a>
