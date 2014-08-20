@@ -16,7 +16,14 @@ namespace FootballLeague.Models.Repositories
 
         public Match GetMatch(int id)
         {
-            return _context.Matches.FirstOrDefault(m => m.Id == id);
+            return _context.Matches.Include(m => m.Creator)
+                .Include(m => m.Team1)
+                .Include(m => m.Team1.Member1)
+                .Include(m => m.Team1.Member2)
+                .Include(m => m.Team2)
+                .Include(m => m.Team2.Member1)
+                .Include(m => m.Team2.Member2)
+                .FirstOrDefault(m => m.Id == id);
         }
 
         public Match InsertMatch(User user, Match match)
@@ -35,7 +42,11 @@ namespace FootballLeague.Models.Repositories
             return _context.Matches
                 .Include(m => m.Creator)
                 .Include(m => m.Team1)
+                .Include(m => m.Team1.Member1)
+                .Include(m => m.Team1.Member2)
                 .Include(m => m.Team2)
+                .Include(m => m.Team2.Member1)
+                .Include(m => m.Team2.Member2)
                 .Where(m => m.PlannedTime >= DateTime.Now)
                 .OrderBy(m => m.PlannedTime)
                 .ToList();
@@ -47,9 +58,11 @@ namespace FootballLeague.Models.Repositories
             if (team.IsFull || match.Contains(user))
                 return;
 
-            team.SetMember(user);
-            _context.Users.Attach(user);
-            _context.SaveChanges();
+            if (team.SetMember(user))
+            {                
+                _context.Users.Attach(user);
+                _context.SaveChanges();
+            }                        
         }
 
         public void RemoveMatchParticipantFromTeam(User user, Match match, int teamId)
@@ -58,8 +71,10 @@ namespace FootballLeague.Models.Repositories
             if (team.IsEmpty || !team.Contains(user))
                 return;
 
-            team.RemoveMember(user);
-            _context.SaveChanges();
+            if (team.RemoveMember(user))
+            {
+                _context.SaveChanges();
+            }            
         }
     }
 }

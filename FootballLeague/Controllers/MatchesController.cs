@@ -19,8 +19,9 @@ namespace FootballLeague.Controllers
 
         public MatchesController(IMatchesRepository matchRepository, IUsersRepository userRepository)
         {
-            _matchRepository = matchRepository ?? new MatchesRepository();
-            _userRepository = userRepository ?? new UsersRepository();            
+            var context = new FootballContext();
+            _matchRepository = matchRepository ?? new MatchesRepository(context);
+            _userRepository = userRepository ?? new UsersRepository(context);            
         }
 
         //Create new Match
@@ -30,7 +31,7 @@ namespace FootballLeague.Controllers
             if (user == null)
                 throw new UnauthorizedAccessException();
 
-            _matchRepository.InsertMatch(user, new Match { PlannedTime = match.PlannedTime });
+            _matchRepository.InsertMatch(user, new Match { PlannedTime = match.PlannedTime });            
         }
 
         public IEnumerable<Match> Get()
@@ -38,10 +39,13 @@ namespace FootballLeague.Controllers
             return _matchRepository.GetPlanned();
         }
 
-        public void Put(int matchId, int teamId)
+        public void Put(int id, [FromUri]int teamId)
         {
             var user = GetCurrentUser();
-            var match = _matchRepository.GetMatch(matchId);
+            if (user == null)
+                throw new UnauthorizedAccessException();
+
+            var match = _matchRepository.GetMatch(id);
             if (match == null)
                 return;
 

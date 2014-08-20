@@ -23,14 +23,14 @@
             <td data-title="'Team1'">
                 {{match.Team1.Member1.Name}}
                 {{match.Team1.Member2.Name}}            
-                <a ng-click="toggleParticipation(match.Team1.Id)" ng-class="{ hidden: !forJoin( match, match.Team1 ) }">Join</a>
-                <a ng-click="toggleParticipation(match.Team1.Id)" ng-class="{ hidden: !forLeave( match, match.Team1 ) }">Leave</a>            
+                <a ng-click="toggleParticipation(match.Id, match.Team1.Id)" ng-class="{ hidden: !forJoin( match, match.Team1 ) }">Join</a>
+                <a ng-click="toggleParticipation(match.Id, match.Team1.Id)" ng-class="{ hidden: !forLeave( match, match.Team1 ) }">Leave</a>            
             </td>
             <td data-title="'Team2'" >
                 {{match.Team2.Member1.Name}}
                 {{match.Team2.Member2.Name}}
-                <a ng-click="toggleParticipation(match.Team2.Id)" ng-class="{ hidden: !forJoin(match, match.Team2) }">Join</a>
-                <a ng-click="toggleParticipation(match.Team2.Id)" ng-class="{ hidden: !forLeave(match, match.Team2) }">Leave</a>            
+                <a ng-click="toggleParticipation(match.Id, match.Team2.Id)" ng-class="{ hidden: !forJoin(match, match.Team2) }">Join</a>
+                <a ng-click="toggleParticipation(match.Id, match.Team2.Id)" ng-class="{ hidden: !forLeave(match, match.Team2) }">Leave</a>            
             </td>                        
         </tr>
     </table>

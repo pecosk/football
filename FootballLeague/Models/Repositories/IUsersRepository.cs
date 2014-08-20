@@ -9,6 +9,6 @@ namespace FootballLeague.Models.Repositories
         IEnumerable<User> GetAllUsers();
         User GetUser(int id);
         User GetUser(string name);
-        void InsertUser(User user);
+        void InsertUser(User user);        
     }
 }

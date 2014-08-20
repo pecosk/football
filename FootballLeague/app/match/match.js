@@ -1,6 +1,6 @@
 ﻿
 footballApp.controller('matchController', function ($scope, $rootScope, $resource, ngTableParams, $filter) {
-    var Match = $resource('api/matches/:id', { id: '@id' }, { 'update': { method: 'PUT' } });
+    var Match = $resource('api/matches/:id', { id: '@id' }, { 'update': { method: 'PUT', params: { teamId: '@teamId' } } });
 
     $scope.submit = function () {
         var date = $scope.date;
@@ -15,16 +15,18 @@ footballApp.controller('matchController', function ($scope, $rootScope, $resourc
         $scope.opened = true;
     };
 
-    $scope.toggleParticipation = function (matchId) {
-        Match.update({ id: matchId }, function () { reloadMatches(); });
+    $scope.toggleParticipation = function (matchId, teamId) {
+        Match.update({ id: matchId, teamId: teamId }, function () { reloadMatches(); });
     };
 
     $scope.forJoin = function (match, team) {
-        return $rootScope.registered && !isUserInMatch(match, team);
+        var user = $rootScope.identity;
+        return $rootScope.registered && !match.containsPlayer(user);;
     };
 
     $scope.forLeave = function (match, team) {
-        return $rootScope.registered && isUserInMatch(match, team);
+        var user = $rootScope.identity;
+        return $rootScope.registered && team.hasMember(user);
     };
 
     $scope.minDate = new Date();
@@ -33,10 +35,15 @@ footballApp.controller('matchController', function ($scope, $rootScope, $resourc
 
     function transformMatches(match) {
         function extendTeam(team) {
+            var currentUser = $rootScope.identity;
             return Object.create(team, {
-                isFull: { value: function () { this.Member1 && this.Member2 } },
-                isEmpty: { value: function () { !this.Member1 && !this.Member2 } },
-                hasMember: { value: function (user) { (this.Member1 && (this.Member1.id === user.id)) || (this.Member2 && (this.Member2.id === user.id)) } }
+                isFull: { value: function () { return this.Member1 && this.Member2 } },
+                isEmpty: { value: function () { return !this.Member1 && !this.Member2 } },
+                hasMember: {
+                    value: function (user) {
+                        return ((this.Member1 && (this.Member1.Id === user.Id)) || (this.Member2 && (this.Member2.Id === user.Id)))
+                    }, enumerable: true
+                },
             });
         }
 
@@ -44,15 +51,9 @@ footballApp.controller('matchController', function ($scope, $rootScope, $resourc
             CreatorName: { value: match.Creator.Name },
             Team1: { value: extendTeam(match.Team1) },
             Team2: { value: extendTeam(match.Team2) },
-            containsPlayer: { value: function (user) { return this.Team1.hasMember(user) || this.Team2.hasMember(user); } }
+            containsPlayer: { value: function (user) { return this.Team1.hasMember(user) || this.Team2.hasMember(user); }, enumerable: true },
         });
     }
-
-    function isUserInMatch(match, team) {
-        var user = $rootScope.identity;
-
-        return team.hasMember(user) || match.containsPlayer(user);
-    };
 
     function reloadMatches() {
         Match.query().$promise.then(function (result) {

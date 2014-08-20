@@ -3,6 +3,7 @@
 namespace FootballLeague.Models
 {
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Web.Script.Serialization;
 
     public class Match
     {
@@ -15,10 +16,11 @@ namespace FootballLeague.Models
         public int Id { get; set; }
         public DateTime PlannedTime { get; set; }
         public User Creator { get; set; }        
-        public Team Team1 { get; set; }
-        public Team Team2 { get; set; }
+        public virtual Team Team1 { get; set; }
+        public virtual Team Team2 { get; set; }
         
         [NotMapped]
+        [ScriptIgnore]
         public object IsFull
         {
             get
