@@ -5,11 +5,11 @@ footballApp.controller('matchController', function ($scope, $rootScope, $resourc
     $scope.submit = function () {
         var date = $scope.date;
         var time = $scope.time;
-        var dateTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes()).toISOString();            
+        var dateTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes()).toISOString();
         Match.save({ PlannedTime: dateTime }).$promise.then(function () { reloadMatches(); });
     };
 
-    $scope.open = function($event) {
+    $scope.open = function ($event) {
         $event.preventDefault();
         $event.stopPropagation();
         $scope.opened = true;
@@ -18,13 +18,13 @@ footballApp.controller('matchController', function ($scope, $rootScope, $resourc
     $scope.toggleParticipation = function (matchId) {
         Match.update({ id: matchId }, function () { reloadMatches(); });
     };
-    
-    $scope.forJoin = function (matchId) {
-        return $rootScope.registered && !isUserInMatch(matchId, $rootScope.identity);
+
+    $scope.forJoin = function (match, team) {
+        return $rootScope.registered && !isUserInMatch(match, team);
     };
 
-    $scope.forLeave = function (matchId) {
-        return $rootScope.registered && isUserInMatch(matchId, $rootScope.identity);
+    $scope.forLeave = function (match, team) {
+        return $rootScope.registered && isUserInMatch(match, team);
     };
 
     $scope.minDate = new Date();
@@ -32,21 +32,26 @@ footballApp.controller('matchController', function ($scope, $rootScope, $resourc
     $scope.time = new Date();
 
     function transformMatches(match) {
-        return {
-            Id: match.Id,
-            PlannedTime: match.PlannedTime,
-            Creator: match.Creator.Name,
-            Team1: match.Team1,
-            Team2: match.Team2
-        };
-    };
+        function extendTeam(team) {
+            return Object.create(team, {
+                isFull: { value: function () { this.Member1 && this.Member2 } },
+                isEmpty: { value: function () { !this.Member1 && !this.Member2 } },
+                hasMember: { value: function (user) { (this.Member1 && (this.Member1.id === user.id)) || (this.Member2 && (this.Member2.id === user.id)) } }
+            });
+        }
 
-    function isUserInMatch(matchId, user) {
-        var matches = $scope.serverMatches.filter(function (match) { return match.Id == matchId });
-        if (matches.length == 0)
-            return false;
+        return Object.create(match, {
+            CreatorName: { value: match.Creator.Name },
+            Team1: { value: extendTeam(match.Team1) },
+            Team2: { value: extendTeam(match.Team2) },
+            containsPlayer: { value: function (user) { return this.Team1.hasMember(user) || this.Team2.hasMember(user); } }
+        });
+    }
 
-        return matches[0].Players.filter(function (player) { return player.Id == user.Id }).length;
+    function isUserInMatch(match, team) {
+        var user = $rootScope.identity;
+
+        return team.hasMember(user) || match.containsPlayer(user);
     };
 
     function reloadMatches() {
