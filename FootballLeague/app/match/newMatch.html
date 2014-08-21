@@ -19,7 +19,7 @@
     <table ng-table="tableParams" class="table table-striped">
         <tr ng-repeat="match in $data">
             <td data-title="'Planovany cas'" sortable="'PlannedTime'">{{match.PlannedTime}}</td>
-            <td data-title="'Vytvoril'" sortable="'Creator'">{{match.Creator.Name}}</td>
+            <td data-title="'Vytvoril'" sortable="'Creator.Name'">{{match.Creator.Name}}</td>
             <td data-title="'Team1'">
                 {{match.Team1.Member1.Name}}
                 {{match.Team1.Member2.Name}}            
