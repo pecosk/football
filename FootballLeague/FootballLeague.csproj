@@ -146,6 +146,7 @@
     <Content Include="app\user\users.html" />
     <Content Include="app\app.js" />
     <Content Include="App_Data\FootballLeague.Models.FootballContext.mdf" />
+    <Content Include="Content\angular-multi-select.css" />
     <Content Include="Content\ng-table.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -157,6 +158,7 @@
     <Content Include="Scripts\angular-loader.js" />
     <Content Include="Scripts\angular-loader.min.js" />
     <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-multi-select.js" />
     <Content Include="Scripts\angular-resource.js" />
     <Content Include="Scripts\angular-resource.min.js" />
     <Content Include="Scripts\angular-route.js" />
