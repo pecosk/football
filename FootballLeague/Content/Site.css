@@ -23,3 +23,7 @@
 .form-inline .timepicker input {
     width: 100%;
 }
+
+.multiSelect .button {
+    min-height: 34px !important;
+}

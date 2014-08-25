@@ -1,5 +1,5 @@
 ﻿
-var footballApp = angular.module('footballApp', ['ngTable', 'ngResource', 'ngRoute', 'ui.bootstrap']);
+var footballApp = angular.module('footballApp', ['ngTable', 'ngResource', 'ngRoute', 'ui.bootstrap', 'multi-select']);
 var users = 'api/users';
 var identity = 'api/identity';
 var match = 'api/matches';

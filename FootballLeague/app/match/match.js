@@ -1,8 +1,10 @@
 ﻿
 footballApp.controller('matchController', function ($scope, $rootScope, $resource, ngTableParams, $filter) {
     var Match = $resource('api/matches/:id', { id: '@id' }, { 'update': { method: 'PUT', params: { teamId: '@teamId' } } });
+    var User = $resource('api/users');
 
     $scope.submit = function () {
+        console.log($scope.selectedUsers.map(cleanUser));
         var date = $scope.date;
         var time = $scope.time;
         var dateTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes()).toISOString();
@@ -32,6 +34,21 @@ footballApp.controller('matchController', function ($scope, $rootScope, $resourc
     $scope.minDate = new Date();
     $scope.date = new Date();
     $scope.time = new Date();
+
+    loadUsers();
+
+    function loadUsers() {
+        User.query().$promise.then(function (data) {
+            $scope.users = data;
+        });
+    };
+
+    function cleanUser(user) {
+        return {
+            Id: user.Id,
+            Name: user.Name
+        };
+    }
 
     function transformMatches(match) {
         function extendTeam(team) {
