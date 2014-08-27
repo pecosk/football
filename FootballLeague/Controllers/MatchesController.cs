@@ -31,7 +31,10 @@ namespace FootballLeague.Controllers
             if (user == null)
                 throw new UnauthorizedAccessException();
 
-            _matchRepository.InsertMatch(user, new Match { PlannedTime = match.PlannedTime });            
+            if (match.Invites != null && match.Invites.Count > 0 && !_userRepository.UsersExist(match.Invites))
+                return;
+
+            _matchRepository.InsertMatch(user, new Match { PlannedTime = match.PlannedTime, Invites = match.Invites });
         }
 
         public IEnumerable<Match> Get()

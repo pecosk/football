@@ -4,6 +4,8 @@ using FootballLeague.Models.Repositories;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FootballLeague.Tests.Controllers
 {    
@@ -52,6 +54,25 @@ namespace FootballLeague.Tests.Controllers
             controller.Post(new Match { PlannedTime = plannedTime });
 
             _matchRepo.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Put_MatchWithInvitedPlayers_StoresMatchIncludingInvites()
+        {
+            var currentUserName = "ferko";
+            MockCurrentUser(currentUserName);
+            var time = DateTime.Parse("2036-01-01T12:00");
+            var user = new User { Id = 2, Name = currentUserName };
+            var invites = new List<User>{ new User(), new User() };
+            _userRepo.Stub(u => u.GetUser(currentUserName)).Return(user);
+            _matchRepo.Expect(r => r.InsertMatch(Arg<User>.Is.Same(user), Arg<Match>.Matches(m => m.PlannedTime == time)));
+            _userRepo.Expect(r => r.UsersExist(Arg<IEnumerable<User>>.Is.Same(invites))).Return(true);
+            var controller = new MatchesController(_matchRepo, _userRepo);
+
+            controller.Post(new Match { PlannedTime = time, Invites = invites });
+
+            _matchRepo.VerifyAllExpectations();
+            _userRepo.VerifyAllExpectations();
         }
 
         //public void Get_GetsAllPlannedMatches()

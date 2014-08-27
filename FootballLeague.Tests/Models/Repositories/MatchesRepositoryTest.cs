@@ -29,6 +29,7 @@ namespace FootballLeague.Tests.Models.Repositories
             var matches = new List<Match> { new Match { Id = 1, PlannedTime = DateTime.Parse("2014-01-01T12:34"), Creator = user, Team1 = TeamData.EmptyTeam, Team2 = TeamData.EmptyTeam } };
             _context.Matches = MockContextData(_context, c => c.Matches, matches.AsQueryable());
             _context.Users = MockContextData(_context, c => c.Users, new List<User>().AsQueryable());
+            _context.Teams = MockContextData(_context, c => c.Teams, new List<Team>().AsQueryable());
             var repo = new MatchesRepository(_context);
             var newMatchTime = DateTime.Parse("2024-01-01T12:34");
             _context.Matches

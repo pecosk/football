@@ -50,5 +50,10 @@ namespace FootballLeague.Models.Repositories
         {
             return _context.Users.FirstOrDefault(u => u.Name == name);
         }
+
+        public bool UsersExist(IEnumerable<User> users)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
