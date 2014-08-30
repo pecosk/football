@@ -4,11 +4,11 @@ footballApp.controller('matchController', function ($scope, $rootScope, $resourc
     var User = $resource('api/users');
 
     $scope.submit = function () {
-        console.log($scope.selectedUsers.map(cleanUser));
         var date = $scope.date;
         var time = $scope.time;
         var dateTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes()).toISOString();
-        Match.save({ PlannedTime: dateTime }).$promise.then(function () { reloadMatches(); });
+        //console.log({ PlannedTime: dateTime, Invites: $scope.selectedUsers.map(cleanUser) });
+        Match.save({ PlannedTime: dateTime, Invites: $scope.selectedUsers.map(cleanUser) }).$promise.then(function () { reloadMatches(); });
     };
 
     $scope.open = function ($event) {

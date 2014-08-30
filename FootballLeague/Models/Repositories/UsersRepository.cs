@@ -53,7 +53,8 @@ namespace FootballLeague.Models.Repositories
 
         public bool UsersExist(IEnumerable<User> users)
         {
-            throw new System.NotImplementedException();
+            return users.Select(u => u.Id).ToList()
+                .All(id => _context.Users.Any(u => u.Id == id));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using FootballLeague.Models;
 using FootballLeague.Models.Repositories;
+using FootballLeague.Tests.Data;
 using NUnit.Framework;
 using Rhino.Mocks;
 using System.Collections.Generic;
@@ -132,6 +133,61 @@ namespace FootballLeague.Tests.Models.Repositories
             _context.Users.VerifyAllExpectations();
             _context.VerifyAllExpectations();
             Assert.IsTrue(user.Inactive);
+        }
+
+        [Test]
+        public void UsersExist_WithOneExistingUser_ConfirmsExistance()
+        {
+            _context.Users = MockContextData(_context, c => c.Users, new List<User> { Users.Dano, Users.Ferko }.AsQueryable());
+            var repo = new UsersRepository(_context);
+
+            var exists = repo.UsersExist(new List<User> { Users.Dano });
+
+            Assert.IsTrue(exists);
+        }
+
+        [Test]
+        public void UsersExist_WithNonExistingUser_DeniesExistance()
+        {
+            _context.Users = MockContextData(_context, c => c.Users, new List<User> { Users.Dano, Users.Ferko }.AsQueryable());
+            var repo = new UsersRepository(_context);
+
+            var exists = repo.UsersExist(new List<User> { Users.Jurko });
+
+            Assert.IsFalse(exists);
+        }
+
+        [Test]
+        public void UsersExist_WithAllUsersExisting_ConfirmsExistance()
+        {
+            _context.Users = MockContextData(_context, c => c.Users, new List<User> { Users.Dano, Users.Ferko }.AsQueryable());
+            var repo = new UsersRepository(_context);
+
+            var exists = repo.UsersExist(new List<User> { Users.Dano, Users.Ferko });
+
+            Assert.IsTrue(exists);
+        }
+
+        [Test]
+        public void UsersExist_WithOnlyFirstUserExisting_DeniesExistance()
+        {
+            _context.Users = MockContextData(_context, c => c.Users, new List<User> { Users.Dano, Users.Ferko }.AsQueryable());
+            var repo = new UsersRepository(_context);
+
+            var exists = repo.UsersExist(new List<User> { Users.Dano, Users.Jurko });
+
+            Assert.IsFalse(exists);
+        }
+
+        [Test]
+        public void UsersExist_WithOnlySecondUserExisting_DeniesExistance()
+        {
+            _context.Users = MockContextData(_context, c => c.Users, new List<User> { Users.Dano, Users.Ferko }.AsQueryable());
+            var repo = new UsersRepository(_context);
+
+            var exists = repo.UsersExist(new List<User> { Users.Jurko, Users.Ferko });
+
+            Assert.IsFalse(exists);
         }
     }
 }

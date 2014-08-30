@@ -41,7 +41,7 @@ namespace FootballLeague.Models
             if (Team1.Id == teamId) return Team1;
             if (Team2.Id == teamId) return Team2;
 
-            throw new ArgumentException("No team with such id exists");
+            return null;
         }
     }
 }

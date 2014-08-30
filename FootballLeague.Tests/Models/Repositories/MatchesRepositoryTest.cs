@@ -212,5 +212,53 @@ namespace FootballLeague.Tests.Models.Repositories
             _context.VerifyAllExpectations();
             Assert.IsFalse(match.Contains(Users.Ferko));
         }
+
+        [Test]
+        public void MatchContainsTeam_WhenMatchContainsTeamWithExpectedId_ConfirmsIt()
+        {
+            var match = MatchBuilder.Create().Build();
+            var repo = new MatchesRepository(_context);
+
+            var contains = repo.MatchContainsTeam(match, match.Team1.Id);
+
+            Assert.IsTrue(contains);
+        }
+
+        [Test]
+        public void MatchContainsTeam_WhenMatchDoesNotContainTeamWithExpectedId_ReturnsFalse()
+        {
+            var match = MatchBuilder.Create().Build();
+            var repo = new MatchesRepository(_context);
+            var nonexistingTeamId = match.Team1.Id + match.Team2.Id + 1;
+
+            var contains = repo.MatchContainsTeam(match, nonexistingTeamId);
+
+            Assert.IsFalse(contains);
+        }
+
+        [Test]
+        public void InsertMatch_WithInvitedUsers_AddsInvitesToDatabase()
+        {
+            var user = Users.Ferko;
+            _context.Matches = MockContextData(_context, c => c.Matches, new List<Match>().AsQueryable());
+            _context.Users = MockContextData(_context, c => c.Users, new List<User> { Users.Dano, Users.Jurko }.AsQueryable());
+            _context.Teams = MockContextData(_context, c => c.Teams, new List<Team>().AsQueryable());
+            var repo = new MatchesRepository(_context);
+            var newMatchTime = DateTime.Parse("2024-01-01T12:34");
+            var invites = new List<User> { 
+                new User { Id = Users.Jurko.Id}, 
+                new User { Id = Users.Dano.Id}, 
+            };
+            _context.Matches.Expect(e => e.Add(Arg<Match>
+                .Matches(m => m.Invites != null && m.Invites.Count == 2 && m.Invites.Contains(Users.Jurko) && m.Invites.Contains(Users.Dano))))
+                .Return(null);
+            _context.Users.Expect(e => e.Attach(Arg<User>.Is.Same(Users.Jurko))).Return(null);
+            _context.Users.Expect(e => e.Attach(Arg<User>.Is.Same(Users.Dano))).Return(null);
+
+            repo.InsertMatch(user, new Match { PlannedTime = newMatchTime, Team1 = TeamData.EmptyTeam, Team2 = TeamData.EmptyTeam, Invites = invites });
+
+            _context.Matches.VerifyAllExpectations();
+            _context.Users.VerifyAllExpectations();
+        }
     }
 }

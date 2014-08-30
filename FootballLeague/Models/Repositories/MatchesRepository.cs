@@ -30,6 +30,12 @@ namespace FootballLeague.Models.Repositories
         {
             match.Creator = user;
             _context.Users.Attach(user);
+            if (match.Invites != null)
+            {
+                match.Invites = match.Invites.Select(i => _context.Users.FirstOrDefault(u => u.Id == i.Id))
+                                    .Where(u => u != null).ToList();
+                match.Invites.ForEach(u => _context.Users.Attach(u));
+            }
             _context.Teams.Add(match.Team1);
             _context.Teams.Add(match.Team2);             
             _context.Matches.Add(match);
@@ -55,7 +61,7 @@ namespace FootballLeague.Models.Repositories
         public void AddMatchParticipantToTeam(User user, Match match, int teamId)
         {
             var team = match.GetTeam(teamId);
-            if (team.IsFull || match.Contains(user))
+            if (team == null || team.IsFull || match.Contains(user))
                 return;
 
             if (team.SetMember(user))
@@ -68,7 +74,7 @@ namespace FootballLeague.Models.Repositories
         public void RemoveMatchParticipantFromTeam(User user, Match match, int teamId)
         {
             var team = match.GetTeam(teamId);
-            if (team.IsEmpty || !team.Contains(user))
+            if (team == null || team.IsEmpty || !team.Contains(user))
                 return;
 
             if (team.RemoveMember(user))

@@ -18,6 +18,7 @@ namespace FootballLeague.Models
             modelBuilder.Entity<Match>().HasOptional(m => m.Creator);
             modelBuilder.Entity<Match>().HasRequired(m => m.Team1).WithOptional().Map(m => m.MapKey("Team1_Id"));
             modelBuilder.Entity<Match>().HasRequired(m => m.Team2).WithOptional().Map(m => m.MapKey("Team2_Id"));
+            modelBuilder.Entity<Match>().HasMany(m => m.Invites).WithMany();
 
             modelBuilder.Entity<Team>().HasKey(t => t.Id);
             modelBuilder.Entity<Team>().HasOptional(t => t.Member1);
