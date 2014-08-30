@@ -8,19 +8,19 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace FootballLeague.Tests.Controllers
-{    
+{
     [TestFixture]
     public class MatchesControllerTest : ControllerTestBase
     {
         private IMatchesRepository _matchRepo;
 
-        private IUsersRepository _userRepo;        
+        private IUsersRepository _userRepo;
 
         [SetUp]
         public void SetUp()
         {
             _matchRepo = MockRepository.GenerateMock<IMatchesRepository>();
-            _userRepo = MockRepository.GenerateMock<IUsersRepository>();            
+            _userRepo = MockRepository.GenerateMock<IUsersRepository>();
         }
 
         [Test]
@@ -63,7 +63,7 @@ namespace FootballLeague.Tests.Controllers
             MockCurrentUser(currentUserName);
             var time = DateTime.Parse("2036-01-01T12:00");
             var user = new User { Id = 2, Name = currentUserName };
-            var invites = new List<User>{ new User(), new User() };
+            var invites = new List<User> { new User(), new User() };
             _userRepo.Stub(u => u.GetUser(currentUserName)).Return(user);
             _matchRepo.Expect(r => r.InsertMatch(Arg<User>.Is.Same(user), Arg<Match>.Matches(m => m.PlannedTime == time)));
             _userRepo.Expect(r => r.UsersExist(Arg<IEnumerable<User>>.Is.Same(invites))).Return(true);
@@ -75,82 +75,108 @@ namespace FootballLeague.Tests.Controllers
             _userRepo.VerifyAllExpectations();
         }
 
-        //public void Get_GetsAllPlannedMatches()
-        //{
-        //    var ferko = new User { Id = 1, Name = "Ferko" };
-        //    var planned = new List<Match> {
-        //        new Match{ Id = 1, PlannedTime = DateTime.Parse("2046-01-02T01:01"), Creator = ferko, Team1 = TeamBuilder.TeamWithFerko},
-        //        new Match{ Id = 2, PlannedTime = DateTime.Parse("2046-01-01T01:01"), Creator = ferko, Team1 = TeamBuilder.TeamWithFerko},
-        //    };
-        //    _matchRepo.Stub(r => r.GetPlanned()).Return(planned);
-        //    var controller = new MatchesController(_matchRepo, _userRepo, _teamRepo);
+        public void Get_GetsAllPlannedMatches()
+        {
+            var ferko = new User { Id = 1, Name = "Ferko" };
+            var planned = new List<Match> {
+                new Match{ Id = 1, PlannedTime = DateTime.Parse("2046-01-02T01:01"), Creator = ferko, Team1 = null },
+                new Match{ Id = 2, PlannedTime = DateTime.Parse("2046-01-01T01:01"), Creator = ferko, Team1 = null },
+            };
+            _matchRepo.Stub(r => r.GetPlanned()).Return(planned);
+            var controller = new MatchesController(_matchRepo, _userRepo);
 
-        //    var matches = controller.Get();
+            var matches = controller.Get();
 
-        //    Assert.That(matches, Is.EqualTo(planned));
-        //}
+            Assert.That(matches, Is.EqualTo(planned));
+        }
 
-        //[Test]
-        //public void Put_WithExistingMatchIdWhenUserNotInMatch_AddsCurrentUserToMatch()
-        //{
-        //    var matchId = 1;
-        //    var user = new User();
-        //    MockCurrentUser("Ferko");
-        //    var match = new Match { Id = matchId };
-        //    _matchRepo.Stub(r => r.GetMatch(matchId)).Return(match);
-        //    _userRepo.Stub(r => r.GetUser("Ferko")).Return(user);
-        //    _matchRepo.Expect(r => r.AddMatchParticipant(user, match.Team1));
-        //    var controller = new MatchesController(_matchRepo, _userRepo, _teamRepo);
+        [Test]
+        public void Put_WithExistingMatchIdWhenUserNotInMatch_AddsCurrentUserToMatch()
+        {
+            var matchId = 1;
+            var teamId = 1;
+            var user = new User();
+            MockCurrentUser("Ferko");
+            var match = new Match { Id = matchId };
+            _matchRepo.Stub(r => r.GetMatch(matchId)).Return(match);
+            _matchRepo.Stub(r => r.MatchContainsTeam(match, teamId)).Return(true);
+            _userRepo.Stub(r => r.GetUser("Ferko")).Return(user);
+            _matchRepo.Expect(r => r.AddMatchParticipantToTeam(user, match, teamId));
+            var controller = new MatchesController(_matchRepo, _userRepo);
 
-        //    controller.Put(matchId);
+            controller.Put(matchId, teamId);
 
-        //    _matchRepo.VerifyAllExpectations();
-        //}
+            _matchRepo.VerifyAllExpectations();
+        }
 
-        //[Test]
-        //public void Put_WithNonexistingMatchId_DoesNothing()
-        //{
-        //    var matchId = 1;
-        //    var user = new User();
-        //    MockCurrentUser("Ferko");
-        //    _matchRepo.Stub(r => r.GetMatch(matchId)).Return(null);
-        //    _userRepo.Stub(r => r.GetUser("Ferko")).Return(user);
-        //    _matchRepo.Expect(r => r.AddMatchParticipant(Arg<User>.Is.Anything, Arg<Team>.Is.Anything)).Repeat.Never();
-        //    var controller = new MatchesController(_matchRepo, _userRepo, _teamRepo);
+        [Test]
+        public void Put_WithNonexistingMatchId_DoesNothing()
+        {
+            var matchId = 1;
+            var teamId = 1;
+            var user = new User();
+            MockCurrentUser("Ferko");
+            _matchRepo.Stub(r => r.GetMatch(matchId)).Return(null);
+            _userRepo.Stub(r => r.GetUser("Ferko")).Return(user);
+            _matchRepo.Expect(r => r.AddMatchParticipantToTeam(Arg<User>.Is.Anything, Arg<Match>.Is.Anything, Arg<int>.Is.Anything)).Repeat.Never();
+            var controller = new MatchesController(_matchRepo, _userRepo);
 
-        //    controller.Put(matchId);
+            controller.Put(matchId, teamId);
 
-        //    _matchRepo.VerifyAllExpectations();
-        //}
+            _matchRepo.VerifyAllExpectations();
+        }
 
-        //[Test]
-        //public void Put_WithNonexistingUser_DoesNothing()
-        //{
-        //    MockCurrentUser("Ferko");
-        //    _userRepo.Stub(r => r.GetUser("Ferko")).Return(null);
-        //    _matchRepo.Expect(r => r.AddMatchParticipant(Arg<User>.Is.Anything, Arg<Team>.Is.Anything)).Repeat.Never();
-        //    var controller = new MatchesController(_matchRepo, _userRepo, _teamRepo);
+        [Test]
+        public void Put_WithNonexistingTeamId_DoesNothing()
+        {
+            var matchId = 1;
+            var teamId = 1;
+            var user = new User();
+            var match = new Match();
+            MockCurrentUser("Ferko");
+            _matchRepo.Stub(r => r.GetMatch(matchId)).Return(match);
+            _matchRepo.Stub(r => r.MatchContainsTeam(match, teamId)).Return(false);
+            _userRepo.Stub(r => r.GetUser("Ferko")).Return(user);
+            _matchRepo.Expect(r => r.AddMatchParticipantToTeam(Arg<User>.Is.Anything, Arg<Match>.Is.Anything, Arg<int>.Is.Anything)).Repeat.Never();
+            var controller = new MatchesController(_matchRepo, _userRepo);
 
-        //    controller.Put(1);
+            controller.Put(matchId, teamId);
 
-        //    _matchRepo.VerifyAllExpectations();
-        //}
+            _matchRepo.VerifyAllExpectations();
+        }
 
-        //[Test]
-        //public void Put_WhenUserInMatch_AddsCurrentUserToMatch()
-        //{
-        //    var teamId = 1;
-        //    MockCurrentUser("Ferko");
-        //    var match = new Match { Id = matchId, Team1 = TeamBuilder.TeamWithFerko};
-        //    _teamRepo.Expect(r => r.)
-        //    _matchRepo.Stub(r => r.GetMatch(matchId)).Return(match);
-        //    _userRepo.Stub(r => r.GetUser("Ferko")).Return(Users.Ferko);
-        //    _matchRepo.Expect(r => r.RemoveMatchParticipant(Users.Ferko, match.Team1));            
-        //    var controller = new MatchesController(_matchRepo, _userRepo, _teamRepo);
+        [Test]
+        [ExpectedException(typeof(UnauthorizedAccessException))]
+        public void Put_WithNonexistingUser_DoesNothing()
+        {
+            MockCurrentUser("Ferko");
+            var teamId = 1;
+            _userRepo.Stub(r => r.GetUser("Ferko")).Return(null);
+            _matchRepo.Expect(r => r.AddMatchParticipantToTeam(Arg<User>.Is.Anything, Arg<Match>.Is.Anything, Arg<int>.Is.Same(teamId))).Repeat.Never();
+            var controller = new MatchesController(_matchRepo, _userRepo);
 
-        //    controller.Put(matchId);
+            controller.Put(1, teamId);
 
-        //    _matchRepo.VerifyAllExpectations();
-        //}    
+            _matchRepo.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Put_WhenUserInMatch_RemovesCurrentUserFromMatch()
+        {
+            var matchId = 1;
+            var teamId = 1;
+            MockCurrentUser("Ferko");
+            var ferko = new User();
+            var match = new Match { Id = matchId, Team1 = new Team { Member1 = ferko } };
+            _matchRepo.Stub(r => r.GetMatch(matchId)).Return(match);
+            _matchRepo.Stub(r => r.MatchContainsTeam(match, teamId)).Return(true);
+            _userRepo.Stub(r => r.GetUser("Ferko")).Return(ferko);
+            _matchRepo.Expect(r => r.RemoveMatchParticipantFromTeam(ferko, match, teamId));            
+            var controller = new MatchesController(_matchRepo, _userRepo);
+
+            controller.Put(matchId, teamId);
+
+            _matchRepo.VerifyAllExpectations();
+        }    
     }
 }

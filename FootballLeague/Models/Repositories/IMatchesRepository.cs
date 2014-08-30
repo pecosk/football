@@ -9,5 +9,6 @@ namespace FootballLeague.Models.Repositories
         Match GetMatch(int id);
         void AddMatchParticipantToTeam(User user, Match match, int teamId);
         void RemoveMatchParticipantFromTeam(User user, Match match, int teamId);
+        bool MatchContainsTeam(Match match, int teamId);
     }
 }

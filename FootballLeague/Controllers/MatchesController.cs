@@ -52,6 +52,9 @@ namespace FootballLeague.Controllers
             if (match == null)
                 return;
 
+            if (!_matchRepository.MatchContainsTeam(match, teamId))
+                return;
+
             if (match.Contains(user))
                 _matchRepository.RemoveMatchParticipantFromTeam(user, match, teamId);
             else

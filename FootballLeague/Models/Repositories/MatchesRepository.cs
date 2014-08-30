@@ -76,5 +76,12 @@ namespace FootballLeague.Models.Repositories
                 _context.SaveChanges();
             }            
         }
+
+
+        public bool MatchContainsTeam(Match match, int teamId)
+        {
+            var team = match.GetTeam(teamId);
+            return team != null;
+        }
     }
 }
