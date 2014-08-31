@@ -35,6 +35,9 @@
                 <a ng-click="toggleParticipation(match.Id, match.Team2.Id)" ng-class="{ hidden: !forJoin(match, match.Team2) }"><i class="glyphicon glyphicon-plus"></i></a>
                 <a ng-click="toggleParticipation(match.Id, match.Team2.Id)" ng-class="{ hidden: !forLeave(match, match.Team2) }"><i class="glyphicon glyphicon-minus"></i></a>            
             </td>                        
+            <td>
+                <i tooltip="You were invited for the match" class="glyphicon glyphicon-envelope" ng-class="{ hidden: !isInvited(match) }"></i>
+            </td>
         </tr>
     </table>
 </div>
