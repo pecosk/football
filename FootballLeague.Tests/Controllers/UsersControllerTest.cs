@@ -6,6 +6,7 @@ using FootballLeague.Models;
 using FootballLeague.Models.Repositories;
 using System.Security.Principal;
 using System.Threading;
+using FootballLeague.Services;
 
 namespace FootballLeague.Tests.Controllers
 {
@@ -13,11 +14,13 @@ namespace FootballLeague.Tests.Controllers
     public class UsersControllerTest : ControllerTestBase
     {
         IUsersRepository _repository;
+        IUsersADSearcher _adSearcher;
 
         [SetUp]
         public void SetUp()
         {
             _repository = MockRepository.GenerateMock<IUsersRepository>();
+            _adSearcher = MockRepository.GenerateMock<IUsersADSearcher>();
         }
 
         [Test]
@@ -28,7 +31,7 @@ namespace FootballLeague.Tests.Controllers
                 new User()
             };
             _repository.Stub(r => r.GetAllUsers()).Return(allUsers);
-            var controller = new UsersController(_repository);
+            var controller = new UsersController(_repository, _adSearcher);
 
             IEnumerable<User> result = controller.Get();
 
@@ -40,7 +43,7 @@ namespace FootballLeague.Tests.Controllers
         {
             var user7 = new User();
             _repository.Stub(r => r.GetUser(7)).Return(user7);
-            var controller = new UsersController(_repository);
+            var controller = new UsersController(_repository, _adSearcher);
 
             var result = controller.Get(7);
 
@@ -50,13 +53,22 @@ namespace FootballLeague.Tests.Controllers
         [Test]
         public void Post_Always_TriesToInsertUser()
         {
-            _repository.Expect(r => r.InsertUser(Arg<User>.Matches(u => u.Name == "Ferko")));
-            var controller = new UsersController(_repository);
+            var mail = "ferko@ferko.sk";
+            var first = "Ferdinand";
+            var last = "Habsburg";
+            _adSearcher.Expect(s => s.LoadUserDetails("Ferko")).Return(new User { Name = "Ferko", Mail = mail, FirstName = first, LastName = last });
+            _repository.Expect(r => r.InsertUser(Arg<User>.Matches(u => 
+                u.Name == "Ferko"
+                && u.Mail == mail
+                && u.FirstName == first
+                && u.LastName == last)));
+            var controller = new UsersController(_repository, _adSearcher);
             MockCurrentUser("Ferko");
 
             controller.Post();
 
             _repository.VerifyAllExpectations();
+            _adSearcher.VerifyAllExpectations();
         }
 
         [Test]
@@ -66,7 +78,7 @@ namespace FootballLeague.Tests.Controllers
             MockCurrentUser("Janko");
             _repository.Stub(r => r.GetUser(1)).Return(user);
             _repository.Expect(r => r.DeleteUser(1));
-            var controller = new UsersController(_repository);
+            var controller = new UsersController(_repository, _adSearcher);
 
             controller.Delete(1);
 

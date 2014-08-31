@@ -1,5 +1,6 @@
 ﻿using FootballLeague.Models;
 using FootballLeague.Models.Repositories;
+using FootballLeague.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -9,10 +10,12 @@ namespace FootballLeague.Controllers
     public class UsersController : ApiController
     {
         private IUsersRepository _repository;
+        private IUsersADSearcher _adSearcher;
 
-        public UsersController(IUsersRepository repository)
+        public UsersController(IUsersRepository repository, IUsersADSearcher adSearcher)
         {
             _repository = repository;
+            _adSearcher = adSearcher;
         }
 
         // GET api/users
@@ -31,7 +34,8 @@ namespace FootballLeague.Controllers
         public User Post()
         {
             var name = User.Identity.Name.Split('\\').Last();
-            _repository.InsertUser(new User { Name = name });
+            var user = _adSearcher.LoadUserDetails(name);
+            _repository.InsertUser(user);
             return _repository.GetUser(name);
         }
 

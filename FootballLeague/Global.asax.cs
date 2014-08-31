@@ -2,6 +2,7 @@
 using Autofac.Integration.WebApi;
 using FootballLeague.Models;
 using FootballLeague.Models.Repositories;
+using FootballLeague.Services;
 using Newtonsoft.Json;
 using System.Data.Entity;
 using System.Reflection;
@@ -50,6 +51,7 @@ namespace FootballLeague
             builder.Register(c => new FootballContext()).AsSelf().InstancePerApiRequest();
             builder.Register(c => new UsersRepository(c.Resolve<FootballContext>())).As<IUsersRepository>().InstancePerApiRequest();
             builder.Register(c => new MatchesRepository(c.Resolve<FootballContext>())).As<IMatchesRepository>().InstancePerApiRequest();
+            builder.Register(c => new UsersADSearcher()).As<IUsersADSearcher>().SingleInstance();
         }
     }
 }
