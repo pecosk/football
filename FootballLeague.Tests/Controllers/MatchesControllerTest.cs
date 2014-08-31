@@ -67,8 +67,8 @@ namespace FootballLeague.Tests.Controllers
             var user = new User { Id = 2, Name = currentUserName };
             var invites = new List<User> { new User(), new User() };
             _userRepo.Stub(u => u.GetUser(currentUserName)).Return(user);
-            _matchRepo.Expect(r => r.InsertMatch(Arg<User>.Is.Same(user), Arg<Match>.Matches(m => m.PlannedTime == time)));
-            _userRepo.Expect(r => r.UsersExist(Arg<IEnumerable<User>>.Is.Same(invites))).Return(true);
+            _matchRepo.Expect(r => r.InsertMatch(Arg<User>.Is.Same(user), Arg<Match>.Matches(m => m.PlannedTime == time && m.Invites != null)));
+            _userRepo.Expect(r => r.GetVerifiedUsers(Arg<IEnumerable<User>>.Is.Same(invites))).Return(invites);
             var controller = new MatchesController(_matchRepo, _userRepo, _notifier);
 
             controller.Post(new Match { PlannedTime = time, Invites = invites });
@@ -85,9 +85,10 @@ namespace FootballLeague.Tests.Controllers
             var time = DateTime.Parse("2036-01-01T12:00");
             var user = new User { Id = 2, Name = currentUserName };
             var invites = new List<User> { new User(), new User() };
+            var verifiedInvites = new List<User> { new User(), new User() };
             _userRepo.Stub(u => u.GetUser(currentUserName)).Return(user);
-            _userRepo.Stub(r => r.UsersExist(Arg<IEnumerable<User>>.Is.Same(invites))).Return(true);
-            _notifier.Expect(n => n.Notify(user, invites, time));
+            _userRepo.Stub(r => r.GetVerifiedUsers(Arg<IEnumerable<User>>.Is.Same(invites))).Return(verifiedInvites);
+            _notifier.Expect(n => n.Notify(user, verifiedInvites, time));
             var controller = new MatchesController(_matchRepo, _userRepo, _notifier);
 
             controller.Post(new Match { PlannedTime = time, Invites = invites });
@@ -191,12 +192,12 @@ namespace FootballLeague.Tests.Controllers
             _matchRepo.Stub(r => r.GetMatch(matchId)).Return(match);
             _matchRepo.Stub(r => r.MatchContainsTeam(match, teamId)).Return(true);
             _userRepo.Stub(r => r.GetUser("Ferko")).Return(ferko);
-            _matchRepo.Expect(r => r.RemoveMatchParticipantFromTeam(ferko, match, teamId));            
+            _matchRepo.Expect(r => r.RemoveMatchParticipantFromTeam(ferko, match, teamId));
             var controller = new MatchesController(_matchRepo, _userRepo, _notifier);
 
             controller.Put(matchId, teamId);
 
             _matchRepo.VerifyAllExpectations();
-        }    
+        }
     }
 }

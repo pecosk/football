@@ -10,6 +10,6 @@ namespace FootballLeague.Models.Repositories
         User GetUser(int id);
         User GetUser(string name);
         void InsertUser(User user);
-        bool UsersExist(IEnumerable<User> users);
+        IEnumerable<User> GetVerifiedUsers(IEnumerable<User> users);
     }
 }

@@ -28,11 +28,18 @@ namespace FootballLeague.Controllers
             if (user == null)
                 throw new UnauthorizedAccessException();
 
-            if (match.Invites != null && match.Invites.Count > 0 && !_userRepository.UsersExist(match.Invites))
-                return;
+            List<User> verifiedInvites = null;
+            if (match.Invites != null && match.Invites.Count > 0)
+            {
+                var dbInvites = _userRepository.GetVerifiedUsers(match.Invites);
+                if (dbInvites == null && dbInvites.Count() == 0)
+                    return;
 
-            _matchRepository.InsertMatch(user, new Match { PlannedTime = match.PlannedTime, Invites = match.Invites });
-            _notifier.Notify(user, match.Invites, match.PlannedTime);
+                verifiedInvites = dbInvites.ToList();
+            }
+
+            _matchRepository.InsertMatch(user, new Match { PlannedTime = match.PlannedTime, Invites = verifiedInvites });
+            _notifier.Notify(user, verifiedInvites, match.PlannedTime);
         }
 
         public IEnumerable<Match> Get()

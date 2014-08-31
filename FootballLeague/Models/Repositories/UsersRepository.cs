@@ -51,10 +51,15 @@ namespace FootballLeague.Models.Repositories
             return _context.Users.FirstOrDefault(u => u.Name == name);
         }
 
-        public bool UsersExist(IEnumerable<User> users)
+        public IEnumerable<User> GetVerifiedUsers(IEnumerable<User> users)
         {
-            return users.Select(u => u.Id).ToList()
-                .All(id => _context.Users.Any(u => u.Id == id));
+            var verifiedUsers = new List<User>();
+            users.Select(u => u.Id).ToList().ForEach(id => {
+                var verifiedUser = _context.Users.FirstOrDefault(u => u.Id == id);
+                if (verifiedUser != null)
+                    verifiedUsers.Add(verifiedUser);
+            });
+            return verifiedUsers;
         }
     }
 }

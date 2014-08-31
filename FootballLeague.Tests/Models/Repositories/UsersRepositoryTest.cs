@@ -141,9 +141,9 @@ namespace FootballLeague.Tests.Models.Repositories
             _context.Users = MockContextData(_context, c => c.Users, new List<User> { Users.Dano, Users.Ferko }.AsQueryable());
             var repo = new UsersRepository(_context);
 
-            var exists = repo.UsersExist(new List<User> { Users.Dano });
+            var verifiedUsers = repo.GetVerifiedUsers(new List<User> { Users.Dano });
 
-            Assert.IsTrue(exists);
+            Assert.That(verifiedUsers.Count(), Is.EqualTo(1));
         }
 
         [Test]
@@ -152,9 +152,9 @@ namespace FootballLeague.Tests.Models.Repositories
             _context.Users = MockContextData(_context, c => c.Users, new List<User> { Users.Dano, Users.Ferko }.AsQueryable());
             var repo = new UsersRepository(_context);
 
-            var exists = repo.UsersExist(new List<User> { Users.Jurko });
+            var verifiedUsers = repo.GetVerifiedUsers(new List<User> { Users.Jurko });
 
-            Assert.IsFalse(exists);
+            Assert.That(verifiedUsers.Count(), Is.EqualTo(0));
         }
 
         [Test]
@@ -163,9 +163,9 @@ namespace FootballLeague.Tests.Models.Repositories
             _context.Users = MockContextData(_context, c => c.Users, new List<User> { Users.Dano, Users.Ferko }.AsQueryable());
             var repo = new UsersRepository(_context);
 
-            var exists = repo.UsersExist(new List<User> { Users.Dano, Users.Ferko });
+            var verifiedUsers = repo.GetVerifiedUsers(new List<User> { Users.Dano, Users.Ferko });
 
-            Assert.IsTrue(exists);
+            Assert.That(verifiedUsers.Count(), Is.EqualTo(2));
         }
 
         [Test]
@@ -174,9 +174,10 @@ namespace FootballLeague.Tests.Models.Repositories
             _context.Users = MockContextData(_context, c => c.Users, new List<User> { Users.Dano, Users.Ferko }.AsQueryable());
             var repo = new UsersRepository(_context);
 
-            var exists = repo.UsersExist(new List<User> { Users.Dano, Users.Jurko });
+            var verifiedUsers = repo.GetVerifiedUsers(new List<User> { Users.Dano, Users.Jurko });
 
-            Assert.IsFalse(exists);
+            Assert.That(verifiedUsers.Count(), Is.EqualTo(1));
+            Assert.That(verifiedUsers.ToList()[0], Is.EqualTo(Users.Dano));
         }
 
         [Test]
@@ -185,9 +186,10 @@ namespace FootballLeague.Tests.Models.Repositories
             _context.Users = MockContextData(_context, c => c.Users, new List<User> { Users.Dano, Users.Ferko }.AsQueryable());
             var repo = new UsersRepository(_context);
 
-            var exists = repo.UsersExist(new List<User> { Users.Jurko, Users.Ferko });
+            var verifiedUsers = repo.GetVerifiedUsers(new List<User> { Users.Jurko, Users.Ferko });
 
-            Assert.IsFalse(exists);
+            Assert.That(verifiedUsers.Count(), Is.EqualTo(1));
+            Assert.That(verifiedUsers.ToList()[0], Is.EqualTo(Users.Ferko));
         }
     }
 }
