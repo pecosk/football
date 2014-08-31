@@ -1,5 +1,6 @@
 ﻿using FootballLeague.Models;
 using FootballLeague.Models.Repositories;
+using FootballLeague.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +11,14 @@ namespace FootballLeague.Controllers
     public class MatchesController : ApiController
     {
         private IMatchesRepository _matchRepository;
-        private IUsersRepository _userRepository;        
+        private IUsersRepository _userRepository;
+        private INotifier _notifier;
 
-        public MatchesController(IMatchesRepository matchRepository, IUsersRepository userRepository)
+        public MatchesController(IMatchesRepository matchRepository, IUsersRepository userRepository, INotifier notifier)
         {
             _matchRepository = matchRepository;
-            _userRepository = userRepository;            
+            _userRepository = userRepository;
+            _notifier = notifier;
         }
 
         //Create new Match
@@ -29,6 +32,7 @@ namespace FootballLeague.Controllers
                 return;
 
             _matchRepository.InsertMatch(user, new Match { PlannedTime = match.PlannedTime, Invites = match.Invites });
+            _notifier.Notify(user, match.Invites, match.PlannedTime);
         }
 
         public IEnumerable<Match> Get()
