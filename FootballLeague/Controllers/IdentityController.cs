@@ -10,13 +10,9 @@ namespace FootballLeague.Controllers
     {
         private IUsersRepository _repository;
 
-        public IdentityController() : this(null)
-        {
-        }
-
         public IdentityController(IUsersRepository repository)
         {
-            _repository = repository ?? new UsersRepository();
+            _repository = repository;
         }
 
         [NullObjectActionFilter]

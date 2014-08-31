@@ -7,9 +7,9 @@ namespace FootballLeague.Models.Repositories
     {
         private FootballContext _context;
 
-        public UsersRepository(FootballContext context = null)
+        public UsersRepository(FootballContext context)
         {
-            _context = context ?? new FootballContext();
+            _context = context;
         }
 
         public IEnumerable<User> GetAllUsers()

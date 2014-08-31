@@ -9,9 +9,9 @@ namespace FootballLeague.Models.Repositories
     {
         private FootballContext _context;
 
-        public MatchesRepository(FootballContext context = null)
+        public MatchesRepository(FootballContext context)
         {
-            _context = context ?? new FootballContext();
+            _context = context;
         }
 
         public Match GetMatch(int id)

@@ -10,13 +10,9 @@ namespace FootballLeague.Controllers
     {
         private IUsersRepository _repository;
 
-        public UsersController() : this(null)
-        {
-        }
-
         public UsersController(IUsersRepository repository)
         {
-            _repository = repository ?? new UsersRepository();
+            _repository = repository;
         }
 
         // GET api/users

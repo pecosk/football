@@ -1,10 +1,10 @@
-﻿using FootballLeague.Models;
+﻿using Autofac;
+using Autofac.Integration.WebApi;
+using FootballLeague.Models;
+using FootballLeague.Models.Repositories;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Web;
+using System.Reflection;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -25,8 +25,31 @@ namespace FootballLeague
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             Database.SetInitializer<FootballContext>(new DropCreateDatabaseIfModelChanges<FootballContext>());
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            GlobalConfiguration.Configuration.DependencyResolver = GetIOCResolver();
             // for now now bundles
             // BundleConfig.RegisterBundles(BundleTable.Bundles);
+        }
+
+        private System.Web.Http.Dependencies.IDependencyResolver GetIOCResolver()
+        {
+            return new AutofacWebApiDependencyResolver(CreateIoCContainer());
+        }
+
+        private IContainer CreateIoCContainer()
+        {
+            var builder = new ContainerBuilder();
+            builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
+
+            RegisterDependencies(builder);
+
+            return builder.Build();
+        }
+
+        private void RegisterDependencies(ContainerBuilder builder)
+        {
+            builder.Register(c => new FootballContext()).AsSelf().InstancePerApiRequest();
+            builder.Register(c => new UsersRepository(c.Resolve<FootballContext>())).As<IUsersRepository>().InstancePerApiRequest();
+            builder.Register(c => new MatchesRepository(c.Resolve<FootballContext>())).As<IMatchesRepository>().InstancePerApiRequest();
         }
     }
 }

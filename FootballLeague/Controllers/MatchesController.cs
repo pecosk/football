@@ -3,7 +3,6 @@ using FootballLeague.Models.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Http;
 
 namespace FootballLeague.Controllers
@@ -13,15 +12,10 @@ namespace FootballLeague.Controllers
         private IMatchesRepository _matchRepository;
         private IUsersRepository _userRepository;        
 
-        public MatchesController() : this(null, null)
-        {
-        }
-
         public MatchesController(IMatchesRepository matchRepository, IUsersRepository userRepository)
         {
-            var context = new FootballContext();
-            _matchRepository = matchRepository ?? new MatchesRepository(context);
-            _userRepository = userRepository ?? new UsersRepository(context);            
+            _matchRepository = matchRepository;
+            _userRepository = userRepository;            
         }
 
         //Create new Match
