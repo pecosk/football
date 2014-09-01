@@ -11,7 +11,8 @@ footballApp.controller('matchController', function ($scope, $rootScope, $resourc
         var dateTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + 'T' + time.getHours() + ':' + time.getMinutes();
         Match.save({ PlannedTime: dateTime, Invites: $scope.selectedUsers.map(cleanUser) }).$promise.then(
             function () { reloadMatches(); },
-            function (e) { console.log(e); $scope.alerts.push({ msg: e.data.ExceptionMessage });
+            function (e) {
+                console.log(e); $scope.alerts.push({ msg: e.data.ExceptionMessage });
             });
     };
 
@@ -45,9 +46,9 @@ footballApp.controller('matchController', function ($scope, $rootScope, $resourc
             && match.Invites.filter(function (i) { return i.Name == user.Name; }).length == 1;
     };
 
-    $scope.isCurrent = function (u) {
+    $scope.isCurrentUser = function (u) {
         var user = $rootScope.identity;
-        return u.Name == user.Name;
+        return u != undefined && u.Name == user.Name;
     };
     $scope.minDate = new Date();
     $scope.date = new Date();
