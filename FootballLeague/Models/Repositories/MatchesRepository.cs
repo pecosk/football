@@ -14,6 +14,20 @@ namespace FootballLeague.Models.Repositories
             _context = context;
         }
 
+        public IList<Match> GetAll()
+        {
+            return _context.Matches
+               .Include(m => m.Creator)
+               .Include(m => m.Team1)
+               .Include(m => m.Team1.Member1)
+               .Include(m => m.Team1.Member2)
+               .Include(m => m.Team2)
+               .Include(m => m.Team2.Member1)
+               .Include(m => m.Team2.Member2)
+               .OrderBy(m => m.PlannedTime)
+               .ToList();
+        }
+
         public Match GetMatch(int id)
         {
             return _context.Matches.Include(m => m.Creator)
@@ -37,7 +51,7 @@ namespace FootballLeague.Models.Repositories
                 match.Invites.ForEach(u => _context.Users.Attach(u));
             }
             _context.Teams.Add(match.Team1);
-            _context.Teams.Add(match.Team2);             
+            _context.Teams.Add(match.Team2);
             _context.Matches.Add(match);
             _context.SaveChanges();
             return match;
@@ -65,10 +79,10 @@ namespace FootballLeague.Models.Repositories
                 return;
 
             if (team.SetMember(user))
-            {                
+            {
                 _context.Users.Attach(user);
                 _context.SaveChanges();
-            }                        
+            }
         }
 
         public void RemoveMatchParticipantFromTeam(User user, Match match, int teamId)
@@ -80,7 +94,7 @@ namespace FootballLeague.Models.Repositories
             if (team.RemoveMember(user))
             {
                 _context.SaveChanges();
-            }            
+            }
         }
 
 
@@ -96,6 +110,14 @@ namespace FootballLeague.Models.Repositories
             var timeMinusSlot = plannedTime.AddMinutes(-15);
             var timePlusSlot = plannedTime.AddMinutes(15);
             return !_context.Matches.Any(m => m.PlannedTime > timeMinusSlot && m.PlannedTime < timePlusSlot);
+        }
+
+        public void UpdateScore(Match match, int t1Score, int t2Score)
+        {
+            _context.Matches.Attach(match);
+            match.Team1Score = t1Score;
+            match.Team2Score = t2Score;
+            _context.SaveChanges();
         }
     }
 }

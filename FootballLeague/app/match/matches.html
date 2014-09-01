@@ -1,0 +1,51 @@
+﻿<div class="row">
+    <ng-include src="'app/match/newMatch.html'"></ng-include>
+    <table ng-table="tableParams" class="table table-striped">
+        <tr ng-repeat="match in $data">
+            <td data-title="'Planned time'" sortable="'PlannedTime'">{{match.PlannedTime}}</td>
+            <td data-title="'Created by'" sortable="'Creator.LastName'">{{match.Creator.FirstName}} {{match.Creator.LastName}}</td>
+            <td data-title="'Team 1'">
+                <span ng-class="{bold: isCurrentUser(match.Team1.Member1)}" tooltip="{{match.Team1.Member1.FirstName}} {{match.Team1.Member1.LastName}}">{{match.Team1.Member1.Name}}</span>
+                <span ng-class="{bold: isCurrentUser(match.Team1.Member2)}" tooltip="{{match.Team1.Member2.FirstName}} {{match.Team1.Member2.LastName}}">{{match.Team1.Member2.Name}}</span>
+                <a ng-click="toggleParticipation(match.Id, match.Team1.Id)" ng-class="{ hidden: !forJoin( match, match.Team1 ) }"><i class="glyphicon glyphicon-plus"></i></a>
+                <a ng-click="toggleParticipation(match.Id, match.Team1.Id)" ng-class="{ hidden: !forLeave( match, match.Team1 ) }"><i class="glyphicon glyphicon-minus"></i></a>
+            </td>
+            <td data-title="'Team 2'">
+                <span ng-class="{bold: isCurrentUser(match.Team2.Member1)}" tooltip="{{match.Team2.Member1.FirstName}} {{match.Team2.Member1.LastName}}">{{match.Team2.Member1.Name}}</span>
+                <span ng-class="{bold: isCurrentUser(match.Team2.Member2)}" tooltip="{{match.Team2.Member2.FirstName}} {{match.Team2.Member2.LastName}}">{{match.Team2.Member2.Name}}</span>
+                <a ng-click="toggleParticipation(match.Id, match.Team2.Id)" ng-class="{ hidden: !forJoin(match, match.Team2) }"><i class="glyphicon glyphicon-plus"></i></a>
+                <a ng-click="toggleParticipation(match.Id, match.Team2.Id)" ng-class="{ hidden: !forLeave(match, match.Team2) }"><i class="glyphicon glyphicon-minus"></i></a>
+            </td>
+            <td>
+                <i tooltip="You were invited for the match" class="glyphicon glyphicon-envelope" ng-class="{ hidden: !isInvited(match) }"></i>
+            </td>
+        </tr>
+    </table>
+
+    <h1>Finished matches</h1>
+    <table ng-table="tableParams2" class="table table-striped">
+        <tr ng-repeat="match in $data">
+            <td data-title="'Planned time'" sortable="'PlannedTime'">{{match.PlannedTime}}</td>
+            <td data-title="'Created by'" sortable="'Creator.LastName'">{{match.Creator.FirstName}} {{match.Creator.LastName}}</td>
+            <td data-title="'Team 1'">
+                <span ng-class="{bold: isCurrentUser(match.Team1.Member1)}" tooltip="{{match.Team1.Member1.FirstName}} {{match.Team1.Member1.LastName}}">{{match.Team1.Member1.Name}}</span>
+                <span ng-class="{bold: isCurrentUser(match.Team1.Member2)}" tooltip="{{match.Team1.Member2.FirstName}} {{match.Team1.Member2.LastName}}">{{match.Team1.Member2.Name}}</span>
+            </td>
+            <td data-title="'Team 2'">
+                <span ng-class="{bold: isCurrentUser(match.Team2.Member1)}" tooltip="{{match.Team2.Member1.FirstName}} {{match.Team2.Member1.LastName}}">{{match.Team2.Member1.Name}}</span>
+                <span ng-class="{bold: isCurrentUser(match.Team2.Member2)}" tooltip="{{match.Team2.Member2.FirstName}} {{match.Team2.Member2.LastName}}">{{match.Team2.Member2.Name}}</span>
+            </td>
+            <td data-title="'Result'">
+                <span ng-class="{hidden: !playedInMatch(match)}">{{match.Team1Score}} : {{match.Team2Score}}</span>
+                <form ng-class="{hidden: playedInMatch(match)}" ng-submit="updateScore(match)" class="form-inline">
+                    <input class="form-control col-md-1" ng-model="match.Team1Score" />
+                    <span>: </span>
+                    <input class="form-control col-md-1" ng-model="match.Team2Score" />
+                    <button type="submit" name="submit" class="btn btn-primary">
+                        <i class="glyphicon glyphicon-ok"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>

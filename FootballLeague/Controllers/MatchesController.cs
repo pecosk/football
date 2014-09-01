@@ -10,12 +10,12 @@ namespace FootballLeague.Controllers
     public class MatchesController : ApiController
     {
         private IMatchesRepository _matchRepository;
-        private IUsersRepository _userRepository;        
+        private IUsersRepository _userRepository;
 
         public MatchesController(IMatchesRepository matchRepository, IUsersRepository userRepository)
         {
             _matchRepository = matchRepository;
-            _userRepository = userRepository;            
+            _userRepository = userRepository;
         }
 
         //Create new Match
@@ -31,12 +31,15 @@ namespace FootballLeague.Controllers
             if (!_matchRepository.IsTimeSlotFree(match.PlannedTime))
                 throw new ArgumentException("Time slot for match already taken, choose another time.");
 
+            if (match.PlannedTime<DateTime.Now)
+                throw new ArgumentException("Cannot create a match in the past.");
+
             _matchRepository.InsertMatch(user, new Match { PlannedTime = match.PlannedTime, Invites = match.Invites });
         }
 
         public IEnumerable<Match> Get()
         {
-            return _matchRepository.GetPlanned();
+            return _matchRepository.GetAll();
         }
 
         public void Put(int id, [FromUri]int teamId)
@@ -49,6 +52,9 @@ namespace FootballLeague.Controllers
             if (match == null)
                 return;
 
+            if (match.PlannedTime < DateTime.Now)
+                throw new ArgumentException("Match already started.");
+
             if (!_matchRepository.MatchContainsTeam(match, teamId))
                 return;
 
@@ -56,6 +62,15 @@ namespace FootballLeague.Controllers
                 _matchRepository.RemoveMatchParticipantFromTeam(user, match, teamId);
             else
                 _matchRepository.AddMatchParticipantToTeam(user, match, teamId);
+        }
+
+        public void Put(int id, [FromUri] int t1Score, [FromUri] int t2Score)
+        {
+            var match = _matchRepository.GetMatch(id);
+            if (match == null)
+                return;
+
+            _matchRepository.UpdateScore(match, t1Score, t2Score);
         }
 
         private User GetCurrentUser()

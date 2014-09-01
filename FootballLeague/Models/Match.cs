@@ -20,6 +20,8 @@ namespace FootballLeague.Models
         public virtual Team Team1 { get; set; }
         public virtual Team Team2 { get; set; }
         public virtual List<User> Invites { get; set; }
+        public int Team1Score { get; set; }
+        public int Team2Score { get; set; }
         
         [NotMapped]
         [ScriptIgnore]

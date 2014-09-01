@@ -8,8 +8,8 @@ footballApp.config(['$routeProvider',
   function ($routeProvider) {
       $routeProvider.
         when('/matches', {
-            templateUrl: 'app/match/newMatch.html',
-            controller: 'matchController'
+            templateUrl: 'app/match/matches.html',
+            controller: 'MatchesController'
         })
         .otherwise({
             templateUrl: 'app/user/users.html',

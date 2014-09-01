@@ -28,7 +28,7 @@
                 <ul class="nav navbar-nav">
                     <li><a ng-click="register()" ng-class="{registered: registered}" class="register">Join</a>
                         <a ng-click="unregister()" ng-class="{registered: registered}" class="unregister">Leave</a></li>
-                    <li><a ng-class="{hidden: !registered}" class="" href="#/matches">Create match</a></li>
+                    <li><a ng-class="{hidden: !registered}" class="" href="#/matches">Matches</a></li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -47,7 +47,8 @@
     <script src="~/Scripts/angular-multi-select.js"></script>
     <script src="~/app/app.js"></script>
     <script src="~/app/identity.js"></script>
-    <script src="~/app/match/match.js"></script>
+    <script src="~/app/match/matches.js"></script>
+    <script src="~/app/match/newMatch.js"></script>
     <script src="~/app/user/user.js"></script>
 </body>
 </html>

@@ -1,35 +1,25 @@
 ﻿
-footballApp.controller('matchController', function ($scope, $rootScope, $resource, ngTableParams, $filter) {
-    var Match = $resource('api/matches/:id', { id: '@id' }, { 'update': { method: 'PUT', params: { teamId: '@teamId' } } });
-    var User = $resource('api/users');
+footballApp.controller('MatchesController', function ($scope, $rootScope, $resource, ngTableParams, $filter) {
+    var Match = $resource('api/matches/:id', { id: '@id' }, {
+        update: { method: 'PUT', params: { teamId: '@teamId' } },
+        updateScore: { method: 'PUT', params: { t1Score: '@t1Score', t2Score: '@t2Score' } }
+    });
 
     $scope.alerts = [];
-
-    $scope.submit = function () {
-        var date = $scope.date;
-        var time = $scope.time;
-        var dateTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + 'T' + time.getHours() + ':' + time.getMinutes();
-        Match.save({ PlannedTime: dateTime, Invites: $scope.selectedUsers.map(cleanUser) }).$promise.then(
-            function () { reloadMatches(); },
-            function (e) {
-                console.log(e); $scope.alerts.push({ msg: e.data.ExceptionMessage });
-            });
-    };
 
     $scope.closeAlert = function (index) {
         $scope.alerts.splice(index, 1);
     };
-    $scope.open = function ($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-        $scope.opened = true;
-    };
 
     $scope.toggleParticipation = function (matchId, teamId) {
-        Match.update({ id: matchId, teamId: teamId }, function () { reloadMatches(); });
+        Match.update({ id: matchId, teamId: teamId }, function () { $scope.reloadMatches(); });
     };
 
-    $scope.forJoin = function (match, team) {
+    $scope.updateScore = function (match) {
+        Match.updateScore({ id: match.Id, t1Score: match.Team1Score, t2Score: match.Team2Score });
+    };
+
+    $scope.forJoin = function (match) {
         var user = $rootScope.identity;
         return $rootScope.registered && !match.containsPlayer(user);
     };
@@ -50,28 +40,14 @@ footballApp.controller('matchController', function ($scope, $rootScope, $resourc
         var user = $rootScope.identity;
         return u != undefined && u.Name == user.Name;
     };
-    $scope.minDate = new Date();
-    $scope.date = new Date();
-    $scope.time = new Date();
 
-    loadUsers();
-
-    function loadUsers() {
-        User.query().$promise.then(function (data) {
-            $scope.users = data;
-        });
+    $scope.playedInMatch = function (match) {
+        var user = $rootScope.identity;
+        return match != undefined && match.containsPlayer(user);
     };
-
-    function cleanUser(user) {
-        return {
-            Id: user.Id,
-            Name: user.Name
-        };
-    }
 
     function transformMatches(match) {
         function extendTeam(team) {
-            var currentUser = $rootScope.identity;
             return Object.create(team, {
                 isFull: { value: function () { return this.Member1 && this.Member2; } },
                 isEmpty: { value: function () { return !this.Member1 && !this.Member2; } },
@@ -91,10 +67,12 @@ footballApp.controller('matchController', function ($scope, $rootScope, $resourc
         });
     }
 
-    function reloadMatches() {
+    $scope.reloadMatches = function () {
         Match.query().$promise.then(function (result) {
-            $scope.serverMatches = result;
-            $scope.matches = result.map(transformMatches);
+            var plannedServerMatches = result.filter(function (x) {
+                return new Date(x.PlannedTime) >= new Date();
+            });
+            $scope.plannedMatches = plannedServerMatches.map(transformMatches);
 
             if (typeof ($scope.tableParams) == 'undefined') {
                 $scope.tableParams = new ngTableParams({
@@ -102,11 +80,11 @@ footballApp.controller('matchController', function ($scope, $rootScope, $resourc
                     count: 10,
                     sorting: { PlannedTime: 'asc' }
                 }, {
-                    total: $scope.matches.length,
+                    total: $scope.plannedMatches.length,
                     getData: function ($defer, params) {
                         var orderedData = params.sorting()
-                            ? $filter('orderBy')($scope.matches, params.orderBy())
-                            : $scope.matches;
+                            ? $filter('orderBy')($scope.plannedMatches, params.orderBy())
+                            : $scope.plannedMatches;
                         $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                     }
                 });
@@ -114,8 +92,32 @@ footballApp.controller('matchController', function ($scope, $rootScope, $resourc
             else {
                 $scope.tableParams.reload();
             }
+
+            var finishedServerMatches = result.filter(function (x) {
+                return new Date(x.PlannedTime) < new Date();
+            });
+            $scope.finishedMatches = finishedServerMatches.map(transformMatches);
+
+            if (typeof ($scope.tableParams2) == 'undefined') {
+                $scope.tableParams2 = new ngTableParams({
+                    page: 1,
+                    count: 10,
+                    sorting: { PlannedTime: 'asc' }
+                }, {
+                    total: $scope.finishedMatches.length,
+                    getData: function ($defer, params) {
+                        var orderedData = params.sorting()
+                            ? $filter('orderBy')($scope.finishedMatches, params.orderBy())
+                            : $scope.finishedMatches;
+                        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    }
+                });
+            }
+            else {
+                $scope.tableParams2.reload();
+            }
         });
     };
 
-    reloadMatches();
+    $scope.reloadMatches();
 });

@@ -147,7 +147,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\identity.js" />
-    <Content Include="app\match\match.js" />
+    <Content Include="app\match\newMatch.js" />
+    <Content Include="app\match\matches.html" />
+    <Content Include="app\match\matches.js" />
     <Content Include="app\user\user.js" />
     <Content Include="app\user\users.html" />
     <Content Include="app\app.js" />
