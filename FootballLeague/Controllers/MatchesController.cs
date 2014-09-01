@@ -29,7 +29,7 @@ namespace FootballLeague.Controllers
                 return;
 
             if (!_matchRepository.IsTimeSlotFree(match.PlannedTime))
-                throw new ArgumentException("Time slot already taken", "plannedTime");
+                throw new ArgumentException("Time slot for match already taken, choose another time.");
 
             _matchRepository.InsertMatch(user, new Match { PlannedTime = match.PlannedTime, Invites = match.Invites });
         }

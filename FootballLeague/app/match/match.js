@@ -3,12 +3,20 @@ footballApp.controller('matchController', function ($scope, $rootScope, $resourc
     var Match = $resource('api/matches/:id', { id: '@id' }, { 'update': { method: 'PUT', params: { teamId: '@teamId' } } });
     var User = $resource('api/users');
 
+    $scope.alerts = [];
+
     $scope.submit = function () {
         var date = $scope.date;
         var time = $scope.time;
         var dateTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + 'T' + time.getHours() + ':' + time.getMinutes();
-        Match.save({ PlannedTime: dateTime, Invites: $scope.selectedUsers.map(cleanUser) }).$promise.then(function () { reloadMatches(); });
+        Match.save({ PlannedTime: dateTime, Invites: $scope.selectedUsers.map(cleanUser) }).$promise.then(
+            function () { reloadMatches(); },
+            function (e) { console.log(e); $scope.alerts.push({ msg: e.data.ExceptionMessage }) });
     };
+
+    $scope.closeAlert = function (index) {
+        $scope.alerts.splice(index, 1);
+    }
 
     $scope.open = function ($event) {
         $event.preventDefault();
