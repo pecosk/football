@@ -89,5 +89,13 @@ namespace FootballLeague.Models.Repositories
             var team = match.GetTeam(teamId);
             return team != null;
         }
+
+
+        public bool IsTimeSlotFree(DateTime plannedTime)
+        {
+            var timeMinusSlot = plannedTime.AddMinutes(-15);
+            var timePlusSlot = plannedTime.AddMinutes(15);
+            return !_context.Matches.Any(m => m.PlannedTime > timeMinusSlot && m.PlannedTime < timePlusSlot);
+        }
     }
 }

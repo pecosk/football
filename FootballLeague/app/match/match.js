@@ -6,7 +6,7 @@ footballApp.controller('matchController', function ($scope, $rootScope, $resourc
     $scope.submit = function () {
         var date = $scope.date;
         var time = $scope.time;
-        var dateTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes()).toISOString();
+        var dateTime = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + 'T' + time.getHours() + ':' + time.getMinutes();
         Match.save({ PlannedTime: dateTime, Invites: $scope.selectedUsers.map(cleanUser) }).$promise.then(function () { reloadMatches(); });
     };
 
@@ -87,7 +87,7 @@ footballApp.controller('matchController', function ($scope, $rootScope, $resourc
                 $scope.tableParams = new ngTableParams({
                     page: 1,
                     count: 10,
-                    sorting: { Name: 'asc' }
+                    sorting: { PlannedTime: 'asc' }
                 }, {
                     total: $scope.matches.length,
                     getData: function ($defer, params) {

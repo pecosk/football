@@ -34,13 +34,13 @@ namespace FootballLeague.Tests.Models.Repositories
             var newMatchTime = DateTime.Parse("2024-01-01T12:34");
             _context.Matches
                 .Expect(e => e.Add(Arg<Match>
-                    .Matches(m => 
-                        m.PlannedTime == newMatchTime && 
-                        m.Creator.Id == user.Id && 
-                        m.Team1.Member1 != null && 
+                    .Matches(m =>
+                        m.PlannedTime == newMatchTime &&
+                        m.Creator.Id == user.Id &&
+                        m.Team1.Member1 != null &&
                         m.Team1.Member1.Id == user.Id)))
                 .Return(null);
-            
+
             _context.Users.Expect(e => e.Attach(Arg<User>.Is.Same(user))).Return(null);
 
             repo.InsertMatch(user, new Match { PlannedTime = newMatchTime, Team1 = TeamData.TeamWithFerko, Team2 = TeamData.EmptyTeam });
@@ -51,7 +51,7 @@ namespace FootballLeague.Tests.Models.Repositories
 
         [Test]
         public void GetPlanned_GetsAllMatchesInFuture()
-        {            
+        {
             var longAgo = DateTime.Parse("1896-01-02T01:01");
             var inFuture = DateTime.Parse("2046-01-01T01:01");
             var planned = new List<Match> {
@@ -259,6 +259,27 @@ namespace FootballLeague.Tests.Models.Repositories
 
             _context.Matches.VerifyAllExpectations();
             _context.Users.VerifyAllExpectations();
+        }
+
+        [TestCase("2020-01-01T08:00", Result = false)]
+        [TestCase("2020-01-01T08:10", Result = false)]
+        [TestCase("2020-01-01T08:25", Result = false)]
+        [TestCase("2020-01-01T08:30", Result = true)]
+        [TestCase("2020-01-01T08:31", Result = false)]
+        [TestCase("2020-01-01T09:00", Result = true)]
+        public bool IsTimeSlotFree_WhenMatchesPlanned0800To0830And0845To0900_ReturnsIfDesiredTimeIsFree(string stringTime)
+        {
+            var time = DateTime.Parse(stringTime);
+            var matches = new List<Match>{
+                new Match{ PlannedTime = DateTime.Parse("2020-01-01T08:00") },
+                new Match{ PlannedTime = DateTime.Parse("2020-01-01T08:15") },
+                new Match{ PlannedTime = DateTime.Parse("2020-01-01T08:45") }
+            };
+            _context.Matches = MockContextData(_context, c => c.Matches, matches.AsQueryable());
+
+            var repo = new MatchesRepository(_context);
+
+            return repo.IsTimeSlotFree(time);
         }
     }
 }
