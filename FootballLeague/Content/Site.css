@@ -27,3 +27,7 @@
 .multiSelect .button {
     min-height: 34px !important;
 }
+
+span.bold {
+    font-weight: bold;
+}

@@ -5,10 +5,10 @@
         <form ng-submit="submit()" class="form-inline">
             <div class="form-group">
                 <div class="input-group">
-                  <input type="text" class="form-control" datepicker-popup="" ng-model="date" min-date="minDate" is-open="opened" ng-required="true" close-text="Close" />
-                  <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                  </span>
+                    <input type="text" class="form-control" datepicker-popup="" ng-model="date" min-date="minDate" is-open="opened" ng-required="true" close-text="Close" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
                 </div>
             </div>
             <div class="form-group timepicker">
@@ -27,17 +27,17 @@
             <td data-title="'Planned time'" sortable="'PlannedTime'">{{match.PlannedTime}}</td>
             <td data-title="'Created by'" sortable="'Creator.LastName'">{{match.Creator.FirstName}} {{match.Creator.LastName}}</td>
             <td data-title="'Team 1'">
-                <span tooltip="{{match.Team1.Member1.FirstName}} {{match.Team1.Member1.LastName}}">{{match.Team1.Member1.Name}}</span>
-                <span tooltip="{{match.Team1.Member2.FirstName}} {{match.Team1.Member2.LastName}}">{{match.Team1.Member2.Name}}</span>
+                <span ng-class="{bold: isCurrent(match.Team1.Member1)}" tooltip="{{match.Team1.Member1.FirstName}} {{match.Team1.Member1.LastName}}">{{match.Team1.Member1.Name}}</span>
+                <span ng-class="{bold: isCurrent(match.Team1.Member2)}" tooltip="{{match.Team1.Member2.FirstName}} {{match.Team1.Member2.LastName}}">{{match.Team1.Member2.Name}}</span>
                 <a ng-click="toggleParticipation(match.Id, match.Team1.Id)" ng-class="{ hidden: !forJoin( match, match.Team1 ) }"><i class="glyphicon glyphicon-plus"></i></a>
-                <a ng-click="toggleParticipation(match.Id, match.Team1.Id)" ng-class="{ hidden: !forLeave( match, match.Team1 ) }"><i class="glyphicon glyphicon-minus"></i></a>            
+                <a ng-click="toggleParticipation(match.Id, match.Team1.Id)" ng-class="{ hidden: !forLeave( match, match.Team1 ) }"><i class="glyphicon glyphicon-minus"></i></a>
             </td>
-            <td data-title="'Team 2'" >
-                <span tooltip="{{match.Team2.Member1.FirstName}} {{match.Team2.Member1.LastName}}">{{match.Team2.Member1.Name}}</span>
-                <span tooltip="{{match.Team2.Member2.FirstName}} {{match.Team2.Member2.LastName}}">{{match.Team2.Member2.Name}}</span>
+            <td data-title="'Team 2'">
+                <span ng-class="{bold: isCurrent(match.Team2.Member1)}" tooltip="{{match.Team2.Member1.FirstName}} {{match.Team2.Member1.LastName}}">{{match.Team2.Member1.Name}}</span>
+                <span ng-class="{bold: isCurrent(match.Team2.Member2)}" tooltip="{{match.Team2.Member2.FirstName}} {{match.Team2.Member2.LastName}}">{{match.Team2.Member2.Name}}</span>
                 <a ng-click="toggleParticipation(match.Id, match.Team2.Id)" ng-class="{ hidden: !forJoin(match, match.Team2) }"><i class="glyphicon glyphicon-plus"></i></a>
-                <a ng-click="toggleParticipation(match.Id, match.Team2.Id)" ng-class="{ hidden: !forLeave(match, match.Team2) }"><i class="glyphicon glyphicon-minus"></i></a>            
-            </td>                        
+                <a ng-click="toggleParticipation(match.Id, match.Team2.Id)" ng-class="{ hidden: !forLeave(match, match.Team2) }"><i class="glyphicon glyphicon-minus"></i></a>
+            </td>
             <td>
                 <i tooltip="You were invited for the match" class="glyphicon glyphicon-envelope" ng-class="{ hidden: !isInvited(match) }"></i>
             </td>
