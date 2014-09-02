@@ -156,6 +156,7 @@
     <Content Include="App_Data\FootballLeague.Models.FootballContext.mdf" />
     <Content Include="Content\angular-multi-select.css" />
     <Content Include="Content\ng-table.css" />
+    <Content Include="Content\xeditable.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\angular-animate.js" />
@@ -465,6 +466,7 @@
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\ng-table.js" />
+    <Content Include="Scripts\xeditable.min.js" />
     <Content Include="Scripts\_intellisense.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />

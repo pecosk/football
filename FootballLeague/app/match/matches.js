@@ -38,12 +38,12 @@ footballApp.controller('MatchesController', function ($scope, $rootScope, $resou
 
     $scope.isCurrentUser = function (u) {
         var user = $rootScope.identity;
-        return u != undefined && u.Name == user.Name;
+        return u && u.Name === user.Name;
     };
 
     $scope.playedInMatch = function (match) {
         var user = $rootScope.identity;
-        return match != undefined && match.containsPlayer(user);
+        return $rootScope.registered && match.containsPlayer(user);
     };
 
     function transformMatches(match) {
@@ -54,16 +54,16 @@ footballApp.controller('MatchesController', function ($scope, $rootScope, $resou
                 hasMember: {
                     value: function (user) {
                         return ((this.Member1 && (this.Member1.Id === user.Id)) || (this.Member2 && (this.Member2.Id === user.Id)));
-                    }, enumerable: true
+                    }
                 },
             });
         }
 
+        match.Team1 = extendTeam(match.Team1);
+        match.Team2 = extendTeam(match.Team2);
         return Object.create(match, {
-            CreatorName: { value: match.Creator.Name },
-            Team1: { value: extendTeam(match.Team1) },
-            Team2: { value: extendTeam(match.Team2) },
-            containsPlayer: { value: function (user) { return this.Team1.hasMember(user) || this.Team2.hasMember(user); }, enumerable: true },
+            CreatorName: { value: match.Creator.Name },        
+            containsPlayer: { value: function (user) { return this.Team1.hasMember(user) || this.Team2.hasMember(user); } },
         });
     }
 
