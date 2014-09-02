@@ -23,7 +23,7 @@ namespace FootballLeague.Models.Repositories
                .Include(m => m.Team1.Member2)
                .Include(m => m.Team2)
                .Include(m => m.Team2.Member1)
-               .Include(m => m.Team2.Member2)
+               .Include(m => m.Team2.Member2)               
                .OrderBy(m => m.PlannedTime)
                .ToList();
         }
@@ -115,8 +115,12 @@ namespace FootballLeague.Models.Repositories
         public void UpdateScore(Match match, int t1Score, int t2Score)
         {
             _context.Matches.Attach(match);
-            match.Team1Score = t1Score;
-            match.Team2Score = t2Score;
+            match.Sets.ForEach(
+                s =>
+                    {
+                        s.Team1Score = t1Score;
+                        s.Team2Score = t2Score;
+                    });
             _context.SaveChanges();
         }
     }

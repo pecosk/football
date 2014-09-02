@@ -12,6 +12,7 @@ namespace FootballLeague.Models
         {
             Team1 = new Team();
             Team2 = new Team();
+            Sets = new List<Set>();
         }
 
         public int Id { get; set; }
@@ -20,8 +21,7 @@ namespace FootballLeague.Models
         public virtual Team Team1 { get; set; }
         public virtual Team Team2 { get; set; }
         public virtual List<User> Invites { get; set; }
-        public int Team1Score { get; set; }
-        public int Team2Score { get; set; }
+        public virtual List<Set> Sets { get; set; }
         
         [NotMapped]
         [ScriptIgnore]

@@ -41,10 +41,12 @@ footballApp.controller('MatchesController', function ($scope, $rootScope, $resou
         return u && u.Name === user.Name;
     };
 
-    $scope.playedInMatch = function (match) {
-        var user = $rootScope.identity;
-        return $rootScope.registered && match.containsPlayer(user);
-    };
+    $scope.addSet = function (sets) {
+        sets.push({
+            Team1Score: 0,
+            Team2Score: 0
+        });
+    }
 
     function transformMatches(match) {
         function extendTeam(team) {
@@ -62,8 +64,19 @@ footballApp.controller('MatchesController', function ($scope, $rootScope, $resou
         match.Team1 = extendTeam(match.Team1);
         match.Team2 = extendTeam(match.Team2);
         return Object.create(match, {
-            CreatorName: { value: match.Creator.Name },        
-            containsPlayer: { value: function (user) { return this.Team1.hasMember(user) || this.Team2.hasMember(user); } },
+            containsPlayer: { value: function(user) { return this.Team1.hasMember(user) || this.Team2.hasMember(user); } },
+            canEditScore: {
+                value: function() {
+                    var user = $rootScope.identity;
+                    return this.containsPlayer(user) && this.Sets.length;
+                }
+            },
+            canAddSet: {
+                value: function() {
+                    var user = $rootScope.identity;
+                    return this.containsPlayer(user) && this.Sets.length < 3;
+                }
+            },
         });
     }
 
@@ -74,7 +87,7 @@ footballApp.controller('MatchesController', function ($scope, $rootScope, $resou
             });
             $scope.plannedMatches = plannedServerMatches.map(transformMatches);
 
-            if (typeof ($scope.tableParams) == 'undefined') {
+            if (typeof ($scope.tableParams) === 'undefined') {
                 $scope.tableParams = new ngTableParams({
                     page: 1,
                     count: 10,
@@ -119,5 +132,5 @@ footballApp.controller('MatchesController', function ($scope, $rootScope, $resou
         });
     };
 
-    $scope.reloadMatches();
+    $scope.reloadMatches();    
 });

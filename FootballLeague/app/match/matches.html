@@ -22,39 +22,45 @@
         </tr>
     </table>
 
-    <h1>Finished matches</h1>
+    <h1>Results</h1>
     <table ng-table="tableParams2" class="table table-striped">
         <tr ng-repeat="match in $data">
-            <td data-title="'Planned time'" sortable="'PlannedTime'">{{match.PlannedTime}}</td>
-            <td data-title="'Created by'" sortable="'Creator.LastName'">{{match.Creator.FirstName}} {{match.Creator.LastName}}</td>
-            <td data-title="'Team 1'">
+            <td style="width: 10%" data-title="'Planned time'" sortable="'PlannedTime'">{{match.PlannedTime}}</td>
+            <td style="width: 15%" data-title="'Created by'" sortable="'Creator.LastName'">{{match.Creator.FirstName}} {{match.Creator.LastName}}</td>
+            <td style="width: 10%" data-title="'Team 1'">
                 <span ng-class="{bold: isCurrentUser(match.Team1.Member1)}" tooltip="{{match.Team1.Member1.FirstName}} {{match.Team1.Member1.LastName}}">{{match.Team1.Member1.Name}}</span>
                 <span ng-class="{bold: isCurrentUser(match.Team1.Member2)}" tooltip="{{match.Team1.Member2.FirstName}} {{match.Team1.Member2.LastName}}">{{match.Team1.Member2.Name}}</span>
             </td>
-            <td data-title="'Team 2'">
+            <td style="width: 10%" data-title="'Team 2'">
                 <span ng-class="{bold: isCurrentUser(match.Team2.Member1)}" tooltip="{{match.Team2.Member1.FirstName}} {{match.Team2.Member1.LastName}}">{{match.Team2.Member1.Name}}</span>
                 <span ng-class="{bold: isCurrentUser(match.Team2.Member2)}" tooltip="{{match.Team2.Member2.FirstName}} {{match.Team2.Member2.LastName}}">{{match.Team2.Member2.Name}}</span>
             </td>
-            <td data-title="'Result'">
-                <form editable-form name="resultForm" onaftersave="updateScore(match)">                    
-                    <span editable-number="match.Team1Score" e-name="score1" e-min="0" e-max="8" e-required>{{match.Team1Score}}</span>
-                    <span editable-number="match.Team2Score" e-name="score2" e-min="0" e-max="8" e-required>{{match.Team2Score}}</span>                                        
-                    <span>
+            <td style="margin:auto; text-align: right" data-title="'Results'">                                                     
+                <span style="margin:auto">
+                    <form style="display: inline" editable-form name="resultForm" onaftersave="updateScore(match)">
+                        <span data-ng-repeat="set in match.Sets">
+                            <span style="width: 50px;" editable-number="set.Team1Score" class="score_input" e-min="0" e-max="8" e-required>{{set.Team1Score}}</span>
+                            :
+                            <span style="width: 50px;" editable-number="set.Team2Score" class="score_input" e-min="0" e-max="8" e-required>{{set.Team2Score}}</span>
+                        </span>
                         <!-- button to show form -->
-                        <button type="button" class="btn btn-primary" ng-click="resultForm.$show()" ng-show="!resultForm.$visible && playedInMatch(match)">
+                        <button type="button" class="btn btn-primary btn-xs" ng-click="resultForm.$show()" ng-show="!resultForm.$visible && match.canEditScore()">
                             <i class="glyphicon glyphicon-edit"></i>
                         </button>
                         <!-- buttons to submit / cancel form -->
                         <span ng-show="resultForm.$visible">
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary btn-xs">
                                 <i class="glyphicon glyphicon-ok"></i>
                             </button>
-                            <button type="button" class="btn btn-default" ng-click="resultForm.$cancel()">
+                            <button type="button" class="btn btn-default btn-xs" ng-click="resultForm.$cancel()">
                                 <i class="glyphicon glyphicon-remove"></i>
                             </button>
                         </span>
-                    </span>
-                </form>                
+                    </form>
+                    <button type="button" class="btn btn-default btn-xs" ng-click="addSet(match.Sets)" ng-show="match.canAddSet()">
+                        Add set <i class="glyphicon glyphicon-plus"></i>
+                    </button>
+                </span>
             </td>
         </tr>
     </table>
