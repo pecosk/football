@@ -2,7 +2,7 @@
 footballApp.controller('MatchesController', function ($scope, $rootScope, $resource, ngTableParams, $filter) {
     var Match = $resource('api/matches/:id', { id: '@id' }, {
         update: { method: 'PUT', params: { teamId: '@teamId' } },
-        updateScore: { method: 'PUT', params: { t1Score: '@t1Score', t2Score: '@t2Score' } }
+        updateScore: { method: 'PUT', params: { sets: '@t1Score' } }
     });
 
     $scope.alerts = [];
@@ -16,7 +16,7 @@ footballApp.controller('MatchesController', function ($scope, $rootScope, $resou
     };
 
     $scope.updateScore = function (match) {
-        Match.updateScore({ id: match.Id, t1Score: match.Team1Score, t2Score: match.Team2Score });
+        Match.updateScore({ id: match.Id }, match.Sets);
     };
 
     $scope.forJoin = function (match) {
@@ -40,13 +40,6 @@ footballApp.controller('MatchesController', function ($scope, $rootScope, $resou
         var user = $rootScope.identity;
         return u && u.Name === user.Name;
     };
-
-    $scope.addSet = function (sets) {
-        sets.push({
-            Team1Score: 0,
-            Team2Score: 0
-        });
-    }
 
     function transformMatches(match) {
         function extendTeam(team) {
@@ -77,6 +70,14 @@ footballApp.controller('MatchesController', function ($scope, $rootScope, $resou
                     return this.containsPlayer(user) && this.Sets.length < 3;
                 }
             },
+            addSet: {
+                value: function() {
+                    this.Sets.push({
+                        Team1Score: 0,
+                        Team2Score: 0
+                    });
+                }
+            }
         });
     }
 
@@ -111,7 +112,7 @@ footballApp.controller('MatchesController', function ($scope, $rootScope, $resou
             });
             $scope.finishedMatches = finishedServerMatches.map(transformMatches);
 
-            if (typeof ($scope.tableParams2) == 'undefined') {
+            if (typeof ($scope.tableParams2) === 'undefined') {
                 $scope.tableParams2 = new ngTableParams({
                     page: 1,
                     count: 10,

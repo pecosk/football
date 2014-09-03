@@ -64,13 +64,13 @@ namespace FootballLeague.Controllers
                 _matchRepository.AddMatchParticipantToTeam(user, match, teamId);
         }
 
-        public void Put(int id, [FromUri] int t1Score, [FromUri] int t2Score)
+        public void Put(int id, [FromBody] IEnumerable<Set> sets)
         {
             var match = _matchRepository.GetMatch(id);
             if (match == null)
                 return;
 
-            _matchRepository.UpdateScore(match, t1Score, t2Score);
+            _matchRepository.UpdateScore(match, sets);
         }
 
         private User GetCurrentUser()
