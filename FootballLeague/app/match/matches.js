@@ -16,7 +16,7 @@ footballApp.controller('MatchesController', function ($scope, $rootScope, $resou
     };
 
     $scope.updateScore = function (match) {
-        Match.updateScore({ id: match.Id }, match.Sets);
+        Match.updateScore({ id: match.Id }, match.Sets, function () { $scope.reloadMatches(); });
     };
 
     $scope.forJoin = function (match) {
@@ -58,26 +58,11 @@ footballApp.controller('MatchesController', function ($scope, $rootScope, $resou
         match.Team2 = extendTeam(match.Team2);
         return Object.create(match, {
             containsPlayer: { value: function(user) { return this.Team1.hasMember(user) || this.Team2.hasMember(user); } },
-            canEditScore: {
-                value: function() {
-                    var user = $rootScope.identity;
-                    return this.containsPlayer(user) && this.Sets.length;
-                }
-            },
-            canAddSet: {
-                value: function() {
-                    var user = $rootScope.identity;
-                    return this.containsPlayer(user) && this.Sets.length < 3;
-                }
-            },
-            addSet: {
-                value: function() {
-                    this.Sets.push({
-                        Team1Score: 0,
-                        Team2Score: 0
-                    });
-                }
-            }
+            canEditScore: { value: function() { return this.containsPlayer($rootScope.identity) && this.Sets.length; } },
+            canAddSet: { value: function() { return this.containsPlayer($rootScope.identity) && this.Sets.length < 3; } },
+            addSet: { value: function () { this.Sets.push({ Team1Score: 0, Team2Score: 0 }); } },
+            calculateTeam1Score: { value: function () { return this.Sets.reduce(function (previousValue, set) { return previousValue + (set.Team1Score > set.Team2Score); }, 0); } },
+            calculateTeam2Score: { value: function () { return this.Sets.reduce(function (previousValue, set) { return previousValue + (set.Team1Score < set.Team2Score); }, 0); } },
         });
     }
 

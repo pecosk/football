@@ -114,11 +114,29 @@ namespace FootballLeague.Models.Repositories
             return !_context.Matches.Any(m => m.PlannedTime > timeMinusSlot && m.PlannedTime < timePlusSlot);
         }
 
-        public void UpdateScore(Match match, IEnumerable<Set> sets)
-        {            
-            _context.Matches.Attach(match);
-            match.Sets = sets.ToList();
+        public void UpdateScore(Match match, List<Set> sets)
+        {
+            var updatedSets = sets.Select(set => UpdateSet(match, set)).ToList();
+            match.Sets = updatedSets;                     
             _context.SaveChanges();
+        }
+
+        private Set UpdateSet(Match match, Set set)
+        {
+            Set existing = _context.Set<Set>().Find(set.Id);
+            if (existing != null)
+            {
+                set.Match = match;
+                _context.Entry(existing).CurrentValues.SetValues(set);
+            }
+            else
+            {
+                set.Match = match;
+                _context.Sets.Add(set);
+                existing = set;
+            }
+
+            return existing;
         }
     }
 }

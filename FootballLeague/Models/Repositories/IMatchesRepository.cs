@@ -13,6 +13,6 @@ namespace FootballLeague.Models.Repositories
         void RemoveMatchParticipantFromTeam(User user, Match match, int teamId);
         bool MatchContainsTeam(Match match, int teamId);
         bool IsTimeSlotFree(DateTime plannedTime);
-        void UpdateScore(Match match, IEnumerable<Set> sets);
+        void UpdateScore(Match match, List<Set> sets);
     }
 }

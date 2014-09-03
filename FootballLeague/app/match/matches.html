@@ -36,30 +36,33 @@
                 <span ng-class="{bold: isCurrentUser(match.Team2.Member2)}" tooltip="{{match.Team2.Member2.FirstName}} {{match.Team2.Member2.LastName}}">{{match.Team2.Member2.Name}}</span>
             </td>
             <td style="margin:auto; text-align: right" data-title="'Results'">                                                     
-                <span style="margin:auto">
-                    <form style="display: inline" editable-form name="resultForm" onaftersave="updateScore(match)">
-                        <span data-ng-repeat="set in match.Sets">
+                <span>
+                    <form editable-form name="resultForm" onaftersave="updateScore(match)">
+                        <span ng-show="!resultForm.$visible">
+                            {{match.calculateTeam1Score()}} : {{match.calculateTeam2Score()}}
+                        </span>
+                        <div data-ng-repeat="set in match.Sets" ng-show="resultForm.$visible">
                             <span style="width: 50px;" editable-number="set.Team1Score" class="score_input" e-min="0" e-max="8" e-required>{{set.Team1Score}}</span>
                             :
                             <span style="width: 50px;" editable-number="set.Team2Score" class="score_input" e-min="0" e-max="8" e-required>{{set.Team2Score}}</span>
-                        </span>
+                        </div>
                         <!-- button to show form -->
                         <button type="button" class="btn btn-primary btn-xs" ng-click="resultForm.$show()" ng-show="!resultForm.$visible && match.canEditScore()">
                             <i class="glyphicon glyphicon-edit"></i>
                         </button>
                         <!-- buttons to submit / cancel form -->
                         <span ng-show="resultForm.$visible">
+                            <button type="button" class="btn btn-default btn-xs" ng-click="match.addSet()" ng-show="match.canAddSet()">
+                                Add set <i class="glyphicon glyphicon-plus"></i>
+                            </button>
                             <button type="submit" class="btn btn-primary btn-xs">
                                 <i class="glyphicon glyphicon-ok"></i>
                             </button>
                             <button type="button" class="btn btn-default btn-xs" ng-click="resultForm.$cancel()">
                                 <i class="glyphicon glyphicon-remove"></i>
-                            </button>
+                            </button>                            
                         </span>
-                    </form>
-                    <button type="button" class="btn btn-default btn-xs" ng-click="match.addSet()" ng-show="match.canAddSet()">
-                        Add set <i class="glyphicon glyphicon-plus"></i>
-                    </button>
+                    </form>                    
                 </span>
             </td>
         </tr>

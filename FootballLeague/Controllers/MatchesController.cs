@@ -70,7 +70,7 @@ namespace FootballLeague.Controllers
             if (match == null)
                 return;
 
-            _matchRepository.UpdateScore(match, sets);
+            _matchRepository.UpdateScore(match, sets.ToList());
         }
 
         private User GetCurrentUser()
