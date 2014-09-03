@@ -60,9 +60,10 @@ footballApp.controller('MatchesController', function ($scope, $rootScope, $resou
             containsPlayer: { value: function(user) { return this.Team1.hasMember(user) || this.Team2.hasMember(user); } },
             canEditScore: { value: function() { return this.containsPlayer($rootScope.identity) && this.Sets.length; } },
             canAddSet: { value: function() { return this.containsPlayer($rootScope.identity) && this.Sets.length < 3; } },
-            addSet: { value: function () { this.Sets.push({ Team1Score: 0, Team2Score: 0 }); } },
-            calculateTeam1Score: { value: function () { return this.Sets.reduce(function (previousValue, set) { return previousValue + (set.Team1Score > set.Team2Score); }, 0); } },
-            calculateTeam2Score: { value: function () { return this.Sets.reduce(function (previousValue, set) { return previousValue + (set.Team1Score < set.Team2Score); }, 0); } },
+            addSet: { value: function() { this.Sets.push({ Team1Score: 0, Team2Score: 0 }); } },
+            calculateTeam1Score: { value: function() { return this.Sets.reduce(function(previousValue, set) { return previousValue + (set.Team1Score > set.Team2Score); }, 0); } },
+            calculateTeam2Score: { value: function() { return this.Sets.reduce(function(previousValue, set) { return previousValue + (set.Team1Score < set.Team2Score); }, 0); } },
+            makeTooltip: { value: function() { return match.Sets.reduce(function(acc, item) { return acc + item.Team1Score + ':' + item.Team2Score + '||'; }, ''); } }
         });
     }
 

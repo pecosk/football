@@ -25,8 +25,8 @@
     <h1>Results</h1>
     <table ng-table="tableParams2" class="table table-striped">
         <tr ng-repeat="match in $data">
-            <td style="width: 10%" data-title="'Planned time'" sortable="'PlannedTime'">{{match.PlannedTime}}</td>
-            <td style="width: 15%" data-title="'Created by'" sortable="'Creator.LastName'">{{match.Creator.FirstName}} {{match.Creator.LastName}}</td>
+            <td style="width: 20%" data-title="'Planned time'" sortable="'PlannedTime'">{{match.PlannedTime}}</td>
+            <td style="width: 20%" data-title="'Created by'" sortable="'Creator.LastName'">{{match.Creator.FirstName}} {{match.Creator.LastName}}</td>
             <td style="width: 10%" data-title="'Team 1'">
                 <span ng-class="{bold: isCurrentUser(match.Team1.Member1)}" tooltip="{{match.Team1.Member1.FirstName}} {{match.Team1.Member1.LastName}}">{{match.Team1.Member1.Name}}</span>
                 <span ng-class="{bold: isCurrentUser(match.Team1.Member2)}" tooltip="{{match.Team1.Member2.FirstName}} {{match.Team1.Member2.LastName}}">{{match.Team1.Member2.Name}}</span>
@@ -38,10 +38,11 @@
             <td style="margin:auto; text-align: right" data-title="'Results'">                                                     
                 <span>
                     <form editable-form name="resultForm" onaftersave="updateScore(match)">
-                        <span ng-show="!resultForm.$visible">
+                        <span ng-show="!resultForm.$visible" tooltip="{{match.makeTooltip()}}">
                             {{match.calculateTeam1Score()}} : {{match.calculateTeam2Score()}}
                         </span>
                         <div data-ng-repeat="set in match.Sets" ng-show="resultForm.$visible">
+                            Set {{$index + 1}}
                             <span style="width: 50px;" editable-number="set.Team1Score" class="score_input" e-min="0" e-max="8" e-required>{{set.Team1Score}}</span>
                             :
                             <span style="width: 50px;" editable-number="set.Team2Score" class="score_input" e-min="0" e-max="8" e-required>{{set.Team2Score}}</span>
