@@ -1,6 +1,7 @@
 ﻿using FootballLeague.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Net.Mail;
 
 namespace FootballLeague.Services
@@ -10,6 +11,10 @@ namespace FootballLeague.Services
         public void Notify(User user, IEnumerable<User> invites, DateTime time)
         {
             if(string.IsNullOrEmpty(user.Mail))
+                return;
+
+            var mailServer = ConfigurationManager.AppSettings["mailServer"];
+            if (string.IsNullOrEmpty(mailServer))
                 return;
 
             foreach (var invitee in invites)
@@ -22,7 +27,7 @@ namespace FootballLeague.Services
                 client.Port = 25;
                 client.DeliveryMethod = SmtpDeliveryMethod.Network;
                 client.UseDefaultCredentials = false;
-                client.Host = "Aare.erni2.ch";
+                client.Host = mailServer;
                 mail.Subject = "Invitation for Football match";
                 mail.Body = string.Format(@"Hi {0},
 you have been invited to play a match on {1} by organizer {2} {3}. 
