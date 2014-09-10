@@ -89,7 +89,7 @@ namespace FootballLeague.Tests.Controllers
             _userRepo.Stub(u => u.GetUser(currentUserName)).Return(user);
             _matchRepo.Expect(r => r.IsTimeSlotFree(plannedTime)).Return(false);
             _matchRepo.Expect(r => r.InsertMatch(Arg<User>.Is.Anything, Arg<Match>.Is.Anything)).Repeat.Never();
-            var controller = new MatchesController(_matchRepo, _userRepo);
+            var controller = new MatchesController(_matchRepo, _userRepo, _notifier);
 
             controller.Post(new Match { PlannedTime = plannedTime });
 
@@ -107,6 +107,7 @@ namespace FootballLeague.Tests.Controllers
             var verifiedInvites = new List<User> { new User(), new User() };
             _userRepo.Stub(u => u.GetUser(currentUserName)).Return(user);
             _userRepo.Stub(r => r.GetVerifiedUsers(Arg<IEnumerable<User>>.Is.Same(invites))).Return(verifiedInvites);
+            _matchRepo.Stub(r => r.IsTimeSlotFree(time)).Return(true);
             _notifier.Expect(n => n.Notify(user, verifiedInvites, time));
             var controller = new MatchesController(_matchRepo, _userRepo, _notifier);
 
