@@ -37,6 +37,8 @@ namespace FootballLeague.Controllers
 
                 verifiedInvites = dbInvites.ToList();
             }
+            if (!_matchRepository.IsTimeSlotFree(match.PlannedTime))
+                throw new ArgumentException("Time slot for match already taken, choose another time.");
 
             _matchRepository.InsertMatch(user, new Match { PlannedTime = match.PlannedTime, Invites = verifiedInvites });
             _notifier.Notify(user, verifiedInvites, match.PlannedTime);

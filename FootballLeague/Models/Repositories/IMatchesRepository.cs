@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace FootballLeague.Models.Repositories
 {
@@ -10,5 +11,6 @@ namespace FootballLeague.Models.Repositories
         void AddMatchParticipantToTeam(User user, Match match, int teamId);
         void RemoveMatchParticipantFromTeam(User user, Match match, int teamId);
         bool MatchContainsTeam(Match match, int teamId);
+        bool IsTimeSlotFree(DateTime plannedTime);
     }
 }

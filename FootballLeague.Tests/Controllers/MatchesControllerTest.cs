@@ -33,8 +33,8 @@ namespace FootballLeague.Tests.Controllers
             var user = new User { Id = 7, Name = currentUserName };
             MockCurrentUser(currentUserName);
             _userRepo.Stub(u => u.GetUser(currentUserName)).Return(user);
-            _matchRepo.Expect(
-                r => r.InsertMatch(Arg<User>.Is.Same(user), Arg<Match>.Matches(m => m.PlannedTime == plannedTime)));
+            _matchRepo.Expect(r => r.InsertMatch(Arg<User>.Is.Same(user), Arg<Match>.Matches(m => m.PlannedTime == plannedTime)));
+            _matchRepo.Expect(r => r.IsTimeSlotFree(plannedTime)).Return(true);
             var controller = new MatchesController(_matchRepo, _userRepo, _notifier);
 
             controller.Post(new Match { PlannedTime = plannedTime });
@@ -68,6 +68,7 @@ namespace FootballLeague.Tests.Controllers
             var invites = new List<User> { new User(), new User() };
             _userRepo.Stub(u => u.GetUser(currentUserName)).Return(user);
             _matchRepo.Expect(r => r.InsertMatch(Arg<User>.Is.Same(user), Arg<Match>.Matches(m => m.PlannedTime == time && m.Invites != null)));
+            _matchRepo.Expect(r => r.IsTimeSlotFree(time)).Return(true);
             _userRepo.Expect(r => r.GetVerifiedUsers(Arg<IEnumerable<User>>.Is.Same(invites))).Return(invites);
             var controller = new MatchesController(_matchRepo, _userRepo, _notifier);
 
@@ -75,6 +76,24 @@ namespace FootballLeague.Tests.Controllers
 
             _matchRepo.VerifyAllExpectations();
             _userRepo.VerifyAllExpectations();
+        }
+        
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Post_MatchForOccupiedTimeSlot_CausesException()
+        {
+            var currentUserName = "Ferko";
+            var plannedTime = DateTime.Parse("2026-01-01T12:00");
+            var user = new User { Id = 7, Name = currentUserName };
+            MockCurrentUser(currentUserName);
+            _userRepo.Stub(u => u.GetUser(currentUserName)).Return(user);
+            _matchRepo.Expect(r => r.IsTimeSlotFree(plannedTime)).Return(false);
+            _matchRepo.Expect(r => r.InsertMatch(Arg<User>.Is.Anything, Arg<Match>.Is.Anything)).Repeat.Never();
+            var controller = new MatchesController(_matchRepo, _userRepo);
+
+            controller.Post(new Match { PlannedTime = plannedTime });
+
+            _matchRepo.VerifyAllExpectations();
         }
 
         [Test]
