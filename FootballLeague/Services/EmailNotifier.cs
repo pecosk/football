@@ -14,8 +14,12 @@ namespace FootballLeague.Services
                 return;
 
             var mailServer = ConfigurationManager.AppSettings["mailServer"];
-            if (string.IsNullOrEmpty(mailServer))
+            var appAddress = ConfigurationManager.AppSettings["appAddress"];
+            if (string.IsNullOrEmpty(mailServer) || string.IsNullOrEmpty(appAddress))
                 return;
+
+            if (!appAddress.EndsWith("/"))
+                appAddress = appAddress + "/";
 
             foreach (var invitee in invites)
             {
@@ -31,7 +35,7 @@ namespace FootballLeague.Services
                 mail.Subject = "Invitation for Football match";
                 mail.Body = string.Format(@"Hi {0},
 you have been invited to play a match on {1} by organizer {2} {3}. 
-You can confirm your participation on http://localhost:60205/#/matches", invitee.FirstName, time, user.FirstName, user.LastName);
+You can confirm your participation on {4}#/matches", invitee.FirstName, time, user.FirstName, user.LastName, appAddress);
                 client.Send(mail);
             }
         }
