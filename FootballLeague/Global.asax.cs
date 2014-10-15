@@ -21,12 +21,12 @@ namespace FootballLeague
         {
             AreaRegistration.RegisterAllAreas();
 
-            WebApiConfig.Register(GlobalConfiguration.Configuration);
+//            WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             Database.SetInitializer<FootballContext>(new DropCreateDatabaseIfModelChanges<FootballContext>());
-            GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            GlobalConfiguration.Configuration.DependencyResolver = GetIOCResolver();
+//            GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+//            GlobalConfiguration.Configuration.DependencyResolver = GetIOCResolver();
             // for now now bundles
             // BundleConfig.RegisterBundles(BundleTable.Bundles);
         }

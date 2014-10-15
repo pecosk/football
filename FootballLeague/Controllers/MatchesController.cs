@@ -14,6 +14,14 @@ namespace FootballLeague.Controllers
         private IUsersRepository _userRepository;
         private INotifier _notifier;
 
+		public MatchesController()
+		{
+			var context = new FootballContext ();
+			_matchRepository = new MatchesRepository (context);
+			_userRepository = new UsersRepository (context);
+			_notifier = new EmailNotifier ();
+		}
+
         public MatchesController(IMatchesRepository matchRepository, IUsersRepository userRepository, INotifier notifier)
         {
             _matchRepository = matchRepository;

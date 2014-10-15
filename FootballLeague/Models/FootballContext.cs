@@ -1,17 +1,31 @@
 ﻿using System.Data.Entity;
+using MySql.Data.Entity;
 
 namespace FootballLeague.Models
 {
-    using System.ComponentModel.DataAnnotations.Schema;
+	//using System.ComponentModel.DataAnnotations.Schema;
 
+	[DbConfigurationType(typeof(MySqlEFConfiguration))]
     public class FootballContext : DbContext
     {
+		public FootballContext(): base("FootballContext")
+		{
+			this.Configuration.ValidateOnSaveEnabled = false;
+		}
+
+		static FootballContext()
+		{
+			DbConfiguration.SetConfiguration (new MySqlEFConfiguration ());
+		}
+
         public virtual IDbSet<User> Users { get; set; }
         public virtual IDbSet<Match> Matches { get; set; }
         public virtual IDbSet<Team> Teams { get; set; } 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+			//modelBuilder.Conventions.Remove<System.Data.Entity.ModelConfiguration.Conventions.PluralizingTableNameConvention> ();
+
             modelBuilder.Entity<User>().HasKey(u => u.Id).Property(u => u.Name).IsRequired();
 
             modelBuilder.Entity<Match>().HasKey(m => m.Id).Property(m => m.PlannedTime).IsRequired();
