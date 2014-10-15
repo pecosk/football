@@ -1,0 +1,17 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="FootballLeague/Web.config">
+    <Files>
+      <File FileName="FootballLeague/Startup.cs" Line="1" Column="1" />
+      <File FileName="FootballLeague/Web.config" Line="19" Column="39" />
+      <File FileName="Selfhost/app.config" Line="15" Column="17" />
+      <File FileName="FootballLeague/Models/FootballContext.cs" Line="20" Column="3" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/home/peco/projects/football/Selfhost/CustomAssembliesResolver.cs" line="17" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
