@@ -26,7 +26,7 @@ namespace FootballLeague.Services
             }
             catch
             {
-                return new User { Name = HttpContext.Current.User.Identity.Name.Split('\\').Last(), Mail = "local@user.sk", FirstName = "Local", LastName = "User" };
+				return new User { Name = userName, Mail = "local@user.sk", FirstName = "Local", LastName = "User" };
             }
         }
     }
