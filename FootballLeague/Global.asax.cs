@@ -48,9 +48,9 @@ namespace FootballLeague
 
         private void RegisterDependencies(ContainerBuilder builder)
         {
-            builder.Register(c => new FootballContext()).AsSelf().InstancePerApiRequest();
-            builder.Register(c => new UsersRepository(c.Resolve<FootballContext>())).As<IUsersRepository>().InstancePerApiRequest();
-            builder.Register(c => new MatchesRepository(c.Resolve<FootballContext>())).As<IMatchesRepository>().InstancePerApiRequest();
+            builder.Register(c => new FootballContext()).AsSelf().InstancePerRequest();
+            builder.Register(c => new UsersRepository(c.Resolve<FootballContext>())).As<IUsersRepository>().InstancePerRequest();
+            builder.Register(c => new MatchesRepository(c.Resolve<FootballContext>())).As<IMatchesRepository>().InstancePerRequest();
             builder.Register(c => new UsersADSearcher()).As<IUsersADSearcher>().SingleInstance();
             builder.Register(c => new EmailNotifier()).As<INotifier>().SingleInstance();
         }

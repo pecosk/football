@@ -3,6 +3,12 @@ using System.Web.Http;
 using Microsoft.Owin.Hosting;
 using System;
 using System.Configuration;
+using Autofac;
+using System.Reflection;
+using FootballLeague.Models;
+using FootballLeague.Models.Repositories;
+using FootballLeague.Services;
+using Autofac.Integration.WebApi;
 
 namespace FootballLeague 
 { 
@@ -25,16 +31,36 @@ namespace FootballLeague
 		{ 
 			// Configure Web API for self-host. 
 			var config = new HttpConfiguration(); 
-			var connectionStrings = ConfigurationManager.ConnectionStrings;
-			Console.WriteLine (connectionStrings);
 
-			config.Routes.MapHttpRoute( 
-				name: "DefaultApi", 
-				routeTemplate: "api/{controller}/{id}", 
-				defaults: new { id = RouteParameter.Optional } 
-			); 
+			IContainer container = CreateIoCContainer ();
+			var dependencyResolver = new AutofacWebApiDependencyResolver(container);
+			config.DependencyResolver = dependencyResolver;
 
+			appBuilder.UseAutofacMiddleware(container);
+			appBuilder.UseAutofacWebApi(config);
+
+			WebApiConfig.Register (config);
 			appBuilder.UseWebApi(config); 
 		} 
+
+		private IContainer CreateIoCContainer()
+		{
+			var builder = new ContainerBuilder();
+			builder.RegisterApiControllers(Assembly.GetExecutingAssembly()).InstancePerRequest();
+
+			RegisterDependencies(builder);
+
+			return builder.Build();
+		}
+
+		private void RegisterDependencies(ContainerBuilder builder)
+		{
+			builder.Register(c => new FootballContext()).AsSelf().InstancePerRequest();
+			builder.Register(c => new UsersRepository(c.Resolve<FootballContext>())).As<IUsersRepository>().InstancePerRequest();
+			builder.Register(c => new MatchesRepository(c.Resolve<FootballContext>())).As<IMatchesRepository>().InstancePerRequest();
+			builder.Register(c => new UsersADSearcher()).As<IUsersADSearcher>().SingleInstance();
+			builder.Register(c => new EmailNotifier()).As<INotifier>().SingleInstance();
+		}
+
 	} 
 }
