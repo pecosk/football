@@ -9,6 +9,7 @@ using FootballLeague.Models;
 using FootballLeague.Models.Repositories;
 using FootballLeague.Services;
 using Autofac.Integration.WebApi;
+using Nancy;
 
 namespace FootballLeague 
 { 
@@ -39,8 +40,10 @@ namespace FootballLeague
 			appBuilder.UseAutofacMiddleware(container);
 			appBuilder.UseAutofacWebApi(config);
 
+			StaticConfiguration.DisableErrorTraces = false;
 			WebApiConfig.Register (config);
-			appBuilder.UseWebApi(config); 
+			appBuilder.UseWebApi(config)
+				.UseNancy ();
 		} 
 
 		private IContainer CreateIoCContainer()
