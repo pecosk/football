@@ -165,6 +165,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Models\FootballInitializer.cs" />
+    <Compile Include="Filters\MyAuthenticationFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\identity.js" />

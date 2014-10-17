@@ -18,7 +18,7 @@ namespace FootballLeague.Controllers
         [NullObjectActionFilter]
         public User Get()
         {
-            var name = User.Identity.Name.Split('\\').Last();
+			var name = User.Identity.Name.Split('\\').Last();
             var user = _repository.GetUser(name);
             if(user == null || user.Inactive)
                 return null;
