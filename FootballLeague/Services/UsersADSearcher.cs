@@ -12,12 +12,18 @@ namespace FootballLeague.Services
         public User LoadUserDetails(string userName)
         {
 			var hostName = ConfigurationManager.AppSettings.Get ("adHostName");
-			var adPath = "";
+			var adUserName = ConfigurationManager.AppSettings.Get("adUserName");
+			var password = ConfigurationManager.AppSettings.Get ("adPassword");
+			var entry = new DirectoryEntry();
 			if (!string.IsNullOrEmpty (hostName)) 
 			{
-				adPath = string.Format ("Ldap://{0}:389", hostName);
+				entry.Path = string.Format ("Ldap://{0}:389", hostName);
 			}
-			var entry = new DirectoryEntry(adPath);
+			if (!string.IsNullOrEmpty (adUserName) && !string.IsNullOrEmpty (password)) 
+			{
+				entry.Username = adUserName;
+				entry.Password = password;
+			}
 			var searcher = new DirectorySearcher(entry);
             searcher.Filter = "(&(objectClass=user)(sAMAccountName=" + userName + "))";
             searcher.PropertiesToLoad.Add("givenName");
