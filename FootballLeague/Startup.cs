@@ -10,6 +10,7 @@ using FootballLeague.Models.Repositories;
 using FootballLeague.Services;
 using Autofac.Integration.WebApi;
 using Nancy;
+using System.Net.Http;
 
 namespace FootballLeague 
 { 
@@ -17,11 +18,19 @@ namespace FootballLeague
 	{ 
 		public static void StartupServer()
 		{
-			string baseAddress = "http://localhost:9000/"; 
+			string baseAddress = ConfigurationManager.AppSettings["baseAddress"] 
+				?? "http://localhost:9000/"; 
 
 			// Start OWIN host 
 			using (WebApp.Start<Startup>(url: baseAddress)) 
 			{ 
+				HttpClient client = new HttpClient(); 
+
+				var response = client.GetAsync(baseAddress + "api/users").Result; 
+
+				Console.WriteLine(response); 
+				Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+				Console.WriteLine ("started listening on " + baseAddress);
 				Console.ReadLine(); 
 			} 
 		}
