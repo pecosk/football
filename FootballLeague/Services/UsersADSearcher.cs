@@ -17,7 +17,7 @@ namespace FootballLeague.Services
 			var entry = new DirectoryEntry();
 			if (!string.IsNullOrEmpty (hostName)) 
 			{
-				entry.Path = string.Format ("Ldap://{0}:389", hostName);
+				entry.Path = string.Format ("Ldap://{0}", hostName);
 			}
 			if (!string.IsNullOrEmpty (adUserName) && !string.IsNullOrEmpty (password)) 
 			{
@@ -31,10 +31,10 @@ namespace FootballLeague.Services
             searcher.PropertiesToLoad.Add("mail");
             try
             {
-				var userProps = searcher.FindOne().Properties;
-                var mail = userProps["mail"][0].ToString();
-                var first = userProps["givenName"][0].ToString();
-                var last = userProps["sn"][0].ToString();
+				var props = searcher.FindOne().Properties;
+				var mail = props["mail"] == null ? "" : props["mail"][0].ToString();
+                var first = props["givenName"][0].ToString();
+                var last = props["sn"][0].ToString();
 
                 return new User { Name = userName, Mail = mail, FirstName = first, LastName = last };
             }
