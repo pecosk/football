@@ -40,9 +40,15 @@ namespace FootballLeague.Services
             }
 			catch(Exception e)
             {
+				Console.WriteLine(string.Format("Failed search for user {0} on host {1}", userName, hostName));
 				Console.WriteLine (e.Message + Environment.NewLine + e.StackTrace);
 				return new User { Name = userName, Mail = "local@user.sk", FirstName = "Local", LastName = "User" };
             }
+			finally
+			{
+				searcher.Dispose ();
+				entry.Dispose ();
+			}
         }
     }
 }
