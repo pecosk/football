@@ -33,8 +33,8 @@ namespace FootballLeague.Services
             {
 				var props = searcher.FindOne().Properties;
 				var mail = props["mail"] == null ? "" : props["mail"][0].ToString();
-                var first = props["givenName"][0].ToString();
-                var last = props["sn"][0].ToString();
+				var first = props["givenName"] == null ? "FirstName" : props["givenName"][0].ToString();
+				var last = props["sn"] == null ? "LastName" : props["sn"][0].ToString();
 
                 return new User { Name = userName, Mail = mail, FirstName = first, LastName = last };
             }

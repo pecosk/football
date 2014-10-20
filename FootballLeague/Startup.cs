@@ -25,6 +25,7 @@ namespace FootballLeague
 			using (WebApp.Start<Startup>(url: baseAddress)) 
 			{ 
 				HttpClient client = new HttpClient(); 
+				client.Timeout = new TimeSpan (0, 5, 0);
 
 				var response = client.GetAsync(baseAddress + "api/users").Result; 
 

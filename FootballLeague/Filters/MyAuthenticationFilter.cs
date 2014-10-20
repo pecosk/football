@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Security.Principal;
 using System.Threading;
 using System.Configuration;
+using System.Text.RegularExpressions;
 
 namespace FootballLeague.Filters
 {
@@ -23,6 +24,8 @@ namespace FootballLeague.Filters
 				{
 					userName = ConfigurationManager.AppSettings ["fakeUser"];
 				}
+				var suffixDomainRemover = new Regex ("@.*");
+				userName = suffixDomainRemover.Replace (userName, "");
 				var identity = new GenericIdentity(userName, "Basic");
 				string[] roles = new string[]{ };
 				var principal = new GenericPrincipal(identity, roles);
