@@ -16,6 +16,7 @@ namespace FootballLeague.Controllers
         }
 
         [NullObjectActionFilter]
+		[NoCacheHeaderActionFilter]
         public User Get()
         {
 			var name = User.Identity.Name.Split('\\').Last();

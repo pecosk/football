@@ -44,6 +44,7 @@ namespace FootballLeague.Controllers
             _notifier.Notify(user, verifiedInvites, match.PlannedTime);
         }
 
+		[NoCacheHeaderActionFilter]
         public IEnumerable<Match> Get()
         {
             return _matchRepository.GetPlanned();

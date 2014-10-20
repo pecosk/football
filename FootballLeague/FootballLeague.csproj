@@ -177,6 +177,7 @@
     <Compile Include="Filters\MyAuthenticationFilter.cs" />
     <Compile Include="Modules\HomeModule.cs" />
     <Compile Include="ApplicationBootstrapper.cs" />
+    <Compile Include="Filters\NoCacheHeaderActionFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\identity.js">

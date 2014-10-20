@@ -19,12 +19,14 @@ namespace FootballLeague.Controllers
         }
 
         // GET api/users
+		[NoCacheHeaderActionFilter]
         public IEnumerable<User> Get()
         {
             return _repository.GetAllUsers();
         }
 
         // GET api/users/5
+		[NoCacheHeaderActionFilter]
         public User Get(int id)
         {
             return _repository.GetUser(id);
