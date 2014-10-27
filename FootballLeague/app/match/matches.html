@@ -1,0 +1,71 @@
+﻿<div class="row">
+    <ng-include src="'app/match/newMatch.html'"></ng-include>
+    <table ng-table="tableParams" class="table table-striped">
+        <tr ng-repeat="match in $data">
+            <td data-title="'Planned time'" sortable="'PlannedTime'">{{match.PlannedTime}}</td>
+            <td data-title="'Created by'" sortable="'Creator.LastName'">{{match.Creator.FirstName}} {{match.Creator.LastName}}</td>
+            <td data-title="'Team 1'">
+                <span ng-class="{bold: isCurrentUser(match.Team1.Member1)}" tooltip="{{match.Team1.Member1.FirstName}} {{match.Team1.Member1.LastName}}">{{match.Team1.Member1.Name}}</span>
+                <span ng-class="{bold: isCurrentUser(match.Team1.Member2)}" tooltip="{{match.Team1.Member2.FirstName}} {{match.Team1.Member2.LastName}}">{{match.Team1.Member2.Name}}</span>
+                <a ng-click="toggleParticipation(match.Id, match.Team1.Id)" ng-class="{ hidden: !forJoin( match, match.Team1 ) }"><i class="glyphicon glyphicon-plus"></i></a>
+                <a ng-click="toggleParticipation(match.Id, match.Team1.Id)" ng-class="{ hidden: !forLeave( match, match.Team1 ) }"><i class="glyphicon glyphicon-minus"></i></a>
+            </td>
+            <td data-title="'Team 2'">
+                <span ng-class="{bold: isCurrentUser(match.Team2.Member1)}" tooltip="{{match.Team2.Member1.FirstName}} {{match.Team2.Member1.LastName}}">{{match.Team2.Member1.Name}}</span>
+                <span ng-class="{bold: isCurrentUser(match.Team2.Member2)}" tooltip="{{match.Team2.Member2.FirstName}} {{match.Team2.Member2.LastName}}">{{match.Team2.Member2.Name}}</span>
+                <a ng-click="toggleParticipation(match.Id, match.Team2.Id)" ng-class="{ hidden: !forJoin(match, match.Team2) }"><i class="glyphicon glyphicon-plus"></i></a>
+                <a ng-click="toggleParticipation(match.Id, match.Team2.Id)" ng-class="{ hidden: !forLeave(match, match.Team2) }"><i class="glyphicon glyphicon-minus"></i></a>
+            </td>
+            <td>
+                <i tooltip="You were invited for the match" class="glyphicon glyphicon-envelope" ng-class="{ hidden: !isInvited(match) }"></i>
+            </td>
+        </tr>
+    </table>
+
+    <h1>Results</h1>
+    <table ng-table="tableParams2" class="table table-striped">
+        <tr ng-repeat="match in $data">
+            <td style="width: 20%" data-title="'Planned time'" sortable="'PlannedTime'">{{match.PlannedTime}}</td>
+            <td style="width: 20%" data-title="'Created by'" sortable="'Creator.LastName'">{{match.Creator.FirstName}} {{match.Creator.LastName}}</td>
+            <td style="width: 10%" data-title="'Team 1'">
+                <span ng-class="{bold: isCurrentUser(match.Team1.Member1)}" tooltip="{{match.Team1.Member1.FirstName}} {{match.Team1.Member1.LastName}}">{{match.Team1.Member1.Name}}</span>
+                <span ng-class="{bold: isCurrentUser(match.Team1.Member2)}" tooltip="{{match.Team1.Member2.FirstName}} {{match.Team1.Member2.LastName}}">{{match.Team1.Member2.Name}}</span>
+            </td>
+            <td style="width: 10%" data-title="'Team 2'">
+                <span ng-class="{bold: isCurrentUser(match.Team2.Member1)}" tooltip="{{match.Team2.Member1.FirstName}} {{match.Team2.Member1.LastName}}">{{match.Team2.Member1.Name}}</span>
+                <span ng-class="{bold: isCurrentUser(match.Team2.Member2)}" tooltip="{{match.Team2.Member2.FirstName}} {{match.Team2.Member2.LastName}}">{{match.Team2.Member2.Name}}</span>
+            </td>
+            <td style="margin:auto; text-align: right" data-title="'Results'">                                                     
+                <span>
+                    <form editable-form name="resultForm" onaftersave="updateScore(match)">
+                        <span ng-show="!resultForm.$visible" tooltip="{{match.makeTooltip()}}">
+                            {{match.calculateTeam1Score()}} : {{match.calculateTeam2Score()}}
+                        </span>
+                        <div data-ng-repeat="set in match.Sets" ng-show="resultForm.$visible">
+                            Set {{$index + 1}}
+                            <span style="width: 50px;" editable-number="set.Team1Score" class="score_input" e-min="0" e-max="8" e-required>{{set.Team1Score}}</span>
+                            :
+                            <span style="width: 50px;" editable-number="set.Team2Score" class="score_input" e-min="0" e-max="8" e-required>{{set.Team2Score}}</span>
+                        </div>
+                        <!-- button to show form -->
+                        <button type="button" class="btn btn-primary btn-xs" ng-click="resultForm.$show()" ng-show="!resultForm.$visible && match.canEditScore()">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </button>
+                        <!-- buttons to submit / cancel form -->
+                        <span ng-show="resultForm.$visible">
+                            <button type="button" class="btn btn-default btn-xs" ng-click="match.addSet()" ng-show="match.canAddSet()">
+                                Add set <i class="glyphicon glyphicon-plus"></i>
+                            </button>
+                            <button type="submit" class="btn btn-primary btn-xs">
+                                <i class="glyphicon glyphicon-ok"></i>
+                            </button>
+                            <button type="button" class="btn btn-default btn-xs" ng-click="resultForm.$cancel()">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </button>                            
+                        </span>
+                    </form>                    
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>

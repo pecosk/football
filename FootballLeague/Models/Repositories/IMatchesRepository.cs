@@ -7,10 +7,12 @@ namespace FootballLeague.Models.Repositories
     {
         Match InsertMatch(User user, Match match);
         IList<Match> GetPlanned();
+        IList<Match> GetAll();
         Match GetMatch(int id);
         void AddMatchParticipantToTeam(User user, Match match, int teamId);
         void RemoveMatchParticipantFromTeam(User user, Match match, int teamId);
         bool MatchContainsTeam(Match match, int teamId);
         bool IsTimeSlotFree(DateTime plannedTime);
+        void UpdateScore(Match match, List<Set> sets);
     }
 }

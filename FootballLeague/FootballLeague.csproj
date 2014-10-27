@@ -139,6 +139,7 @@
     <Compile Include="Models\Repositories\MatchesRepository.cs" />
     <Compile Include="Models\Repositories\UsersRepository.cs" />
     <Compile Include="Models\Result.cs" />
+    <Compile Include="Models\Set.cs" />
     <Compile Include="Models\Team.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -5,11 +5,12 @@ namespace FootballLeague.Models
     using System.ComponentModel.DataAnnotations.Schema;
 
     public class FootballContext : DbContext
-    {
+    {        
         public virtual IDbSet<User> Users { get; set; }
         public virtual IDbSet<Match> Matches { get; set; }
-        public virtual IDbSet<Team> Teams { get; set; } 
-
+        public virtual IDbSet<Team> Teams { get; set; }
+        public virtual IDbSet<Set> Sets { get; set; }
+        
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().HasKey(u => u.Id).Property(u => u.Name).IsRequired();
@@ -18,11 +19,14 @@ namespace FootballLeague.Models
             modelBuilder.Entity<Match>().HasOptional(m => m.Creator);
             modelBuilder.Entity<Match>().HasRequired(m => m.Team1).WithOptional().Map(m => m.MapKey("Team1_Id"));
             modelBuilder.Entity<Match>().HasRequired(m => m.Team2).WithOptional().Map(m => m.MapKey("Team2_Id"));
-            modelBuilder.Entity<Match>().HasMany(m => m.Invites).WithMany();
+            modelBuilder.Entity<Match>().HasMany(m => m.Invites).WithMany();            
 
             modelBuilder.Entity<Team>().HasKey(t => t.Id);
             modelBuilder.Entity<Team>().HasOptional(t => t.Member1);
             modelBuilder.Entity<Team>().HasOptional(t => t.Member2);
+
+            modelBuilder.Entity<Set>().HasKey(s => s.Id);
+            modelBuilder.Entity<Set>().HasRequired(s => s.Match).WithMany(m => m.Sets);
         }
     }
 }

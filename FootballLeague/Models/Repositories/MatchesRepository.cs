@@ -14,6 +14,21 @@ namespace FootballLeague.Models.Repositories
             _context = context;
         }
 
+        public IList<Match> GetAll()
+        {
+            return _context.Matches
+               .Include(m => m.Creator)
+               .Include(m => m.Team1)
+               .Include(m => m.Team1.Member1)
+               .Include(m => m.Team1.Member2)
+               .Include(m => m.Team2)
+               .Include(m => m.Team2.Member1)
+               .Include(m => m.Team2.Member2)          
+               .Include(m => m.Sets)
+               .OrderBy(m => m.PlannedTime)
+               .ToList();
+        }
+
         public Match GetMatch(int id)
         {
             return _context.Matches.Include(m => m.Creator)
@@ -23,6 +38,7 @@ namespace FootballLeague.Models.Repositories
                 .Include(m => m.Team2)
                 .Include(m => m.Team2.Member1)
                 .Include(m => m.Team2.Member2)
+                .Include(m => m.Sets)
                 .FirstOrDefault(m => m.Id == id);
         }
 
@@ -37,7 +53,7 @@ namespace FootballLeague.Models.Repositories
                 match.Invites.ForEach(u => _context.Users.Attach(u));
             }
             _context.Teams.Add(match.Team1);
-            _context.Teams.Add(match.Team2);             
+            _context.Teams.Add(match.Team2);
             _context.Matches.Add(match);
             _context.SaveChanges();
             return match;
@@ -65,10 +81,10 @@ namespace FootballLeague.Models.Repositories
                 return;
 
             if (team.SetMember(user))
-            {                
+            {
                 _context.Users.Attach(user);
                 _context.SaveChanges();
-            }                        
+            }
         }
 
         public void RemoveMatchParticipantFromTeam(User user, Match match, int teamId)
@@ -80,7 +96,7 @@ namespace FootballLeague.Models.Repositories
             if (team.RemoveMember(user))
             {
                 _context.SaveChanges();
-            }            
+            }
         }
 
 
@@ -96,6 +112,31 @@ namespace FootballLeague.Models.Repositories
             var timeMinusSlot = plannedTime.AddMinutes(-15);
             var timePlusSlot = plannedTime.AddMinutes(15);
             return !_context.Matches.Any(m => m.PlannedTime > timeMinusSlot && m.PlannedTime < timePlusSlot);
+        }
+
+        public void UpdateScore(Match match, List<Set> sets)
+        {
+            var updatedSets = sets.Select(set => UpdateSet(match, set)).ToList();
+            match.Sets = updatedSets;                     
+            _context.SaveChanges();
+        }
+
+        private Set UpdateSet(Match match, Set set)
+        {
+            Set existing = _context.Set<Set>().Find(set.Id);
+            if (existing != null)
+            {
+                set.Match = match;
+                _context.Entry(existing).CurrentValues.SetValues(set);
+            }
+            else
+            {
+                set.Match = match;
+                _context.Sets.Add(set);
+                existing = set;
+            }
+
+            return existing;
         }
     }
 }

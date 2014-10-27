@@ -1,4 +1,4 @@
-﻿using FootballLeague.Models;
+using FootballLeague.Models;
 using FootballLeague.Models.Repositories;
 using FootballLeague.Services;
 using System;

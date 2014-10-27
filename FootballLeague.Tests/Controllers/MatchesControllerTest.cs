@@ -6,7 +6,6 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FootballLeague.Tests.Controllers
 {
