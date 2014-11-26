@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Diagnostics;
 
 namespace FootballLeague.Controllers
 {
@@ -46,8 +47,12 @@ namespace FootballLeague.Controllers
 
 		[NoCacheHeaderActionFilter]
         public IEnumerable<Match> Get()
-        {
-            return _matchRepository.GetPlanned();
+		{
+			var sw = Stopwatch.StartNew ();
+			var matches = _matchRepository.GetPlanned ();
+			sw.Stop ();
+			Console.WriteLine ("matches " + sw.ElapsedMilliseconds);
+			return matches;
         }
 
         public void Put(int id, [FromUri]int teamId)

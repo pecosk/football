@@ -7,7 +7,7 @@ namespace FootballLeague
 	{
 		public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
 		{
-			actionExecutedContext.Response.Content.Headers.Expires = DateTimeOffset.Now;
+			//actionExecutedContext.Response.Content.Headers.Expires = DateTimeOffset.Now;
 		}
 	}}
 

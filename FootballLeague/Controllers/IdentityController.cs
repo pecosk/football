@@ -3,6 +3,8 @@ using FootballLeague.Models;
 using FootballLeague.Models.Repositories;
 using System.Linq;
 using System.Web.Http;
+using System.Diagnostics;
+using System;
 
 namespace FootballLeague.Controllers
 {
@@ -19,8 +21,11 @@ namespace FootballLeague.Controllers
 		[NoCacheHeaderActionFilter]
         public User Get()
         {
+			var sw = Stopwatch.StartNew ();
 			var name = User.Identity.Name.Split('\\').Last();
             var user = _repository.GetUser(name);
+			sw.Stop ();
+			Console.WriteLine ("identity " + sw.ElapsedMilliseconds);
             if(user == null || user.Inactive)
                 return null;
 

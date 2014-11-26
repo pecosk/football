@@ -5,7 +5,7 @@ namespace FootballLeague.Models
 {
 	//using System.ComponentModel.DataAnnotations.Schema;
 
-	[DbConfigurationType(typeof(MySqlEFConfiguration))]
+	//[DbConfigurationType(typeof(MySqlEFConfiguration))]
     public class FootballContext : DbContext
     {
 		public FootballContext(): base("FootballContext")
@@ -15,7 +15,7 @@ namespace FootballLeague.Models
 
 		static FootballContext()
 		{
-			DbConfiguration.SetConfiguration (new MySqlEFConfiguration ());
+			//DbConfiguration.SetConfiguration (new MySqlEFConfiguration ());
 		}
 
         public virtual IDbSet<User> Users { get; set; }

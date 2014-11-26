@@ -4,6 +4,8 @@ using FootballLeague.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Diagnostics;
+using System;
 
 namespace FootballLeague.Controllers
 {
@@ -22,7 +24,11 @@ namespace FootballLeague.Controllers
 		[NoCacheHeaderActionFilter]
         public IEnumerable<User> Get()
         {
-            return _repository.GetAllUsers();
+			var sw = Stopwatch.StartNew ();
+			var users = _repository.GetAllUsers ();
+			sw.Stop ();
+			Console.WriteLine ("users " + sw.ElapsedMilliseconds);
+			return users;
         }
 
         // GET api/users/5
