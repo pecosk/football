@@ -10,7 +10,7 @@ function tournamentRenderer() {
             name: name,
             roundIndex: roundNumber,
             teamIndex: teamIndex,
-            scores: scores[teamIndex % 2]
+            scores: scores.map(function(score) { return score[teamIndex % 2]; })
         };
     }
 
@@ -36,7 +36,7 @@ function tournamentRenderer() {
             for (var j = 0; j < previousRoundResults.length; j++) {
                 var matchResult = previousRoundResults[j];
                 var winnerIndicator = _.reduce(matchResult, function (acc, set) { return set[0] > set[1] ? acc + 1 : acc - 1; });
-                var winner = teams[j][winnerIndicator > 0 ? 0 : 1];
+                var winner = teams[j][winnerIndicator > 0 ? 1 : 0];
                 winners.push(winner);
             }
 
