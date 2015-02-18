@@ -31,3 +31,76 @@
 span.bold {
     font-weight: bold;
 }
+
+#bracket {    
+    overflow-x: auto;
+    white-space: nowrap;    
+}
+
+.team {
+    float: left !important;
+    
+}
+
+.team-delimiter {
+    width: 1px;
+    height: 5px;
+}
+
+
+.winner {
+    background: green;
+}
+
+.round1 {
+    display: inline-block;    
+    vertical-align: middle;    
+    float: none;    
+}
+
+.round2 {
+    display: inline-block;    
+    vertical-align: middle;    
+    float: none;        
+}
+
+.round3 {
+    display: inline-block;    
+    vertical-align: middle;    
+    float: none;    
+}
+
+.match {
+    float: left;
+}
+
+.round1 > div.match {
+    height: 73px;    
+}
+
+.round2 > div.match {
+    height: 73px;    
+}
+
+.round3 > div.match {
+    height: 73px;    
+}
+
+.round1 > div.match-delimiter {
+    width: 1px;
+    height: 25px;
+}
+
+.round2 > div.match-delimiter {
+    width: 1px;
+    height: 16px;
+}
+
+.round3 > div.match-delimiter {
+    width: 1px;
+    height: 25px;
+}
+
+.round4 > div.match-delimiter {
+    
+}

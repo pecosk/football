@@ -40,10 +40,10 @@
         {
             if (user.Equals(Member1))
                 return Member1;
-            else if (user.Equals(Member2))
+            if (user.Equals(Member2))
                 return Member2;
-            else 
-                return null;
+            
+            return null;
         }
 
         public bool SetMember(User user)

@@ -12,6 +12,10 @@ footballApp.config([
                 templateUrl: 'app/match/matches.html',
                 controller: 'MatchesController'
             })
+            .when('/tournament', {
+                templateUrl: 'app/tournament/tournament.html',
+                controller: 'flTournamentCtrl'
+            })
             .otherwise({
                 templateUrl: 'app/user/users.html',
                 controller: 'userController'

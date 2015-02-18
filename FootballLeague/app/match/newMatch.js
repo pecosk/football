@@ -1,5 +1,5 @@
 ﻿
-footballApp.controller('NewMatchController', function ($scope, $rootScope, $resource, ngTableParams, $filter) {
+footballApp.controller('NewMatchController', function ($scope, $rootScope, $resource) {
     var Match = $resource('api/matches/:id', { id: '@id' }, { 'update': { method: 'PUT', params: { teamId: '@teamId' } } });
     var User = $resource('api/users');
 
