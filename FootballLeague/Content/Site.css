@@ -47,21 +47,26 @@ span.bold {
     height: 5px;
 }
 
-
 .winner {
     background: green;
 }
 
-.round1 {
+.round0 {
     display: inline-block;    
     vertical-align: middle;    
     float: none;    
 }
 
-.round2 {
+.round1 {
     display: inline-block;    
     vertical-align: middle;    
     float: none;        
+}
+
+.round2 {
+    display: inline-block;    
+    vertical-align: middle;    
+    float: none;    
 }
 
 .round3 {
@@ -74,6 +79,10 @@ span.bold {
     float: left;
 }
 
+.round0 > div.match {
+    height: 73px;    
+}
+
 .round1 > div.match {
     height: 73px;    
 }
@@ -82,25 +91,17 @@ span.bold {
     height: 73px;    
 }
 
-.round3 > div.match {
-    height: 73px;    
+.round0 > div.match-delimiter {
+    width: 1px;
+    height: 25px;
 }
 
 .round1 > div.match-delimiter {
     width: 1px;
-    height: 25px;
+    height: 123px;
 }
 
 .round2 > div.match-delimiter {
     width: 1px;
-    height: 16px;
-}
-
-.round3 > div.match-delimiter {
-    width: 1px;
-    height: 25px;
-}
-
-.round4 > div.match-delimiter {
-    
+    height: 317px;
 }
