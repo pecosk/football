@@ -30,11 +30,44 @@ function tournamentRenderer() {
         };
     }
     
+    function getWinners(teams, results, roundIndex) {
+        function evaluateWinners(teams, results) {
+            var winners = [];
+            for (var j = 0; j < previousRoundResults.length; j++) {
+                var matchResult = previousRoundResults[j];
+                var winnerIndicator = _.reduce(matchResult, function (acc, set) { return set[0] > set[1] ? acc + 1 : acc - 1; });
+                var winner = teams[j][winnerIndicator > 0 ? 0 : 1];
+                winners.push(winner);
+            }
+
+            var newMatches =
+            _.chain(winners)
+            .groupBy(function (winner, index) { return Math.floor(index / 2); })
+            .toArray()
+            .value();
+
+            return newMatches;
+        }
+
+        if (roundIndex == 0) {
+            return teams;
+        }
+        
+        for (var i = 0; i < roundIndex; i++) {
+            var previousRoundResults = results[i];
+            teams = evaluateWinners(teams, previousRoundResults);
+        }
+                
+        return teams;
+    }
+
     var render = function ($container, teams, results) {
-        var rounds = [];
-        _.chain(_.range(1))
+        var rounds = [],
+            numberOfRounds = results.length;
+
+        _.chain(_.range(numberOfRounds))
             .each(function (roundIndex) {
-                var matches = _.chain(teams)
+                var matches = _.chain(getWinners(teams, results, roundIndex))
                     .map(function (pair, index) { return makeMatch(pair, results, index, roundIndex); })
                     .value();
                 rounds.push(makeRound(matches, roundIndex));

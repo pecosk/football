@@ -32,7 +32,7 @@ span.bold {
     font-weight: bold;
 }
 
-#bracket {    
+.bracket {    
     overflow-x: auto;
     white-space: nowrap;    
 }
