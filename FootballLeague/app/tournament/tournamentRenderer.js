@@ -16,61 +16,62 @@ function tournamentRenderer() {
 
     function makeMatch(pair, results, matchIndex, roundIndex) {
         return {
-            team1: makeTeam(pair[0], results[roundIndex][matchIndex], matchIndex * 2, roundIndex),
-            team2: makeTeam(pair[1], results[roundIndex][matchIndex], matchIndex * 2 + 1, roundIndex),
-            renderTeam: renderTeam
+            team1: makeTeam(pair[0], results[matchIndex], matchIndex * 2, roundIndex),
+            team2: makeTeam(pair[1], results[matchIndex], matchIndex * 2 + 1, roundIndex),
+            result: results[matchIndex],
+            renderTeam: renderTeam,
+            getWinner: function() {
+                var winnerIndicator = this.result.reduce(function(acc, set) {
+                        return set[0] > set[1] ? acc + 1 : acc - 1;                    
+                });
+
+                return winnerIndicator > 0 ? this.team1 : this.team2;
+            }
         };
+    }
+
+    function Match(team1, team2) {
+        
     }
 
     function makeRound(matches, roundIndex) {
         return {
             roundIndex: roundIndex,
-            matches: matches,
+            matches: getMatchesForRound(matches, roundIndex),
             renderMatch: renderMatch
         };
     }
     
-    function getWinners(teams, results, roundIndex) {
-        function evaluateWinners(teams, results) {
-            var winners = [];
-            for (var j = 0; j < previousRoundResults.length; j++) {
-                var matchResult = previousRoundResults[j];
-                var winnerIndicator = _.reduce(matchResult, function (acc, set) { return set[0] > set[1] ? acc + 1 : acc - 1; });
-                var winner = teams[j][winnerIndicator > 0 ? 1 : 0];
-                winners.push(winner);
-            }
+    function getMatchesForRound(matches, roundIndex) {       
+        
+        var nextRoundMatches = matches;
 
-            var newMatches =
-            _.chain(winners)
+        for (var i = 0; i < roundIndex; i++) {         
+            nextRoundMatches =
+           _.chain(matches)
+            .map(function (match) { return match.getWinner(); })
             .groupBy(function (winner, index) { return Math.floor(index / 2); })
+            .map(function (pair, index) { return makeMatch(pair, results, index, 0); })
             .toArray()
             .value();
-
-            return newMatches;
         }
 
-        if (roundIndex == 0) {
-            return teams;
-        }
-        
-        for (var i = 0; i < roundIndex; i++) {
-            var previousRoundResults = results[i];
-            teams = evaluateWinners(teams, previousRoundResults);
-        }
-                
-        return teams;
+        return nextRoundMatches;
     }
 
     var render = function ($container, teams, results) {
         var rounds = [],
             numberOfRounds = results.length;
 
+        var resultsPerRound = results.reduce(function(acc, item) {
+            acc.push(item);
+            return acc;
+        });
+
+        var initialMatches = teams.map(function (pair, index) { return makeMatch(pair, resultsPerRound[0], index, 0); });
         _.chain(_.range(numberOfRounds))
-            .each(function (roundIndex) {
-                var matches = _.chain(getWinners(teams, results, roundIndex))
-                    .map(function (pair, index) { return makeMatch(pair, results, index, roundIndex); })
-                    .value();
-                rounds.push(makeRound(matches, roundIndex));
+            .each(function (roundIndex) {                                
+                rounds.push(makeRound(initialMatches, roundIndex));
             });
 
         $container.html(renderBracket({ renderRound: renderRound, rounds: rounds }));
