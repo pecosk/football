@@ -1,49 +1,7 @@
 ﻿<div ng-controller="flTournamentCtrl">
     <div class="row">
-        <div id="tournament" class="col-md-12">
-
+        <div id="tournament" class="col-md-12">            
+            <ng-bracket bracket="bracket"></ng-bracket>            
         </div>
-    </div>
-
-    <script id="team-template" type="text/template">
-        <div class="team" id="round<%= roundIndex %>-team<%= teamIndex %>">
-            <div class="input-group">
-                <div class="form-control">
-                    <%= name %>
-                </div>
-                <% for (var i = 0; i < scores.length; i++) { %>
-                    <span class="input-group-addon">
-                        <span class="badge pull-right winner"><%= scores[i] %></span>
-                    </span>
-                <% } %>                
-            </div>
-        </div>
-    </script>
-
-    <script id="match-template" type="text/template">
-        <div class="match">            
-            <%= renderTeam(team1) %>
-            <div class="team-delimiter pull-left"></div>
-            <%= renderTeam(team2) %>
-        </div>
-    </script>
-
-    <script id="round-template" type="text/template">
-        <div class="round<%= roundIndex %> col-md-3 col-sm-6 col-xs-6">            
-            <% for(var i = 0; i < matches.length; i++) { %>
-                <%= renderMatch(matches[i]) %>
-                <% if (i != matches.length -1 )  { %>
-                    <div class="match-delimiter pull-left"></div>        
-                <% } %>
-            <% } %>
-        </div>
-    </script>
-
-    <script id="bracket-template" type="text/template">
-        <div class="bracket">
-            <% for(var i = 0; i < rounds.length; i++) { %>
-                <%= renderRound(rounds[i]) %>
-            <% } %>
-        </div>
-    </script>
+    </div>    
 </div>

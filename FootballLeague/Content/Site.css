@@ -57,7 +57,7 @@ span.bold {
     float: none;    
 }
 
-.round1 {
+.round {
     display: inline-block;    
     vertical-align: middle;    
     float: none;        
@@ -79,7 +79,7 @@ span.bold {
     float: left;
 }
 
-.round0 > div.match {
+.round > div.match {
     height: 73px;    
 }
 
@@ -91,17 +91,17 @@ span.bold {
     height: 73px;    
 }
 
-.round0 > div.match-delimiter {
+.round .match-delimiter {
     width: 1px;
     height: 25px;
 }
 
-.round1 > div.match-delimiter {
+.round > div.match-delimiter {
     width: 1px;
     height: 123px;
 }
 
-.round2 > div.match-delimiter {
+.round > div.match-delimiter {
     width: 1px;
     height: 317px;
 }

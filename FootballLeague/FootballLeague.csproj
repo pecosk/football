@@ -126,6 +126,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IdentityController.cs" />
+    <Compile Include="Controllers\JasmineController.cs" />
     <Compile Include="Controllers\MatchesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Filters\NullObjectActionFilter.cs" />
@@ -155,7 +156,11 @@
     <Content Include="app\match\matches.html" />
     <Content Include="app\match\matches.js" />
     <Content Include="app\match\newMatch.js" />
+    <Content Include="app\tournament\bracket-template.html" />
     <Content Include="app\tournament\flTournamentCtrl.js" />
+    <Content Include="app\tournament\match-template.html" />
+    <Content Include="app\tournament\model.js" />
+    <Content Include="app\tournament\round-template.html" />
     <Content Include="app\tournament\tournamentRenderer.js" />
     <Content Include="app\tournament\tournament.html" />
     <Content Include="app\user\user.js" />
@@ -163,6 +168,8 @@
     <Content Include="app\app.js" />
     <Content Include="App_Data\FootballLeague.Models.FootballContext.mdf" />
     <Content Include="Content\angular-multi-select.css" />
+    <Content Include="Content\jasmine\jasmine.css" />
+    <Content Include="Content\jasmine\jasmine_favicon.png" />
     <Content Include="Content\ng-table.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -470,6 +477,14 @@
     <Content Include="Scripts\i18n\angular-locale_zu-za.js" />
     <Content Include="Scripts\i18n\angular-locale_zu.js" />
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
+    <Content Include="Scripts\jasmine-samples\Player.js" />
+    <Content Include="Scripts\jasmine-samples\PlayerSpec.js" />
+    <Content Include="Scripts\jasmine-samples\Song.js" />
+    <Content Include="Scripts\jasmine-samples\SpecHelper.js" />
+    <Content Include="Scripts\jasmine\boot.js" />
+    <Content Include="Scripts\jasmine\console.js" />
+    <Content Include="Scripts\jasmine\jasmine-html.js" />
+    <Content Include="Scripts\jasmine\jasmine.js" />
     <Content Include="Scripts\jqSimpleConnect-1.0.min.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
@@ -491,6 +506,7 @@
     <Content Include="Scripts\underscore.min.map" />
     <None Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Jasmine\SpecRunner.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Angular\" />
