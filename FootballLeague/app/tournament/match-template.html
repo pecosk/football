@@ -1,23 +1,10 @@
-﻿<div class="match">
-    <div class="team">
-        <div class="input-group">
-            <div class="form-control">
-                {{match.team1.name}}
-            </div>
-            <span class="input-group-addon" ng-repeat="set in match.sets">
-                <span class="badge pull-right winner">{{set.scoreTeam1 }}</span>
-            </span>
-        </div>
-    </div>
-    <div class="team-delimiter pull-left"></div>
-    <div class="team">
-        <div class="input-group">
-            <div class="form-control">
-                {{match.team2.name}}
-            </div>
-            <span class="input-group-addon" ng-repeat="set in match.sets">
-                <span class="badge pull-right winner">{{ set.scoreTeam2 }}</span>
-            </span>
-        </div>
-    </div>
+﻿<div class="match pull-left">    
+    <fl-team team="match.team1" index="1" round-index="roundIndex" scores="match.sets" edit-state="isEditing"></fl-team>
+    <div class="team-delimiter"></div>
+    <fl-team team="match.team2" index="2" round-index="roundIndex" scores="match.sets" edit-state="isEditing"></fl-team>
+    <a ng-click="changeEditState()" ng-model="isEditing">
+        <span ng-hide="isEditing" class="glyphicon glyphicon-edit" style="position:absolute; top:0px; right:0px;cursor:pointer"></span>
+        <span ng-show="isEditing" class="glyphicon glyphicon-ok" style="position:absolute; top:0px; right:0px;cursor:pointer"></span>
+    </a>        
 </div>
+

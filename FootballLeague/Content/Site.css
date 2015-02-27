@@ -1,4 +1,9 @@
-﻿.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+﻿input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    display: none;    
+}
+
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
 .navbar .nav > li > a.register.registered, .navbar .nav > li > a.unregister {
     display: none;
@@ -42,22 +47,21 @@ span.bold {
     
 }
 
+.team-name {
+    width: 116px !important;
+}
+
 .team-delimiter {
     width: 1px;
     height: 5px;
+    float: left;
 }
 
 .winner {
     background: green;
 }
 
-.round0 {
-    display: inline-block;    
-    vertical-align: middle;    
-    float: none;    
-}
-
-.round {
+.round1 {
     display: inline-block;    
     vertical-align: middle;    
     float: none;        
@@ -75,33 +79,59 @@ span.bold {
     float: none;    
 }
 
-.match {
-    float: left;
+.round4 {
+    display: inline-block;    
+    vertical-align: middle;    
+    float: none;    
 }
 
-.round > div.match {
-    height: 73px;    
+.match {    
+    height: 73px;   
+    width: 256px;
+    position:relative; 
 }
 
-.round1 > div.match {
-    height: 73px;    
+.match > a {
+    display:none;
 }
 
-.round2 > div.match {
-    height: 73px;    
+.match:hover > a {
+    display:block;
 }
 
-.round .match-delimiter {
+.round1 .match-delimiter {
     width: 1px;
     height: 25px;
 }
 
-.round > div.match-delimiter {
+.round2 div.match-delimiter {
     width: 1px;
     height: 123px;
 }
 
-.round > div.match-delimiter {
+.round3 div.match-delimiter {
     width: 1px;
     height: 317px;
+}
+
+.score-box {
+    width: 46px !important;        
+}
+
+.score-box-input {
+    display: inline-block;    
+    padding: 2px 6px !important;
+    margin: 0px !important;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;    
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    text-align:center;     
+    -moz-border-radius: 5px !important;
+    -webkit-border-radius: 5px !important;
+    border-radius: 5px !important;    
+    height:18px; 
+    width: 21px !important;
 }

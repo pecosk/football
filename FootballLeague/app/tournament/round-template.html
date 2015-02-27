@@ -1,6 +1,6 @@
-﻿<div class="round col-md-3 col-sm-6 col-xs-6">
-    <div ng-repeat="match in round.matches">
-        <fl-match match="match"></fl-match>
-        <div class="match-delimiter pull-left"></div>
-    </div>                
+﻿<div ng-class="getClass()">
+    <div ng-repeat="match in round.matches" style="margin-top:25px">
+        <fl-match match="match" round-index="roundIndex" match-index="$index + 1"></fl-match>
+        <div ng-show="isVisible($index)" class="match-delimiter pull-left"></div>
+    </div>
 </div>

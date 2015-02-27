@@ -8,9 +8,10 @@
     }
 }
 
-function Team(name) {
+function Team(name, id) {
     return {
-        name: name
+        name: name,
+        id : id
     }
 }
 
@@ -56,14 +57,14 @@ function Bracket(firstRound) {
     function makeRounds() {        
         var rounds = [];
         var round1 = new Round([
-            new Match(new Team("team1"), new Team("team2")),
-            new Match(new Team("team3"), new Team("team4")),
-            new Match(new Team("team5"), new Team("team6")),
-            new Match(new Team("team7"), new Team("team8")),
-            new Match(new Team("team9"), new Team("team10")),
-            new Match(new Team("team11"), new Team("team12")),
-            new Match(new Team("team13"), new Team("team14")),
-            new Match(new Team("team15"), new Team("team16")),
+            new Match(new Team("team1", 1), new Team("team2", 2)),
+            new Match(new Team("team3", 3), new Team("team4", 4)),
+            new Match(new Team("team5", 5), new Team("team6", 6)),
+            new Match(new Team("team7", 7), new Team("team8", 8)),
+            new Match(new Team("team9", 9), new Team("team10", 10)),
+            new Match(new Team("team11", 11), new Team("team12", 12)),
+            new Match(new Team("team13", 13), new Team("team14", 14)),
+            new Match(new Team("team15", 15), new Team("team16", 16)),
         ]);
         rounds.push(round1);
         var nextRound = round1;
