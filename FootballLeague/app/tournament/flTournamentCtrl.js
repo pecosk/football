@@ -44,7 +44,7 @@
         },
         controller: function ($scope) {
             $scope.getClass = function () {
-                return "round" + $scope.roundIndex + " col-md-3 col-sm-6 col-xs-6";
+                return "round" + $scope.roundIndex;
             }
 
             $scope.isVisible = function (index) {

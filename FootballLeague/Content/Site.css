@@ -42,13 +42,16 @@ span.bold {
     white-space: nowrap;    
 }
 
+.page-header {        
+    border-color:#F87431;        
+}
+
 .team {
-    float: left !important;
-    
+    float: left !important;    
 }
 
 .team-name {
-    width: 116px !important;
+    min-width: 128px;
 }
 
 .team-delimiter {
@@ -61,33 +64,45 @@ span.bold {
     background: green;
 }
 
+.round-box {
+    display: inline-block;        
+    float: none; 
+    min-width: 275px;    
+}
+
+.round-header {
+    display: inline-block;        
+    float: none; 
+    min-width: 275px;                    
+}
+
 .round1 {
     display: inline-block;    
     vertical-align: middle;    
-    float: none;        
+    float: none;    
 }
 
 .round2 {
     display: inline-block;    
     vertical-align: middle;    
-    float: none;    
+    float: none;       
 }
 
 .round3 {
     display: inline-block;    
     vertical-align: middle;    
-    float: none;    
+    float: none;        
 }
 
 .round4 {
     display: inline-block;    
     vertical-align: middle;    
-    float: none;    
+    float: none    
 }
 
 .match {    
     height: 73px;   
-    width: 256px;
+    width: 100%;
     position:relative; 
 }
 
@@ -112,10 +127,6 @@ span.bold {
 .round3 div.match-delimiter {
     width: 1px;
     height: 317px;
-}
-
-.score-box {
-    width: 46px !important;        
 }
 
 .score-box-input {
