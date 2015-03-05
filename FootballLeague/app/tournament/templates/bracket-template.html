@@ -1,9 +1,9 @@
 ﻿<div class="bracket" id="brack">    
-    <div class="bracket-header">
+    <div>
         <div class="round-header col-lg-3 col-md-4 col-sm-6 col-xs-8" ng-repeat="round in bracket.rounds">
             <h4 ng-bind="'Round ' + ($index + 1)"></h4>
         </div>
     </div>
-    <hr style="background:#F87431; border:0; height:2px; margin: 2px 15px 20px 15px" />
+    <hr style="background:#aaa; border:0; height:1px; margin: 2px 15px 20px 15px" />
     <fl-round ng-repeat="round in bracket.rounds" round="round" roundIndex="$index + 1"></fl-round>
 </div>

@@ -1,0 +1,34 @@
+﻿<div class="row" ng-controller="flTournamentJoinCtrl">
+    <div class="page-header">
+        <ul class="breadcrumb" ncy-breadcrumb></ul>
+    </div>
+    <form ng-submit="submit()" class="form-inline">
+        <div class="form-group">            
+                <label for="teamName">Team Name: </label>
+                <input name="teamName" type="text" class="form-control" ng-required="true" />                            
+        </div>        
+        <div class="form-group">
+            <div multi-select input-model="users" output-model="selectedUsers" button-label="Name" item-label="FirstName LastName" tick-property="ticked" max-labels="1" default-label="Select partner" />
+        </div>
+        <button type="submit" name="submit" class="btn btn-primary">
+            Join
+        </button>
+    </form>
+    <div>
+        <h3>name: Street Fighter</h3>
+        <h3>type: single elimination</h3>
+        <h3>teams:</h3>
+        <div ng-repeat="team in teams">
+            <div class="col-lg-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading" ng-bind="team.name"></div>
+                    <div class="panel-body">
+                        <div class="team-member" ng-bind="team.player1"></div>
+                        <hr style="background-color:black; height: 1px;margin:10px 0; padding:0;"/>
+                        <div class="team-member" ng-bind="team.player2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>

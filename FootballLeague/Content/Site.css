@@ -1,28 +1,92 @@
-﻿input::-webkit-outer-spin-button,
+﻿body {
+    margin: 0;
+    background: url('~/../../../Images/main-background.jpg') !important;
+    background-size: 1920px 1280px;
+    background-repeat:no-repeat;
+    display:compact;    
+    color: #eee;
+}
+
+h2 {
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+
+h4 {
+    color: #ddd;
+}
+
+input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     display: none;    
 }
 
-.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
-
-.navbar .nav > li > a.register.registered, .navbar .nav > li > a.unregister {
-    display: none;
+.breadcrumb {
+  padding: 8px 0px;
+  margin-bottom: 0px;
+  list-style: none;
+  background-color: transparent;
+  border-radius: 4px;
+}
+.breadcrumb > li {
+  display: inline-block;
 }
 
-.navbar .nav > li > a.register, .navbar .nav > li > a.unregister.registered {
-    display: block;
+.breadcrumb > li a {
+    color: #E76321;
+}
+
+.breadcrumb > li a:hover {
+    color: #c54118;
+}
+
+.breadcrumb > li + li:before {
+  padding: 0 5px;
+  color: #777;
+  content: "/\00a0";
+}
+.breadcrumb > .active {
+  color: #aaa;
+}
+
+.btn-primary {
+    color: #eee;
+    background: #F87431;
+    border-color: #F87431;    
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open > .dropdown-toggle.btn-primary {
+  color: #eee;
+  background-color: #F87431;
+  border-color: #F87431;
+}
+
+.btn-primary:hover {
+    color: #F87431;
+    background: #eee;    
+    border-color: #eee;
+}
+
+.btn-table {    
+    padding: 0 10px 0 10px !important;    
+}
+
+.page-header {
+    margin-top: 0 !important;
+    margin-bottom: 10px !important;
+    border-color:#F87431;        
+}
+
+.active {
+    color: #F87431;
 }
 
 .hidden {
     display: none;
-}
-
-.navbar .nav > li > a.register {
-    color: #5cb85c;
-}
-
-.navbar .nav > li > a.unregister {
-    color: #d9534f;
 }
 
 .form-inline .timepicker input {
@@ -37,112 +101,11 @@ span.bold {
     font-weight: bold;
 }
 
-.bracket {    
-    overflow-x: auto;
-    white-space: nowrap;    
+.panel-body {
+    color: #333;
 }
 
-.page-header {        
-    border-color:#F87431;        
+.table-controls {    
+    margin-bottom: 10px;
 }
 
-.team {
-    float: left !important;    
-}
-
-.team-name {
-    min-width: 128px;
-}
-
-.team-delimiter {
-    width: 1px;
-    height: 5px;
-    float: left;
-}
-
-.winner {
-    background: green;
-}
-
-.round-box {
-    display: inline-block;        
-    float: none; 
-    min-width: 275px;    
-}
-
-.round-header {
-    display: inline-block;        
-    float: none; 
-    min-width: 275px;                    
-}
-
-.round1 {
-    display: inline-block;    
-    vertical-align: middle;    
-    float: none;    
-}
-
-.round2 {
-    display: inline-block;    
-    vertical-align: middle;    
-    float: none;       
-}
-
-.round3 {
-    display: inline-block;    
-    vertical-align: middle;    
-    float: none;        
-}
-
-.round4 {
-    display: inline-block;    
-    vertical-align: middle;    
-    float: none    
-}
-
-.match {    
-    height: 73px;   
-    width: 100%;
-    position:relative; 
-}
-
-.match > a {
-    display:none;
-}
-
-.match:hover > a {
-    display:block;
-}
-
-.round1 .match-delimiter {
-    width: 1px;
-    height: 25px;
-}
-
-.round2 div.match-delimiter {
-    width: 1px;
-    height: 123px;
-}
-
-.round3 div.match-delimiter {
-    width: 1px;
-    height: 317px;
-}
-
-.score-box-input {
-    display: inline-block;    
-    padding: 2px 6px !important;
-    margin: 0px !important;
-    font-size: 12px;
-    font-weight: 700;
-    line-height: 1;    
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    text-align:center;     
-    -moz-border-radius: 5px !important;
-    -webkit-border-radius: 5px !important;
-    border-radius: 5px !important;    
-    height:18px; 
-    width: 21px !important;
-}

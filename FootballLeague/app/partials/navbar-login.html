@@ -1,0 +1,29 @@
+﻿<nav ng-controller="identityController" class="main-header navbar navbar-default" role="navigation" fl-navbar>
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Table football league</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-right" collapse="navCollapsed">
+            <ul class="nav navbar-nav">
+                <li data-match-route="/tournaments"><a ng-class="{hidden: !registered}" class="" href="#/tournaments">Tournaments</a></li>                
+                <li data-match-route="/matches"><a ng-class="{hidden: !registered}" class="" href="#/matches">Matches</a></li>                                
+                <li data-match-route="/players"><a ng-class="{hidden: !registered}" class="" href="#/users">Players</a></li>
+                <li>
+                    <a ng-click="register()" ng-class="{registered: registered}" class="register">Join</a>
+                    <a ng-click="unregister()" ng-class="{registered: registered}" class="unregister">Leave</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>

@@ -1,28 +1,10 @@
 ﻿
-var footballApp = angular.module('footballApp', ['ngTable', 'ngResource', 'ngRoute', 'ui.bootstrap', 'multi-select', 'xeditable']);
+var footballApp = angular
+    .module('footballApp', ['ngTable', 'ngResource', 'ngRoute', 'ui.bootstrap', 'multi-select', 'xeditable', 'ui.router.state', 'ncy-angular-breadcrumb']);
 
 var users = 'api/users';
 var identity = 'api/identity';
 var match = 'api/matches';
-
-footballApp.config([
-    '$routeProvider',
-    function($routeProvider) {
-        $routeProvider.
-            when('/matches', {
-                templateUrl: 'app/match/matches.html',
-                controller: 'MatchesController'
-            })
-            .when('/tournament', {
-                templateUrl: 'app/tournament/tournament.html',
-                controller: 'flTournamentCtrl'
-            })
-            .otherwise({
-                templateUrl: 'app/user/users.html',
-                controller: 'userController'
-            });
-    }
-]);
 
 footballApp.run(function (editableOptions, editableThemes) {
     editableThemes.bs3.inputClass = 'input-sm';    

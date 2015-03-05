@@ -1,0 +1,39 @@
+﻿<div ng-controller="flTournamentsCtrl" class="row">
+    <div class="page-header">
+        <ul class="breadcrumb" ncy-breadcrumb>
+        </ul>        
+    </div>   
+    <div>
+        <div class="pull-left form-inline table-controls">
+            <label for="search">Search: </label>
+            <input class="form-control" name="search" type="text" />
+            <button class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
+        </div>
+        <div class="pull-right table-controls"><a class="btn btn-primary" href="#/tournaments.create">Create new</a></div>
+    </div> 
+    <table ng-table="tableParams" class="table">        
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Teams</th>
+                    <th>Played</th>
+                    <th>Winner</th>
+                    <th style="text-align:right">Action</th>
+                </tr>                
+            </thead>
+            <tbody>
+                <tr ng-repeat="tournament in tournaments">
+                    <td data-title="'Name'" ng-bind="tournament.Name"></td>
+                    <td data-title="'Type'" ng-bind="tournament.Type"></td>
+                    <td data-title="'Teams'" ng-bind="tournament.Teams"></td>
+                    <td data-title="'Played'" ng-bind="tournament.MatchesPlayed"></td>
+                    <td data-title="'Winner'">{{tournament.Winner || ''}}</td>
+                    <td data-title="'Action'" style="text-align: right;"> 
+                        <span ng-if="tournament.State === 'inProgress'"><a class="btn btn-primary btn-table" href="#/tournaments.detail">view</a></span>
+                        <span ng-if="tournament.State === 'registration'"><a class="btn btn-primary btn-table" href="#/tournaments.join">join</a></span>
+                    </td>  
+                </tr>
+            </tbody>                  
+    </table>
+</div>

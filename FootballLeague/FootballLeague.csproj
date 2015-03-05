@@ -151,28 +151,46 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\identity.js" />
+    <Content Include="app\main\flNavbar.js" />
+    <Content Include="app\main\router.js" />
     <Content Include="app\match\match.js" />
     <Content Include="app\match\matches.html" />
     <Content Include="app\match\matches.js" />
     <Content Include="app\match\newMatch.js" />
-    <Content Include="app\tournament\bracket-template.html" />
-    <Content Include="app\tournament\flTournamentCtrl.js" />
-    <Content Include="app\tournament\match-template.html" />
+    <Content Include="app\partials\navbar-login.html" />
+    <Content Include="app\partials\scripts.html" />
+    <Content Include="app\results\flResults.js" />
+    <Content Include="app\results\results.html" />
+    <Content Include="app\services\identity.js" />
+    <Content Include="app\tournament\flTournamentCreateCtrl.js" />
+    <Content Include="app\tournament\flTournamentJoinCtrl.js" />
+    <Content Include="app\tournament\flTournamentsCtrl.js" />
+    <Content Include="app\tournament\templates\bracket-template.html" />
+    <Content Include="app\tournament\flTournamentDetailCtrl.js" />
+    <Content Include="app\tournament\templates\match-template.html" />
     <Content Include="app\tournament\model.js" />
-    <Content Include="app\tournament\round-template.html" />
-    <Content Include="app\tournament\team-template.html" />
-    <Content Include="app\tournament\tournamentRenderer.js" />
-    <Content Include="app\tournament\tournament.html" />
+    <Content Include="app\tournament\templates\round-template.html" />
+    <Content Include="app\tournament\templates\team-template.html" />
+    <Content Include="app\tournament\tournamentCreate.html" />
+    <Content Include="app\tournament\tournamentDetail.html" />
+    <Content Include="app\tournament\tournamentJoin.html" />
+    <Content Include="app\tournament\tournaments.html" />
+    <Content Include="app\user\flIdentity.js" />
     <Content Include="app\user\user.js" />
     <Content Include="app\user\users.html" />
     <Content Include="app\app.js" />
     <Content Include="App_Data\FootballLeague.Models.FootballContext.mdf" />
     <Content Include="Content\angular-multi-select.css" />
+    <Content Include="Content\navbar.css" />
     <Content Include="Content\ng-table.css" />
+    <Content Include="Content\tournamentBracket.css" />
+    <Content Include="Content\tournaments.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Images\main-background.jpg" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
+    <Content Include="Scripts\angular-breadcrumb.min.js" />
     <Content Include="Scripts\angular-cookies.js" />
     <Content Include="Scripts\angular-cookies.min.js" />
     <Content Include="Scripts\angular-csp.css" />
@@ -189,12 +207,16 @@
     <Content Include="Scripts\angular-scenario.js" />
     <Content Include="Scripts\angular-touch.js" />
     <Content Include="Scripts\angular-touch.min.js" />
+    <Content Include="Scripts\angular-ui-router.js" />
+    <Content Include="Scripts\angular-ui-router.min.js" />
     <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.js" />
     <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.min.js" />
     <Content Include="Scripts\angular-ui\ui-bootstrap.js" />
     <Content Include="Scripts\angular-ui\ui-bootstrap.min.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\i18n\angular-locale_af-na.js" />
     <Content Include="Scripts\i18n\angular-locale_af-za.js" />
     <Content Include="Scripts\i18n\angular-locale_af.js" />
@@ -481,6 +503,7 @@
     <Content Include="Scripts\ng-table.js" />
     <Content Include="Scripts\underscore.js" />
     <Content Include="Scripts\underscore.min.js" />
+    <Content Include="Scripts\xeditable.min.js" />
     <Content Include="Scripts\_intellisense.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
@@ -500,8 +523,6 @@
   <ItemGroup>
     <Folder Include="Angular\" />
     <Folder Include="app\repositories\" />
-    <Folder Include="app\services\" />
-    <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -1,6 +1,6 @@
 ﻿<div class="row">
     <ng-include src="'app/match/newMatch.html'"></ng-include>
-    <table ng-table="tableParams" class="table table-striped">
+    <table ng-table="tableParams" class="table table-hover">
         <tr ng-repeat="match in $data">
             <td data-title="'Planned time'" sortable="'PlannedTime'">{{match.PlannedTime}}</td>
             <td data-title="'Created by'" sortable="'Creator.LastName'">{{match.Creator.FirstName}} {{match.Creator.LastName}}</td>

@@ -9,53 +9,40 @@
     <link href="~/Content/angular-multi-select.css" rel="stylesheet" />
     <link href="~/Content/xeditable.css" rel="stylesheet" />
     <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/navbar.css" rel="stylesheet" />
+    <link href="~/Content/tournamentBracket.css" rel="stylesheet" />
 </head>
-<body>
-    <nav ng-controller="identityController" class="navbar navbar-default" role="navigation">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Table football league</a>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" collapse="navCollapsed">
-                <ul class="nav navbar-nav">
-                    <li><a ng-click="register()" ng-class="{registered: registered}" class="register">Join</a>
-                        <a ng-click="unregister()" ng-class="{registered: registered}" class="unregister">Leave</a></li>
-                    <li><a ng-class="{hidden: !registered}" class="" href="#/matches">Matches</a></li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container-fluid -->
-    </nav>
-    <div class="container">
-        <div ng-view></div>
+<body>             
+    <ng-include src="'/app/partials/navbar-login.html'"></ng-include>
+    <div class="container">        
+        <div ui-view></div>
     </div>
-    <script src="~/Scripts/jquery-2.1.1.min.js"></script>    
+
+    <script src="~/Scripts/jquery-2.1.1.min.js"></script>
     <script src="~/Scripts/underscore.js"></script>
-    <script src="~/Scripts/angular.js"></script>    
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/angular.js"></script>
     <script src="~/Scripts/ng-table.js"></script>
     <script src="~/Scripts/xeditable.min.js"></script>
     <script src="~/Scripts/angular-route.min.js"></script>
     <script src="~/Scripts/angular-resource.min.js"></script>
     <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
     <script src="~/Scripts/angular-multi-select.js"></script>
+    <script src="~/Scripts/angular-ui-router.min.js"></script>
+    <script src="~/Scripts/angular-breadcrumb.min.js"></script>
     <script src="~/Scripts/jqSimpleConnect-1.0.min.js"></script>
-    <script src="~/app/tournament/model.js"></script>
+    <script src="~/app/tournament/model.js"></script>    
     <script src="~/app/app.js"></script>
+    <script src="~/app/main/router.js"></script>
+    <script src="~/app/main/flNavbar.js"></script>
     <script src="~/app/identity.js"></script>
     <script src="~/app/match/matches.js"></script>
     <script src="~/app/match/newMatch.js"></script>
     <script src="~/app/user/user.js"></script>
-    <script src="~/app/tournament/flTournamentCtrl.js"></script>
+    <script src="~/app/tournament/flTournamentsCtrl.js"></script>
+    <script src="~/app/tournament/flTournamentDetailCtrl.js"></script>
+    <script src="~/app/tournament/flTournamentJoinCtrl.js"></script>
+    <script src="~/app/tournament/flTournamentCreateCtrl.js"></script>
 </body>
 </html>
 

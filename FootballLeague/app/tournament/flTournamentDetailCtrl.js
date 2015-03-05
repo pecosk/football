@@ -1,4 +1,4 @@
-﻿footballApp.controller("flTournamentCtrl", function ($scope, $resource) {
+﻿footballApp.controller("flTournamentDetailCtrl", function ($scope, $resource) {
     $scope.bracket = new Bracket();
 }).directive("flMatch", function () {
     return {
@@ -23,7 +23,7 @@
                     $scope.match.sets.map(function (set) { return set.scoreTeam2; });
             }
         },
-        templateUrl: 'app/tournament/match-template.html'
+        templateUrl: 'app/tournament/templates/match-template.html'
     }
 }).directive("ngBracket", function () {
     return {
@@ -32,7 +32,7 @@
         scope: {
             bracket: "=bracket"
         },
-        templateUrl: 'app/tournament/bracket-template.html'
+        templateUrl: 'app/tournament/templates/bracket-template.html'
     }
 }).directive("flRound", function () {
     return {
@@ -51,7 +51,7 @@
                 return index !== $scope.round.matches.length - 1;
             }
         },
-        templateUrl: 'app/tournament/round-template.html'
+        templateUrl: 'app/tournament/templates/round-template.html'
     }
 }).directive("flTeam", function () {
     return {
@@ -69,6 +69,6 @@
                 return teamNumber === '1' ? score.scoreTeam1 : score.scoreTeam2;
             }
         },
-        templateUrl: 'app/tournament/team-template.html'
+        templateUrl: 'app/tournament/templates/team-template.html'
     }
 });
