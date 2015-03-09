@@ -5,10 +5,13 @@
     using System.Web.Script.Serialization;    
 
     public class Team
-    {
+    {    
+        public Team()
+        {                        
+        }
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        
+        public int Id { get; set; }               
+
         public User Member1 { get; set; }
         
         public User Member2 { get; set; }
@@ -68,6 +71,6 @@
                 return false;
 
             return true;
-        }
+        } 
     }
 }

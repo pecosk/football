@@ -1,17 +1,19 @@
-﻿<div ng-controller="flTournamentsCtrl" class="row">
+﻿<div ng-controller="flTournamentsCtrl">
     <div class="page-header">
         <ul class="breadcrumb" ncy-breadcrumb>
         </ul>        
     </div>   
-    <div>
+    <div class="col-lg-12">
         <div class="pull-left form-inline table-controls">
             <label for="search">Search: </label>
             <input class="form-control" name="search" type="text" />
             <button class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
         </div>
+        <button class="pull-right btn btn-primary table-controls" ng-click="refresh()"><span class="glyphicon glyphicon-refresh"></span></button>
         <div class="pull-right table-controls"><a class="btn btn-primary" href="#/tournaments.create">Create new</a></div>
     </div> 
-    <table ng-table="tableParams" class="table">        
+    <div class="col-lg-12">
+        <table ng-table="tableParams" class="table">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -20,20 +22,22 @@
                     <th>Played</th>
                     <th>Winner</th>
                     <th style="text-align:right">Action</th>
-                </tr>                
+                </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="tournament in tournaments">
                     <td data-title="'Name'" ng-bind="tournament.Name"></td>
-                    <td data-title="'Type'" ng-bind="tournament.Type"></td>
-                    <td data-title="'Teams'" ng-bind="tournament.Teams"></td>
+                    <td data-title="'Type'" ng-bind="tournament.EliminationType | toEliminationTypeName"></td>
+                    <td data-title="'Teams'" ng-bind="tournament.NumberOfTeams"></td>
                     <td data-title="'Played'" ng-bind="tournament.MatchesPlayed"></td>
-                    <td data-title="'Winner'">{{tournament.Winner || ''}}</td>
-                    <td data-title="'Action'" style="text-align: right;"> 
-                        <span ng-if="tournament.State === 'inProgress'"><a class="btn btn-primary btn-table" href="#/tournaments.detail">view</a></span>
-                        <span ng-if="tournament.State === 'registration'"><a class="btn btn-primary btn-table" href="#/tournaments.join">join</a></span>
-                    </td>  
+                    <td data-title="'Winner'" ng-bind="tournament.Winner || '' "></td>
+                    <td style="text-align: right;">
+                        <span ng-if="tournament.State === 0"><a class="btn btn-primary btn-table" ui-sref="tournaments-join({id: tournament.Id})">registration</a></span>
+                        <span ng-if="tournament.State === 0 && isFull(tournament)"><a class="btn btn-primary btn-table" ng-click="start(tournament)">start</a></span>                        
+                        <span ng-if="tournament.State === 1"><a class="btn btn-primary btn-table" ui-sref="tournaments-detail({id: tournament.Id})">view</a></span>
+                    </td>
                 </tr>
-            </tbody>                  
-    </table>
-</div>
+            </tbody>
+        </table>
+        </div>
+    </div>

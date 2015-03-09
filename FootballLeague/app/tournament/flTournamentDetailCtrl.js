@@ -1,5 +1,14 @@
-﻿footballApp.controller("flTournamentDetailCtrl", function ($scope, $resource) {
-    $scope.bracket = new Bracket();
+﻿footballApp.controller("flTournamentDetailCtrl", function ($scope, $resource, $stateParams) {
+    var User = $resource('api/users');
+    var Tournament = $resource('api/tournament/:id');
+    var TournamentTeam = $resource('api/tournamentteam/:id');
+        
+    var tournament;
+    $scope.tournamentPromise = Tournament.get({ id: $stateParams.id }, function (data) {
+        tournament = data;
+        $scope.bracket = new Bracket(tournament.Matches, tournament.Size);
+        $scope.isLoaded = true;
+    }).$promise;    
 }).directive("flMatch", function () {
     return {
         restrict: 'EA',
@@ -19,8 +28,8 @@
             }
             $scope.getScores = function (index) {
                 return index === 1 ?
-                    $scope.match.sets.map(function (set) { return set.scoreTeam1; }) :
-                    $scope.match.sets.map(function (set) { return set.scoreTeam2; });
+                    $scope.match.sets.map(function (set) { return set.ScoreTeam1; }) :
+                    $scope.match.sets.map(function (set) { return set.ScoreTeam2; });
             }
         },
         templateUrl: 'app/tournament/templates/match-template.html'

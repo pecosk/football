@@ -1,7 +1,6 @@
 ﻿
 .bracket {    
-    overflow-x: auto;
-    white-space: nowrap;    
+    overflow-x: auto;    
 }
 
 .team {
@@ -25,37 +24,39 @@
 .round-box {
     display: inline-block;        
     float: none; 
+    padding-left: 0;    
     min-width: 275px;    
 }
 
 .round-header {
     display: inline-block;        
     float: none; 
+    padding-left: 0;    
     min-width: 275px;                    
 }
 
 .round1 {
     display: inline-block;    
     vertical-align: middle;    
-    float: none;    
+    float: none;            
 }
 
 .round2 {
     display: inline-block;    
     vertical-align: middle;    
-    float: none;       
+    float: none;           
 }
 
 .round3 {
     display: inline-block;    
     vertical-align: middle;    
-    float: none;        
+    float: none;            
 }
 
 .round4 {
     display: inline-block;    
     vertical-align: middle;    
-    float: none    
+    float: none;    
 }
 
 .match {    

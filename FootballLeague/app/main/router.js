@@ -23,7 +23,7 @@
             }
         })
         .state('tournaments-detail', {
-            url: '/tournaments.detail',
+            url: '/tournaments.detail?id',
             templateUrl: 'app/tournament/tournamentDetail.html',
             ncyBreadcrumb: {
                 parent: 'tournaments',
@@ -32,12 +32,12 @@
             }
         })
         .state('tournaments-join', {
-            url: '/tournaments.join',
-            templateUrl: 'app/tournament/tournamentJoin.html',
+            url: '/tournaments.join?id',
+            templateUrl: 'app/tournament/tournamentJoin.html',            
             ncyBreadcrumb: {
                 parent: 'tournaments',
-                label: 'join',
-                controller: 'flTournamentJoinCtrl'
+                label: 'join',                
+                controller: 'flTournamentJoinCtrl'                
             }
         })
         .state('tournaments-create', {

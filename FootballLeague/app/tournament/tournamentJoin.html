@@ -1,34 +1,40 @@
-﻿<div class="row" ng-controller="flTournamentJoinCtrl">
+﻿<div ng-controller="flTournamentJoinCtrl">
     <div class="page-header">
         <ul class="breadcrumb" ncy-breadcrumb></ul>
     </div>
-    <form ng-submit="submit()" class="form-inline">
-        <div class="form-group">            
-                <label for="teamName">Team Name: </label>
-                <input name="teamName" type="text" class="form-control" ng-required="true" />                            
-        </div>        
-        <div class="form-group">
-            <div multi-select input-model="users" output-model="selectedUsers" button-label="Name" item-label="FirstName LastName" tick-property="ticked" max-labels="1" default-label="Select partner" />
-        </div>
-        <button type="submit" name="submit" class="btn btn-primary">
-            Join
+    <div class="col-lg-12" cg-busy="{promise:tournamentPromise,message:'Loading',backdrop:false,delay:0,minDuration:300}">                
+        <form ng-show="isLoaded && !isRegistered()" ng-submit="submit()" class="form-inline" style="margin-bottom:15px;">
+            <input name="teamName" ng-model="teamName" type="text" class="form-control" ng-required="true" placeholder="Team Name" />
+            <select name="partner" class="form-control"
+                    ng-model="selectedPartner"
+                    ng-options="user as user.FirstName + ' ' + user.LastName for user in users | existingUsers:this"
+                    required>
+                <option value="">Select partner</option>
+            </select>
+            <!--<div multi-select input-model="users" output-model="selectedUsers" button-label="Name" item-label="FirstName LastName" tick-property="ticked" max-labels="1" default-label="Select partner" />-->
+            <button type="submit" name="submit" class="btn btn-primary">
+                Join
+            </button>
+        </form>
+        <button ng-show="isLoaded && isRegistered()" class="btn btn-primary pull-right" ng-click="leave()">
+            Leave
         </button>
-    </form>
-    <div>
-        <h3>name: Street Fighter</h3>
-        <h3>type: single elimination</h3>
-        <h3>teams:</h3>
-        <div ng-repeat="team in teams">
+        <div ng-show="isLoaded" style="margin-bottom:15px;">
+            <div>name: {{tournament.Name}}</div>
+            <div>type: {{tournament.EliminationType | toEliminationTypeName}}</div>
+            <div>teams: {{tournament.Teams.length + '/' + tournament.Size}}</div>
+        </div>
+        <div ng-repeat="team in tournament.Teams">                            
             <div class="col-lg-3">
                 <div class="panel panel-default">
-                    <div class="panel-heading" ng-bind="team.name"></div>
+                    <div class="panel-heading" ng-bind="team.TeamName"></div>
                     <div class="panel-body">
-                        <div class="team-member" ng-bind="team.player1"></div>
-                        <hr style="background-color:black; height: 1px;margin:10px 0; padding:0;"/>
-                        <div class="team-member" ng-bind="team.player2"></div>
+                        <div class="team-member" ng-bind="team.Member1.FirstName + ' ' + team.Member1.LastName"></div>
+                        <hr style="background-color:#333; height: 1px;margin:10px 0; padding:0;" />
+                        <div class="team-member" ng-bind="team.Member2.FirstName + ' ' + team.Member2.LastName"></div>
                     </div>
                 </div>
             </div>
-        </div>        
+        </div>
     </div>
 </div>

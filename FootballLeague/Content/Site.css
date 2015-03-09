@@ -76,8 +76,9 @@ input::-webkit-inner-spin-button {
 }
 
 .page-header {
-    margin-top: 0 !important;
-    margin-bottom: 10px !important;
+    margin-top: 0 !important;    
+    margin-left: 15px;
+    margin-right: 15px;
     border-color:#F87431;        
 }
 
@@ -106,6 +107,6 @@ span.bold {
 }
 
 .table-controls {    
-    margin-bottom: 10px;
+    margin: 0 5px 10px 0px;
 }
 

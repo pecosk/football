@@ -1,36 +1,26 @@
-﻿<div class="row" ng-controller="flTournamentCreateCtrl">
+﻿<div ng-controller="flTournamentCreateCtrl">
     <div class="page-header">
         <ul class="breadcrumb" ncy-breadcrumb></ul>
     </div>
     <div class="col-lg-4">
-        <form class="form">
+        <form class="form" ng-submit="submit()">
             <div class="form-group">
-                <label for="exampleInputName2">Name: </label>
-                <input type="text" class="form-control" id="exampleInputName2" placeholder="Jane Doe">
+                <label for="name">Name: </label>
+                <input type="text" class="form-control" name="name" placeholder="Tournament name" ng-model="tournament.name" ng-required/>
             </div>
             <div class="form-group">
                 <label for="type">Number of teams: </label>
-                <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-default">
-                        <input type="radio" id="q156" name="type[1]" value="Single" checked="checked" /> 4
-                    </label>
-                    <label class="btn btn-default">
-                        <input type="radio" id="q157" name="type[2]" value="Double" /> 8
-                    </label>
-                    <label class="btn btn-default active">
-                        <input type="radio" id="q157" name="type[2]" value="Double" /> 16
-                    </label>
-                </div>
+                <div class="btn-group">
+                    <label class="btn btn-default" ng-model="tournament.size" btn-radio="'4'">4</label>
+                    <label class="btn btn-default" ng-model="tournament.size" btn-radio="'8'">8</label>
+                    <label class="btn btn-default" ng-model="tournament.size" btn-radio="'16'">16</label>
+                </div>                                
             </div>
             <div class="form-group">
                 <label for="type">Type of elimination: </label>
-                <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-default active">
-                        <input type="radio" id="q156" name="type[1]" value="Single" checked="checked" /> Single
-                    </label>
-                    <label class="btn btn-default">
-                        <input type="radio" id="q157" name="type[2]" value="Double" /> Double
-                    </label>
+                <div class="btn-group">
+                    <label class="btn btn-default" ng-model="tournament.eliminationType" btn-radio="'Single'">Single</label>
+                    <label class="btn btn-default" ng-model="tournament.eliminationType" btn-radio="'Double'">Double</label>                    
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">Create tournament</button>

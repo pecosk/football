@@ -1,10 +1,8 @@
 ﻿<div ng-controller="flTournamentDetailCtrl">
     <div class="page-header">
         <ul class="breadcrumb" ncy-breadcrumb></ul>
-    </div>    
-    <div class="row">
-        <div id="tournament">            
-            <ng-bracket bracket="bracket"></ng-bracket>            
-        </div>
+    </div>        
+    <div class="col-lg-12" cg-busy="{promise:tournamentPromise,message:'Loading',backdrop:false,delay:0,minDuration:300}" id=" tournament">
+        <ng-bracket ng-show="isLoaded" bracket="bracket"></ng-bracket>
     </div>    
 </div>

@@ -51,8 +51,11 @@ namespace FootballLeague
             builder.Register(c => new FootballContext()).AsSelf().InstancePerApiRequest();
             builder.Register(c => new UsersRepository(c.Resolve<FootballContext>())).As<IUsersRepository>().InstancePerApiRequest();
             builder.Register(c => new MatchesRepository(c.Resolve<FootballContext>())).As<IMatchesRepository>().InstancePerApiRequest();
+            builder.Register(c => new TournamentRepository(c.Resolve<FootballContext>())).As<ITournamentRepository>().InstancePerApiRequest();
+            builder.Register(c => new TournamentTeamRepository(c.Resolve<FootballContext>())).As<ITournamentTeamRepository>().InstancePerApiRequest();
             builder.Register(c => new UsersADSearcher()).As<IUsersADSearcher>().SingleInstance();
             builder.Register(c => new EmailNotifier()).As<INotifier>().SingleInstance();
+
         }
     }
 }
