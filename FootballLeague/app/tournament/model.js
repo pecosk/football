@@ -9,14 +9,21 @@
     }
 }
 
+function TeamPlaceholder() {
+    return {
+        TeamName: 'TBD'
+    }
+}
+
 function Bracket(matches, size) {    
     var rounds = [];
     var firstRoundSize = size / 2;
+    var numberOfMatches = size - 1;
     var firstRoundMatches = matches.slice(0, firstRoundSize);
 
     var previousRoundSize = 0;
     var nextRoundSize = size / 2;
-    while (nextRoundSize > 1) {
+    while (nextRoundSize >= 1) {
         rounds.push(new Round(matches.slice(previousRoundSize, nextRoundSize)));
         previousRoundSize = nextRoundSize;
         nextRoundSize = nextRoundSize / 2;

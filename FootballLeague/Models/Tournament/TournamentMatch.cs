@@ -13,15 +13,10 @@ namespace FootballLeague.Models.Tournament
         {
             Team1 = new TournamentTeam();
             Team2 = new TournamentTeam();
-            Sets = new List<TournamentSet>
-            {
-                new TournamentSet(),
-                new TournamentSet(),
-                new TournamentSet()
-            };
+            Sets = new List<TournamentSet>();            
         }
 
-        public TournamentMatch(TournamentTeam team1, TournamentTeam team2) : this()
+        public TournamentMatch(TournamentTeam team1, TournamentTeam team2)
         {
             Team1 = team1;
             Team2 = team2;            

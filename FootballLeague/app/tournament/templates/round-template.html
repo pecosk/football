@@ -1,4 +1,4 @@
-﻿<div ng-class="getClass() col-lg-3 col-md-4 col-sm-6 col-xs-8">
+﻿<div ng-class="getClass()" class="col-lg-3 col-md-4 col-sm-6 col-xs-8">
     <div ng-repeat="match in round.matches">
         <fl-match match="match" round-index="roundIndex" match-index="$index + 1"></fl-match>
         <div ng-show="isVisible($index)" class="match-delimiter pull-left"></div>

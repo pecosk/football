@@ -21,6 +21,10 @@
     background: green;
 }
 
+.looser {
+    background: #6F4242;
+}
+
 .round-box {
     display: inline-block;        
     float: none; 
@@ -38,7 +42,8 @@
 .round1 {
     display: inline-block;    
     vertical-align: middle;    
-    float: none;            
+    float: none;      
+    padding-left: 0px;      
 }
 
 .round2 {

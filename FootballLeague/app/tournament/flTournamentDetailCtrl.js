@@ -48,8 +48,8 @@
         restrict: 'EA',
         replace: true,
         scope: {
-            round: "=round",
-            roundIndex: "=roundindex"
+            round: "=",
+            roundIndex: "@"
         },
         controller: function ($scope) {
             $scope.getClass = function () {
@@ -74,8 +74,14 @@
             editState: "="
         },
         controller: function($scope) {
-            $scope.getScore = function (teamNumber) {
-                return teamNumber === '1' ? score.scoreTeam1 : score.scoreTeam2;
+            $scope.isWinner = function (teamNumber, score) {
+                if(teamNumber === 1 && score.Team1Score > score.Team2Score ||
+                   teamNumber === 2 && score.Team1Score < score.Team2Score) {
+                    return "winner";
+                }
+                else if (score.Team1Score !== score.Team2Score) {
+                    return "looser";
+                }
             }
         },
         templateUrl: 'app/tournament/templates/team-template.html'

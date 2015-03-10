@@ -25,6 +25,7 @@
                 .Include(t => t.Teams.Select(x => x.Member1))
                 .Include(t => t.Teams.Select(x => x.Member2))
                 .Include(t => t.Matches)
+                .Include(t => t.Matches.Select(x => x.Sets))
                 .FirstOrDefault(m => m.Id == id);
         }
 
@@ -85,7 +86,7 @@
         public void Save(Tournament tournament)
         {
             tournament.Matches.ForEach(x => _context.TournamentMatches.Add(x));            
-            tournament.Matches.ForEach(x => x.Sets.ForEach(y => _context.TournamentSets.Add(y)));            
+            //tournament.Matches.ForEach(x => x.Sets.ForEach(y => _context.TournamentSets.Add(y)));            
             _context.Entry(tournament).State = EntityState.Modified;
             _context.SaveChanges();
         }

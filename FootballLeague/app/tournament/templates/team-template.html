@@ -1,15 +1,16 @@
 ﻿<div id="{{'round'+roundIndex + '_team' + team.id}}" class="team">    
     <div ng-hide="editState" class="input-group">
         <div class="form-control team-name" ng-bind="team.TeamName"></div>
-        <span class="input-group-addon cols-xs-4" ng-repeat="score in scores">
-            <span class="badge pull-right winner">{{ index === '1' ? score.ScoreTeam1 : score.ScoreTeam2 }}</span>
+        <span class="input-group-addon cols-xs-4" ng-repeat="score in scores">            
+            <span ng-class="isWinner(1, score)" class="badge pull-right" ng-if="index === '1'" ng-bind="score.Team1Score" type="number" min="0" max="8"></span>
+            <span ng-class="isWinner(2, score)" class="badge pull-right" ng-if="index === '2'" ng-bind="score.Team2Score" type="number" min="0" max="8"></span>
         </span>
     </div>       
     <div ng-show="editState" class="input-group">
         <div class="form-control team-name" ng-bind="team.TeamName"></div>
         <span class="input-group-addon" ng-repeat="score in scores">
-            <input class="form-control pull-right score-box-input" ng-if="index === '1'" ng-model="score.scoreTeam1" type="number" min="0" max="8" />
-            <input class="form-control pull-right score-box-input" ng-if="index === '2'" ng-model="score.scoreTeam2" type="number" min="0" max="8" />
+            <input class="form-control pull-right score-box-input" ng-if="index === '1'" ng-model="score.Team1Score" type="number" min="0" max="8" />
+            <input class="form-control pull-right score-box-input" ng-if="index === '2'" ng-model="score.Team2Score" type="number" min="0" max="8" />
         </span>
     </div>    
 </div>
