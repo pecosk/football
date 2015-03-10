@@ -25,25 +25,16 @@
     background: #6F4242;
 }
 
-.round-box {
-    display: inline-block;        
-    float: none; 
-    padding-left: 0;    
-    min-width: 275px;    
-}
-
 .round-header {
     display: inline-block;        
-    float: none; 
-    padding-left: 0;    
+    float: none;    
     min-width: 275px;                    
 }
 
 .round1 {
     display: inline-block;    
     vertical-align: middle;    
-    float: none;      
-    padding-left: 0px;      
+    float: none;              
 }
 
 .round2 {
@@ -65,8 +56,7 @@
 }
 
 .match {    
-    height: 73px;   
-    width: 100%;
+    height: 73px;       
     position:relative; 
 }
 
@@ -91,6 +81,10 @@
 .round3 div.match-delimiter {
     width: 1px;
     height: 317px;
+}
+
+.input-group-addon {
+    padding: 6px 6px;
 }
 
 .score-box-input {

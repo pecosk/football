@@ -128,6 +128,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IdentityController.cs" />
     <Compile Include="Controllers\MatchesController.cs" />
+    <Compile Include="Controllers\TournamentMatchController.cs" />
     <Compile Include="Controllers\TournamentTeamController.cs" />
     <Compile Include="Controllers\TournamentController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
@@ -139,20 +140,31 @@
     <Compile Include="Migrations\201503092043460_InitialCreate.Designer.cs">
       <DependentUpon>201503092043460_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201503101315264_TournamentSet.IsPlayed.cs" />
+    <Compile Include="Migrations\201503101315264_TournamentSet.IsPlayed.Designer.cs">
+      <DependentUpon>201503101315264_TournamentSet.IsPlayed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201503101613104_AddedTrounamentRound.cs" />
+    <Compile Include="Migrations\201503101613104_AddedTrounamentRound.Designer.cs">
+      <DependentUpon>201503101613104_AddedTrounamentRound.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DbInitializer.cs" />
     <Compile Include="Models\FootballContext.cs" />
     <Compile Include="Models\Match.cs" />
     <Compile Include="Models\Repositories\IMatchesRepository.cs" />
+    <Compile Include="Models\Repositories\ITournamentMatchRepository.cs" />
     <Compile Include="Models\Repositories\ITournamentRepository.cs" />
     <Compile Include="Models\Repositories\IUsersRepository.cs" />
     <Compile Include="Models\Repositories\MatchesRepository.cs" />
+    <Compile Include="Models\Repositories\TournamentMatchRepository.cs" />
     <Compile Include="Models\Repositories\TournamentRepository.cs" />
     <Compile Include="Models\Repositories\TournamentTeamRepository.cs" />
     <Compile Include="Models\Repositories\UsersRepository.cs" />
     <Compile Include="Models\Result.cs" />
     <Compile Include="Models\Set.cs" />
     <Compile Include="Models\Team.cs" />
+    <Compile Include="Models\Tournament\TournamentRound.cs" />
     <Compile Include="Models\Tournament\TournamentSet.cs" />
     <Compile Include="Models\Tournament\Tournament.cs" />
     <Compile Include="Models\Tournament\EliminationType.cs" />
@@ -588,6 +600,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201503092043460_InitialCreate.resx">
       <DependentUpon>201503092043460_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503101315264_TournamentSet.IsPlayed.resx">
+      <DependentUpon>201503101315264_TournamentSet.IsPlayed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201503101613104_AddedTrounamentRound.resx">
+      <DependentUpon>201503101613104_AddedTrounamentRound.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

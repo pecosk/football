@@ -10,23 +10,27 @@ namespace FootballLeague.Models.Tournament
     public class TournamentMatch
     {
         public TournamentMatch()
-        {
-            Team1 = new TournamentTeam();
-            Team2 = new TournamentTeam();
+        {           
             Sets = new List<TournamentSet>();            
         }
 
-        public TournamentMatch(TournamentTeam team1, TournamentTeam team2)
+        public TournamentMatch(TournamentTeam team1, TournamentTeam team2, int matchNumber)
         {
             Team1 = team1;
-            Team2 = team2;            
+            Team2 = team2;
+            MatchNumber = matchNumber;
+            Sets = new List<TournamentSet>();            
         }
 
         public int Id { get; set; }
-        public virtual Tournament Tournament { get; set; }
-        public virtual TournamentTeam Team1 { get; set; }
-        public virtual TournamentTeam Team2 { get; set; }
-        public virtual List<TournamentSet> Sets { get; set; }
+
+        public int MatchNumber { get; set; }
+
+        public TournamentRound Round { get; set; }
+
+        public TournamentTeam Team1 { get; set; }
+        public TournamentTeam Team2 { get; set; }
+        public List<TournamentSet> Sets { get; set; }
 
         public bool Contains(User user)
         {
@@ -39,6 +43,25 @@ namespace FootballLeague.Models.Tournament
             if (Team2.Id == teamId) return Team2;
 
             return null;
-        }        
+        }
+
+        internal static TournamentMatch CreateEmptyMatch(int matchNumber)
+        {
+            var match = new TournamentMatch
+            {
+                MatchNumber = matchNumber
+            };
+            match.Sets.Add(new TournamentSet());
+            match.Sets.Add(new TournamentSet());
+            match.Sets.Add(new TournamentSet());
+
+            return match;
+        }
+
+        internal TournamentTeam GetWinner()
+        {
+            var numberOfWins = Sets.Count(x => x.Team1Score > x.Team2Score);
+            return numberOfWins >= 2 ? Team1 : Team2;
+        }
     }
 }

@@ -17,6 +17,7 @@ namespace FootballLeague.Models
         public virtual IDbSet<Set> Sets { get; set; }
 
         public virtual IDbSet<Tournament.Tournament> Tournaments { get; set; }
+        public virtual IDbSet<Tournament.TournamentRound> TournamentRounds { get; set; }
         public virtual IDbSet<Tournament.TournamentMatch> TournamentMatches { get; set; }
         public virtual IDbSet<Tournament.TournamentTeam> TournamentTeams { get; set; }
         public virtual IDbSet<Tournament.TournamentSet> TournamentSets { get; set; }
@@ -41,8 +42,11 @@ namespace FootballLeague.Models
             modelBuilder.Entity<Tournament.Tournament>().HasKey(t => t.Id).Property(t => t.Name).IsRequired();
             modelBuilder.Entity<Tournament.Tournament>().HasOptional(t => t.Teams);
 
+            modelBuilder.Entity<Tournament.TournamentRound>().HasKey(m => m.Id);
+            modelBuilder.Entity<Tournament.TournamentRound>().HasRequired(m => m.Tournament).WithMany(t => t.Rounds);            
+
             modelBuilder.Entity<Tournament.TournamentMatch>().HasKey(m => m.Id);
-            modelBuilder.Entity<Tournament.TournamentMatch>().HasRequired(m => m.Tournament).WithMany(t => t.Matches);
+            modelBuilder.Entity<Tournament.TournamentMatch>().HasRequired(m => m.Round).WithMany(t => t.Matches);
             modelBuilder.Entity<Tournament.TournamentMatch>().HasOptional(m => m.Team1);
             modelBuilder.Entity<Tournament.TournamentMatch>().HasOptional(m => m.Team2);
 

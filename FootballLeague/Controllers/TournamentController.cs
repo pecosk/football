@@ -44,25 +44,13 @@
         public void Put(int id, [FromUri]string state)
         {
             var tournament = _tournamentRepository.GetById(id);
-            tournament.State = (TournamentState)Enum.Parse(typeof(TournamentState), state);
-            if (tournament.State == TournamentState.InProgress)
+            var newState = (TournamentState)Enum.Parse(typeof(TournamentState), state);
+            if (newState == TournamentState.InProgress)
             {
-                CreateMatches(tournament);
+                tournament.Start();           
             }
-            _tournamentRepository.Save(tournament);
-        }
 
-        private void CreateMatches(Tournament tournament)
-        {
-            var pairs = tournament.Teams.Select((value, index) => new { value, index } ).GroupBy(x => x.index / 2, x => x.value);
-            tournament.Matches = pairs.Select(
-                x => {
-                    var t = new TournamentMatch(x.First(), x.Last());
-                    t.Sets.Add(new TournamentSet());
-                    t.Sets.Add(new TournamentSet());
-                    t.Sets.Add(new TournamentSet());
-                    return t;
-            }).ToList();
+            _tournamentRepository.Save(tournament);
         }
 
         public IEnumerable<Tournament> Get()
